@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.ui.theme" value="simple" />
+    <package name="edu.kgu.aeon.Action" extends="struts-default">
+    	<!-- loginAction -->
+    	<action name="loginAction" class="edu.kgu.aeon.Action.loginAction">
+            <result name="input">login.jsp</result>
+            <result name="success">register.jsp</result>
+        </action>
+        
+        <!-- registerAction -->
+        <action name="registerAction" class="edu.kgu.aeon.Action.registerAction">
+            <result name="input">register.jsp</result>
+            <result name="success">registerConfirm.jsp</result>
+        </action>
+
+    </package>
+</struts>
