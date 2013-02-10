@@ -1,6 +1,5 @@
 package edu.kgu.aeon.logic;
-
-import java.io.File;
+import java.util.Random;
 
 import edu.kgu.QrCode.QrcodeEncode;
 import edu.kgu.aeon.access.userInfoAccess;
@@ -8,7 +7,6 @@ import edu.kgu.aeon.bean.*;
 import edu.kgu.log.LogLogger;
 import edu.kgu.util.NumberProcess;
 import edu.kgu.util.StringProcess;
-import edu.kgu.util.SystemParameter;
 
 public class registerLogic extends BaseLogic {
 	private registerFormBean bean;
@@ -20,25 +18,30 @@ public class registerLogic extends BaseLogic {
 	}
 	
 	public boolean CheckFormBean() {
-		userInfoBean in = new userInfoBean();
 		userInfoBean out;
 		
+		// ユーザ名 空チェック
+		if (this.bean.getUserName().length() <= 0) {
+			this.messagebean.setErrorMsg("ユーザ名入力してください");
+			return false;
+		}
+		
+		// ユーザ名 重複チェック
+		out = access.getUserInfoByUserName(bean.getUserName());
+		if (out.getUserID().trim().length() > 0) {
+			this.messagebean.setErrorMsg("ユーザ名既に存在している");
+			return false;
+		}
+		
 		// メールアドレス 空チェック
-		if (this.bean.getUserID().length() <= 0) {
+		if (this.bean.getMailAddress().length() <= 0) {
 			this.messagebean.setErrorMsg("メールアドレス入力してください");
 			return false;
 		}
-		// メールアドレス Format チェック
-		if (!StringProcess.chkMailAddress(bean.getUserID())) {
-			this.messagebean.setErrorMsg("メールアドレスフォマットエラー");
-			return false;
-		}
 		
-		// メールアドレス 重複チェック
-		in.setUserID(bean.getUserID().trim());
-		out = access.getUserInfo(in);
-		if (out.getUserID().trim().length() > 0) {
-			this.messagebean.setErrorMsg("メールアドレス既に存在している");
+		// メールアドレス Format チェック
+		if (!StringProcess.chkMailAddress(bean.getMailAddress())) {
+			this.messagebean.setErrorMsg("メールアドレスフォマットエラー");
 			return false;
 		}
 		
@@ -95,15 +98,15 @@ public class registerLogic extends BaseLogic {
 			return false;
 		}
 		
-		// お住まい 空チェック
-		if (this.bean.getHomeAddress().length() <= 0) {
-			this.messagebean.setErrorMsg("お住まい入力してください");
+		// お住まい郵便番号 空チェック
+		if (this.bean.getHomePostalcode().length() <= 0) {
+			this.messagebean.setErrorMsg("お住まい郵便番号入力してください");
 			return false;
 		}
 		
-		// 勤務地/学校所在地 空チェック
+		// お住まい 空チェック
 		if (this.bean.getHomeAddress().length() <= 0) {
-			this.messagebean.setErrorMsg("勤務地/学校所在地入力してください");
+			this.messagebean.setErrorMsg("お住まい入力してください");
 			return false;
 		}
 		
@@ -112,20 +115,39 @@ public class registerLogic extends BaseLogic {
 	
 	public userInfoBean setUserInfoBean() {
 		userInfoBean rtn = new userInfoBean();
-		rtn.setUserID(this.bean.getUserID());
+		
+		// create userId
+		userInfoBean tmpUserinfo;
+		int iUserid;
+		do {
+			Random random = new Random();
+			iUserid =random.nextInt();
+			if (iUserid < 0) {
+				iUserid = iUserid * -1;
+			}
+			tmpUserinfo = access.getUserInfoByUserID(String.valueOf(iUserid));
+		} while(tmpUserinfo.getUserID().length() < 0);
+		
+		rtn.setUserID(String.valueOf(iUserid));
+		rtn.setUserName(this.bean.getUserName());
 		rtn.setPassword(this.bean.getPassword());
+		rtn.setMailAddress(this.bean.getMailAddress());
 		rtn.setFirstnameSpelling(this.bean.getFirstnameSpelling());
 		rtn.setLastnameSpelling(this.bean.getLastnameSpelling());
 		rtn.setFirstname(this.bean.getFirstname());
 		rtn.setLastname(this.bean.getLastname());
 		rtn.setHandPhoneNo(this.bean.getHandPhoneNo());
-		rtn.setHomeAddress(this.bean.getHomeAddress());
-		rtn.setWorkAddress(this.bean.getWorkAddress());
 		if (this.bean.getAllowSMS().equals("true")) {
 			rtn.setAllowSMS("1");
 		} else {
 			rtn.setAllowSMS("0");
 		}
+		rtn.setHomePostalcode(this.bean.getHomePostalcode());
+		rtn.setHomeAddress(this.bean.getHomeAddress());
+		rtn.setWorkPostalcode(this.bean.getWorkPostalcode());
+		rtn.setWorkAddress(this.bean.getWorkAddress());
+		rtn.setSchoolPostalcode(this.bean.getSchoolPostalcode());
+		rtn.setSchoolAddress(this.bean.getSchoolAddress());
 		rtn.setIsValidate("0");
 		
 		return rtn;	
@@ -141,7 +163,7 @@ public class registerLogic extends BaseLogic {
 			userInfoBean in = this.setUserInfoBean();
 			if (access.insertUserInfo(in) == 0) {
 				this.registerconfirmbean.setFirstName(this.bean.getFirstname());
-				String filename = createQrCode(bean.getUserID());
+				String filename = createQrCode(in.getUserID());
 				this.registerconfirmbean.setQrImage("QRtmp/" + filename);
 				rtn = true;
 			}
@@ -166,6 +188,4 @@ public class registerLogic extends BaseLogic {
 		
 		return fileName;
 	}
-
-
 }

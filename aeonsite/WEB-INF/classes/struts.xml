@@ -5,12 +5,21 @@
 
 <struts>
 	<constant name="struts.ui.theme" value="simple" />
-    <package name="edu.kgu.aeon.Action" extends="struts-default">      
+    <package name="edu.kgu.aeon.Action" extends="json-default">      
+        <!-- loginAction -->
+        <action name="loginAction" class="edu.kgu.aeon.Action.loginAction">
+            <result name="input">login.jsp</result>
+            <result name="success">registerConfirm.jsp</result>
+        </action>
+        
         <!-- registerAction -->
         <action name="registerAction" class="edu.kgu.aeon.Action.registerAction">
             <result name="input">register.jsp</result>
             <result name="success">registerConfirm.jsp</result>
         </action>
 
+        <action name="loginQrAction" class="edu.kgu.aeon.Action.loginQrAction">
+            <result type="json"/>
+        </action>
     </package>
 </struts>

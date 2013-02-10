@@ -1,14 +1,12 @@
 package edu.kgu.aeon.Action;
 
-import org.omg.CORBA.Request;
-
 import edu.kgu.aeon.bean.*;
 import edu.kgu.aeon.logic.*;
 
 public class registerAction extends BaseAction{
 	
 	// logic
-	private registerLogic registerlogic = new registerLogic();
+	private registerLogic logic = new registerLogic();
 	
 	// register form bean
 	private registerFormBean registerBean;
@@ -36,20 +34,14 @@ public class registerAction extends BaseAction{
 		
 		String rtn = INPUT;
 		
-		if (registerlogic.execute(this.registerBean)) {
-			this.registerConfirmBean = registerlogic.getRegisterconfirmbean();
+		if (logic.execute(this.registerBean)) {
+			this.registerConfirmBean = logic.getRegisterconfirmbean();
 			rtn = SUCCESS;
 		} else {
-			this.messagebean.setErrorMsg(registerlogic.messagebean.getErrorMsg());
 			rtn = INPUT;	
 		}
 
+		this.messagebean = logic.messagebean;
 		return rtn;
 	}
-
-
-
-
-
-
 }

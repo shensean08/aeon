@@ -2,20 +2,24 @@ package edu.kgu.aeon.bean;
 
 public class userInfoBean {
 	private String userID = "";
+	private String userName = "";
 	private String password = "";
 	private String firstname = "";
 	private String lastname = "";
 	private String firstnameSpelling = "";
 	private String lastnameSpelling = "";
 	private String sex = "";
-	private String birtyday = "";
+	private String birthday = "";
 	private String telNo = "";
 	private String handPhoneNo = "";
-	private String handPhoneMailAddess = "";
+	private String mailAddress = "";
 	private String allowSMS = "";
+	private String homePostalcode = "";
 	private String homeAddress = "";
+	private String schoolPostalcode = "";
+	private String schoolAddress = "";
+	private String workPostalcode = "";
 	private String workAddress = "";
-	private String validateCode = "";
 	private String isValidate = "";
 	
 	public String getUserID() {
@@ -23,6 +27,12 @@ public class userInfoBean {
 	}
 	public void setUserID(String userID) {
 		this.userID = userID;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	public String getPassword() {
 		return password;
@@ -60,11 +70,11 @@ public class userInfoBean {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
-	public String getBirtyday() {
-		return birtyday;
+	public String getBirthday() {
+		return birthday;
 	}
-	public void setBirtyday(String birtyday) {
-		this.birtyday = birtyday;
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
 	}
 	public String getTelNo() {
 		return telNo;
@@ -78,11 +88,11 @@ public class userInfoBean {
 	public void setHandPhoneNo(String handPhoneNo) {
 		this.handPhoneNo = handPhoneNo;
 	}
-	public String getHandPhoneMailAddess() {
-		return handPhoneMailAddess;
+	public String getMailAddress() {
+		return mailAddress;
 	}
-	public void setHandPhoneMailAddess(String handPhoneMailAddess) {
-		this.handPhoneMailAddess = handPhoneMailAddess;
+	public void setMailAddress(String mailAddress) {
+		this.mailAddress = mailAddress;
 	}
 	public String getAllowSMS() {
 		return allowSMS;
@@ -90,11 +100,35 @@ public class userInfoBean {
 	public void setAllowSMS(String allowSMS) {
 		this.allowSMS = allowSMS;
 	}
+	public String getHomePostalcode() {
+		return homePostalcode;
+	}
+	public void setHomePostalcode(String homePostalcode) {
+		this.homePostalcode = homePostalcode;
+	}
 	public String getHomeAddress() {
 		return homeAddress;
 	}
 	public void setHomeAddress(String homeAddress) {
 		this.homeAddress = homeAddress;
+	}
+	public String getSchoolPostalcode() {
+		return schoolPostalcode;
+	}
+	public void setSchoolPostalcode(String schoolPostalcode) {
+		this.schoolPostalcode = schoolPostalcode;
+	}
+	public String getSchoolAddress() {
+		return schoolAddress;
+	}
+	public void setSchoolAddress(String schoolAddress) {
+		this.schoolAddress = schoolAddress;
+	}
+	public String getWorkPostalcode() {
+		return workPostalcode;
+	}
+	public void setWorkPostalcode(String workPostalcode) {
+		this.workPostalcode = workPostalcode;
 	}
 	public String getWorkAddress() {
 		return workAddress;
@@ -102,17 +136,11 @@ public class userInfoBean {
 	public void setWorkAddress(String workAddress) {
 		this.workAddress = workAddress;
 	}
-	public String getValidateCode() {
-		return validateCode;
-	}
-	public void setValidateCode(String validateCode) {
-		this.validateCode = validateCode;
-	}
 	public String getIsValidate() {
 		return isValidate;
 	}
 	public void setIsValidate(String isValidate) {
 		this.isValidate = isValidate;
 	}
-
+	
 }

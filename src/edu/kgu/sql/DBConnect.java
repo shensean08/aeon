@@ -63,6 +63,14 @@ public class DBConnect {
 		return rtnRs;
     }
     
+    public void BeginTransaction() {
+    	try {
+			this._conn.setAutoCommit(false);
+		} catch (SQLException e) {
+			LogLogger.error(e);
+		}
+    }
+    
     public void Commit() {
     	try {
 			this._conn.commit();

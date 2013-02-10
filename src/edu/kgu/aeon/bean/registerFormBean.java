@@ -1,31 +1,34 @@
 package edu.kgu.aeon.bean;
 
 public class registerFormBean {
-	private String userID = "";
+	private String userName = "";
+	private String mailAddress = "";
 	private String password = "";
 	private String passwordConfirm = "";
 	private String firstname = "";
 	private String lastname = "";
 	private String firstnameSpelling = "";
 	private String lastnameSpelling = "";
-	private String sex = "";
-	private String BirthdayYear = "";
-	private String BirthdayMonth = "";
-	private String BirthdayDay = "";
-	private String telNo = "";
 	private String handPhoneNo = "";
-	private String handPhomeMailAddress = "";
 	private String allowSMS = "";
+	private String homePostalcode = "";
 	private String homeAddress = "";
+	private String workPostalcode = "";
 	private String workAddress = "";
-	private String validateCode = "";
-	private String isValidate = "false";
-
-	public String getUserID() {
-		return userID;
+	private String schoolPostalcode = "";
+	private String schoolAddress = "";
+	
+	public String getUserName() {
+		return userName;
 	}
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getMailAddress() {
+		return mailAddress;
+	}
+	public void setMailAddress(String mailAddress) {
+		this.mailAddress = mailAddress;
 	}
 	public String getPassword() {
 		return password;
@@ -63,47 +66,11 @@ public class registerFormBean {
 	public void setLastnameSpelling(String lastnameSpelling) {
 		this.lastnameSpelling = lastnameSpelling;
 	}
-	public String getSex() {
-		return sex;
-	}
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
-	public String getBirthdayYear() {
-		return BirthdayYear;
-	}
-	public void setBirthdayYear(String birthdayYear) {
-		BirthdayYear = birthdayYear;
-	}
-	public String getBirthdayMonth() {
-		return BirthdayMonth;
-	}
-	public void setBirthdayMonth(String birthdayMonth) {
-		BirthdayMonth = birthdayMonth;
-	}
-	public String getBirthdayDay() {
-		return BirthdayDay;
-	}
-	public void setBirthdayDay(String birthdayDay) {
-		BirthdayDay = birthdayDay;
-	}
-	public String getTelNo() {
-		return telNo;
-	}
-	public void setTelNo(String telNo) {
-		this.telNo = telNo;
-	}
 	public String getHandPhoneNo() {
 		return handPhoneNo;
 	}
 	public void setHandPhoneNo(String handPhoneNo) {
 		this.handPhoneNo = handPhoneNo;
-	}
-	public String getHandPhomeMailAddress() {
-		return handPhomeMailAddress;
-	}
-	public void setHandPhomeMailAddress(String handPhomeMailAddress) {
-		this.handPhomeMailAddress = handPhomeMailAddress;
 	}
 	public String getAllowSMS() {
 		return allowSMS;
@@ -111,11 +78,23 @@ public class registerFormBean {
 	public void setAllowSMS(String allowSMS) {
 		this.allowSMS = allowSMS;
 	}
+	public String getHomePostalcode() {
+		return homePostalcode;
+	}
+	public void setHomePostalcode(String homePostalcode) {
+		this.homePostalcode = homePostalcode;
+	}
 	public String getHomeAddress() {
 		return homeAddress;
 	}
 	public void setHomeAddress(String homeAddress) {
 		this.homeAddress = homeAddress;
+	}
+	public String getWorkPostalcode() {
+		return workPostalcode;
+	}
+	public void setWorkPostalcode(String workPostalcode) {
+		this.workPostalcode = workPostalcode;
 	}
 	public String getWorkAddress() {
 		return workAddress;
@@ -123,16 +102,16 @@ public class registerFormBean {
 	public void setWorkAddress(String workAddress) {
 		this.workAddress = workAddress;
 	}
-	public String getValidateCode() {
-		return validateCode;
+	public String getSchoolPostalcode() {
+		return schoolPostalcode;
 	}
-	public void setValidateCode(String validateCode) {
-		this.validateCode = validateCode;
+	public void setSchoolPostalcode(String schoolPostalcode) {
+		this.schoolPostalcode = schoolPostalcode;
 	}
-	public String getIsValidate() {
-		return isValidate;
+	public String getSchoolAddress() {
+		return schoolAddress;
 	}
-	public void setIsValidate(String isValidate) {
-		this.isValidate = isValidate;
+	public void setSchoolAddress(String schoolAddress) {
+		this.schoolAddress = schoolAddress;
 	}
 }

@@ -1,11 +1,11 @@
 package edu.kgu.aeon.bean;
 
 public class messageBean {
-	private String messageID;
-	private String warningMsg;
-	private String errorMsg;
-	private String debugMsg;
-	private String fatalMsg;
+	private String messageID = "";
+	private String warningMsg = "";
+	private String errorMsg = "";
+	private String debugMsg = "";
+	private String fatalMsg = "";
 	
 	public String getMessageID() {
 		return messageID;

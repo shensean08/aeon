@@ -1,8 +1,8 @@
 package edu.kgu.aeon.bean;
 
 public class registerConfirmFormBean {
-	public String firstName;
-	public String qrImage;
+	public String firstName = "";
+	public String qrImage = "";
 	
 	public String getFirstName() {
 		return firstName;
