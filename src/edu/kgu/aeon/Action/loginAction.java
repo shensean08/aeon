@@ -1,5 +1,7 @@
 package edu.kgu.aeon.Action;
 
+import javax.servlet.http.HttpServletRequest;
+
 import edu.kgu.aeon.bean.loginFormBean;
 import edu.kgu.aeon.bean.registerConfirmFormBean;
 import edu.kgu.aeon.logic.loginLogic;

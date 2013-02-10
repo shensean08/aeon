@@ -1,26 +1,29 @@
 package edu.kgu.aeon.Action;
 
-import com.opensymphony.xwork2.Action;
+import edu.kgu.aeon.logic.loginQrLogic;
 
-import edu.kgu.log.LogLogger;
-
-
-public class loginQrAction {
-	private String name;
+public class loginQrAction extends BaseAction {
+	// logic
+	loginQrLogic logic = new loginQrLogic();
+	
+	private String qrdecode;
     private String result;
+    
+	public String getQrdecode() {
+		return qrdecode;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
+	public void setQrdecode(String qrdecode) {
+		this.qrdecode = qrdecode;
+	}
+	
     public String getResult() {
         return result;
     }
 	
 	public String execute() {
-		LogLogger.info("--");
-		LogLogger.info(name);
-		 this.result = "Hello! " + this.name + ".";
-		return Action.SUCCESS;
+		this.result = logic.execute(qrdecode);
+		this.messagebean = logic.messagebean;
+		return SUCCESS;
 	}
 }

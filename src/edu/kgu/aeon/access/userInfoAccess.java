@@ -96,7 +96,7 @@ public class userInfoAccess extends BaseAccess {
 		query.append("       ,workAddress");
 		query.append("       ,isValidate");
 		query.append("   FROM userInfo ");
-		query.append("  WHERE userName = '" + userID + "'");
+		query.append("  WHERE userID = '" + userID + "'");
 		
 		try {
 			result = dbConn.ExecuteQuery(query.toString());		   

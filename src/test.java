@@ -13,7 +13,7 @@ public class test {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		login();
+		loginQr();
 	}
 
 	public static void loginQrAction() {
@@ -67,6 +67,12 @@ public class test {
 		registerAction action = new registerAction();
 		action.setRegisterBean(bean);
 		
+		action.execute();
+	}
+	
+	public static void loginQr() {
+		loginQrAction action = new loginQrAction();
+		action.setQrdecode("1315492432");
 		action.execute();
 	}
 }

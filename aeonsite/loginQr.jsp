@@ -6,24 +6,23 @@
 <title>Web QR</title>
 <script type="text/javascript" src="js/jquery.js"></script>
 <SCRIPT type="text/javascript">
-            function clickButton()
-            {    
-                var url = 'loginQrAction';
-                var params = {
-                        'name':'ffffffff333'
-                };
-                $.post(url,
-                	   params,
-                	   function(result) {
-                	   	alert(result);
-                	   },"json");
-            }
-           
-        </SCRIPT>
+function clickButton() {    
+	var qrdecode = document.getElementById("qrdecode");
+	var url = 'loginQrAction';
+	var params = {
+                 'qrdecode':'1315492432'
+				 };
+	$.post(url,
+		   params,
+	       function(result) {
+           		alert(result);
+           },"json");
+    }    
+</SCRIPT>
         
 </head>
 <body>
 <input id="name" type="text">
-        <input type="button" value="ok" onclick="javascript:clickButton();">
+  <input type="button" id="qrdecode" value="ok" onclick="javascript:clickButton();">
 </body>
 </html>
