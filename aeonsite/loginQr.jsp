@@ -14,10 +14,9 @@
                 };
                 $.post(url,
                 	   params,
-                	   function(data) {
-                	   	alert(data);
+                	   function(result) {
+                	   	alert(result);
                 	   },"json");
-              alert(1);
             }
            
         </SCRIPT>

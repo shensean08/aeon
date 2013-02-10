@@ -19,7 +19,9 @@
         </action>
 
         <action name="loginQrAction" class="edu.kgu.aeon.Action.loginQrAction">
-            <result type="json"/>
+            <result type="json">
+                <param name="root">result</param>
+            </result>
         </action>
     </package>
 </struts>
