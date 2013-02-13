@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+    <asset>
+        <up_axis>Z_UP</up_axis>
+    </asset>
+    <library_materials>
+        <material id="material0">
+            <instance_effect url="#effect0"/>
+        </material>
+        <material id="material1">
+            <instance_effect url="#effect1"/>
+        </material>
+    </library_materials>
+    <library_effects>
+        <effect id="effect0">
+            <profile_COMMON>
+                <newparam sid="image0-surface">
+                    <surface type="2D">
+                        <init_from>image0</init_from>
+                    </surface>
+                </newparam>
+                <newparam sid="image0-sampler">
+                    <sampler2D>
+                        <source>image0-surface</source>
+                    </sampler2D>
+                </newparam>
+                <technique sid="technique-phong">
+                    <phong>
+                        <emission>
+                            <color>1 1 1 1</color>
+                        </emission>
+                        <ambient>
+                            <color>1 1 1 1</color>
+                        </ambient>
+                        <diffuse>
+                            <texture texture="image0-sampler" texcoord="TEXCOORD"/>
+                        </diffuse>
+                        <specular>
+                            <color>1 1 1 1</color>
+                        </specular>
+                        <shininess>
+                            <float>0</float>
+                        </shininess>
+                    </phong>
+                </technique>
+                <extra>
+                    <technique profile="GOOGLEEARTH">
+                        <double_sided>0</double_sided>
+                    </technique>
+                </extra>
+            </profile_COMMON>
+        </effect>
+        <effect id="effect1">
+            <profile_COMMON>
+                <newparam sid="image1-surface">
+                    <surface type="2D">
+                        <init_from>image1</init_from>
+                    </surface>
+                </newparam>
+                <newparam sid="image1-sampler">
+                    <sampler2D>
+                        <source>image1-surface</source>
+                    </sampler2D>
+                </newparam>
+                <technique sid="technique-phong">
+                    <phong>
+                        <emission>
+                            <color>1 1 1 1</color>
+                        </emission>
+                        <ambient>
+                            <color>1 1 1 1</color>
+                        </ambient>
+                        <diffuse>
+                            <texture texture="image1-sampler" texcoord="TEXCOORD"/>
+                        </diffuse>
+                        <specular>
+                            <color>1 1 1 1</color>
+                        </specular>
+                        <shininess>
+                            <float>0</float>
+                        </shininess>
+                    </phong>
+                </technique>
+                <extra>
+                    <technique profile="GOOGLEEARTH">
+                        <double_sided>0</double_sided>
+                    </technique>
+                </extra>
+            </profile_COMMON>
+        </effect>
+    </library_effects>
+    <library_images>
+        <image id="image0" height="0" width="0">
+            <init_from>image0.jpg</init_from>
+        </image>
+        <image id="image1" height="0" width="0">
+            <init_from>image1.jpg</init_from>
+        </image>
+    </library_images>
+    <library_geometries>
+        <geometry id="geometry0">
+            <mesh>
+                <source id="geometry0-position">
+                    <float_array id="geometry0-position-array" count="24">-18.2452 -70.4145 0 -32.7608 -8.99569 0 0 0 0 16.2008 -62.13 0 16.2008 -62.13 33.3661 0 0 33.3661 -32.7608 -8.99569 33.3661 -18.2452 -70.4145 33.3661</float_array>
+                    <technique_common>
+                        <accessor count="8" source="#geometry0-position-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="geometry0-normal">
+                    <float_array id="geometry0-normal-array" count="36">0 0 -2142.71 0 0 -2274.35 0 0 2181.17 0 0 2235.88 2070.45 550.391 0 2070.45 550.391 -0 -305.336 1091.66 0 -305.336 1091.66 0 -2046.98 -494.051 0 -2046.98 -494.051 0 281.871 -1148 0 281.871 -1148 0</float_array>
+                    <technique_common>
+                        <accessor count="12" source="#geometry0-normal-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="geometry0-texcoord">
+                    <float_array id="geometry0-texcoord-array" count="72">0.321425 0.443841 0.356443 0.997419 0.654927 0.989277 0.321425 0.443841 0.654927 0.989277 0.63226 0.425408 0.313795 0.42517 0.336462 0.989039 0.0379784 0.997181 0.313795 0.42517 0.0379784 0.997181 0.00296016 0.443603 0.00299424 0.117444 0.567318 0.117444 0.567318 0.410701 0.00299424 0.117444 0.567318 0.410701 0.00299424 0.410701 0.56457 0.407915 0.863164 0.407915 0.863164 0.994429 0.56457 0.407915 0.863164 0.994429 0.56457 0.994429 0.00293121 0.407915 0.557616 0.407915 0.557616 0.994429 0.00293121 0.407915 0.557616 0.994429 0.00293121 0.994429 0.575755 0.125832 0.887136 0.125832 0.887136 0.419089 0.575755 0.125832 0.887136 0.419089 0.575755 0.419089</float_array>
+                    <technique_common>
+                        <accessor count="36" source="#geometry0-texcoord-array" stride="2">
+                            <param name="S" type="float"/>
+                            <param name="T" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="geometry0-vertex">
+                    <input semantic="POSITION" source="#geometry0-position"/>
+                </vertices>
+                <triangles count="8" material="material0-symbol">
+                    <input offset="0" semantic="VERTEX" source="#geometry0-vertex" set="0"/>
+                    <input offset="1" semantic="TEXCOORD" source="#geometry0-texcoord" set="0"/>
+                    <p>0 0 1 1 2 2 0 3 2 4 3 5 4 6 5 7 6 8 4 9 6 10 7 11 3 12 2 13 5 14 3 15 5 16 4 17 0 30 3 31 4 32 0 33 4 34 7 35</p>
+                </triangles>
+                <triangles count="4" material="material1-symbol">
+                    <input offset="0" semantic="VERTEX" source="#geometry0-vertex" set="0"/>
+                    <input offset="1" semantic="TEXCOORD" source="#geometry0-texcoord" set="0"/>
+                    <p>2 18 1 19 6 20 2 21 6 22 5 23 1 24 0 25 7 26 1 27 7 28 6 29</p>
+                </triangles>
+            </mesh>
+        </geometry>
+    </library_geometries>
+    <library_visual_scenes>
+        <visual_scene id="visual-scene">
+            <node>
+                <instance_geometry url="#geometry0">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="material0-symbol" target="#material0"/>
+                            <instance_material symbol="material1-symbol" target="#material1"/>
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+        </visual_scene>
+    </library_visual_scenes>
+    <scene>
+        <instance_visual_scene url="#visual-scene"/>
+    </scene>
+</COLLADA>

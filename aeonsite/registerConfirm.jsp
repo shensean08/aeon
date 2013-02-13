@@ -16,9 +16,9 @@
 <header><h1><a href="login.jsp"><img src="images/aeon-logo.png" alt="AEON HAZARDMAP"></a></h1></header>
 <nav>
 <ul>
-<li class="nav-1"><a href="register.html">ご利用登録（無料）</a></li>
-<li class="nav-2"><a href="">ハザードマップとは</a></li>
-<li class="nav-3"><a href="">ＤＬ一覧</a></li>
+<li class="nav-1"><a href="register.jsp">ご利用登録（無料）</a></li>
+<li class="nav-2"><a href="login.jsp">ハザードマップとは</a></li>
+<li class="nav-3"><a href="login.jsp">ＤＬ一覧</a></li>
 </ul>
 </nav>
 <footer>
