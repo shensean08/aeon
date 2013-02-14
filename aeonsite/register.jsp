@@ -5,7 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>AEON HAZARDMAP</title>
-<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
+<meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1">
+<link rel="stylesheet" href="style.css" type="text/css" media="screen">
+<link rel="stylesheet" media="screen and (max-width: 854px)" href="rwd.css" type="text/css" />
 <script type="text/javascript" src="js/jquery.js"></script>
 <script src="http://ajaxzip3.googlecode.com/svn/trunk/ajaxzip3/ajaxzip3.js" charset="UTF-8"></script>
 <body>
@@ -18,14 +20,10 @@
 <ul>
 <li class="nav-1"><a href="register.jsp">ご利用登録（無料）</a></li>
 <li class="nav-2"><a href="login.jsp">ハザードマップとは</a></li>
-<li class="nav-3"><a href="login.jsp">ＤＬ一覧</a></li>
+<li class="nav-3"><a href="aeonlink.html">ＤＬ一覧</a></li>
 </ul>
 </nav>
-<footer>
-<ul><li><a href=""><img src="images/bnr-apple.png" alt="APP STORE"></a></li><li><a href=""><img src="images/bnr-android.png" alt="Android STORE"></a></li></ul>
-<p><small>Disaster Preparedness 
-and Visualization<br>
-Public Service .NPO&nbsp;&copy;&nbsp;2013</small></p></footer>
+<br class="clear">
 </div>
 <div id="main">
 <article>
@@ -123,11 +121,15 @@ Public Service .NPO&nbsp;&copy;&nbsp;2013</small></p></footer>
 	</tbody>
 </table>
 
-<p class="sabmit"><input type="submit" id="registerAction_0" value="登録" class="input-btn"></p>
+<p class="sabmit"><s:submit value="登録" cssClass="input-btn"/></p>
 
 </s:form>
 </article>
 </div><!-- /main -->
+<footer>
+<ul class="bnr-pc"><li><a href=""><img src="images/bnr-pc-1.png" alt="APP STORE"></a></li><li><a href=""><img src="images/bnr-pc-2.png" alt="Android STORE"></a></li></ul>
+<ul class="bnr-rwd"><li><a href=""><img src="images/bnr-rwd-1.png" alt="APP STORE"></a></li></ul>
+<p><small>Disaster Preparedness and Visualization Public Service .NPO &copy;&nbsp;2013</small></p></footer>
 </div><!-- /register -->
 </div><!-- /wrap -->
 

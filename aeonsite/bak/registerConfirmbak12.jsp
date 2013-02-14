@@ -5,9 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>AEON HAZARDMAP</title>
-<meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1">
-<link rel="stylesheet" href="style.css" type="text/css" media="screen">
-<link rel="stylesheet" media="screen and (max-width: 854px)" href="rwd.css" type="text/css" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
 <script type="text/javascript" src="js/jquery.js"></script>
 
 <body>
@@ -20,22 +18,22 @@
 <ul>
 <li class="nav-1"><a href="register.jsp">ご利用登録（無料）</a></li>
 <li class="nav-2"><a href="login.jsp">ハザードマップとは</a></li>
-<li class="nav-3"><a href="aeonlink.html">ＤＬ一覧</a></li>
+<li class="nav-3"><a href="login.jsp">ＤＬ一覧</a></li>
 </ul>
 </nav>
-<br class="clear">
+<footer>
+<ul><li><a href=""><img src="images/bnr-apple.png" alt="APP STORE"></a></li><li><a href=""><img src="images/bnr-android.png" alt="Android STORE"></a></li></ul>
+<p><small>Disaster Preparedness 
+and Visualization<br>
+Public Service .NPO&nbsp;&copy;&nbsp;2013</small></p></footer>
 </div>
 <div id="main">
 <article>
 <h2>QRコード発行</h2>
 <p><s:property value="%{registerConfirmBean.firstName}"/>&nbsp;様、あなたのQRコードは以下です。</p>
-<p><img src="<s:property value='registerConfirmBean.qrImage'/>" height="200" width="200"/></p>
+<p><img src="<s:property value='registerConfirmBean.qrImage'/>"/></p>
 </article>
 </div><!-- /main -->
-<footer>
-<ul class="bnr-pc"><li><a href=""><img src="images/bnr-pc-1.png" alt="APP STORE"></a></li><li><a href=""><img src="images/bnr-pc-2.png" alt="Android STORE"></a></li></ul>
-<ul class="bnr-rwd"><li><a href=""><img src="images/bnr-rwd-1.png" alt="APP STORE"></a></li></ul>
-<p><small>Disaster Preparedness and Visualization Public Service .NPO &copy;&nbsp;2013</small></p></footer>
 </div><!-- /showcode -->
 </div><!-- /wrap -->
 

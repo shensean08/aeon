@@ -38,18 +38,18 @@ div#side {
 	padding: 30px 0 50px 0;
 	float: left;
 	position: fixed;
-	color: #FFF;
+
 }
 
-footer{bottom: 20px; position: fixed;}
+footer{bottom: 20px; position: fixed; color: #FFF; width: 185px;}
 
-footer li {text-align: center; padding-top:25px;}
+footer li {text-align: center; padding-top:7px;}
 
 small {font-size: 0.8em;}
 
-footer p {line-height: 1.2; padding-top:20px;}
+footer p {line-height: 1.2; padding-top:15px;}
 
-
+.bnr-rwd {display: none;} 
 
 html,body {height: 100%;}
 
@@ -60,7 +60,7 @@ body {font: 0.8em "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メ�
 
 nav {padding-top: 50px;}
 
-nav a {color: #b42e83; font-weight: bold; text-decoration: none;}
+nav a, #aeonlink #main li a {color: #b42e83; font-weight: bold; text-decoration: none;}
 
 nav ul li {height: 32px; margin-bottom:20px; padding: 7px 0 0 40px;}
 nav ul li.nav-1 {background:url(images/nav-1.png) 0 0 no-repeat;}
@@ -124,10 +124,12 @@ td.i-cap input{width:auto;margin-right:0.5em}
 #login h2{background:url(images/h2-dps-logo.png) 0 0 no-repeat;}
 
 #login #main,
-#showcode #main {width: 75%;margin-top: 15%;}
+#showcode #main,
+#aeonlink #main {width: 75%;margin-top: 15%;}
 
 #login article,
-#showcode article {width: 70%;}
+#showcode article,
+#aeonlink article {width: 70%;}
 
 
 #login th{width: 25%;}
@@ -152,6 +154,11 @@ td.i-cap input{width:auto;margin-right:0.5em}
 #register td.i-cap2 input{width:75%;margin-left: 0.5em;}
 
 /* register End */
+
+/* aeonlink Start */
+#aeonlink h2 {background:url(images/h2-aeonlink.png) 0 0 no-repeat;}
+#aeonlink #main li {height: 27px; margin-bottom:20px; padding: 2px 0 0 35px;background:url(images/list-aeonlink.png) 5px 0 no-repeat; font-size:110%;}
+
 
 
 /* bg */
