@@ -1,0 +1,14 @@
+D:\sean\magent\magent\obj\Debug\ResolveAssemblyReference.cache
+D:\sean\magent\magent\obj\Debug\Interop.AgentObjects.dll
+D:\sean\magent\magent\obj\Debug\AxInterop.AgentObjects.dll
+D:\sean\magent\magent\obj\Debug\magent.csproj.ResolveComReference.cache
+D:\sean\magent\magent\obj\Debug\magent.frmAgent.resources
+D:\sean\magent\magent\obj\Debug\magent.Properties.Resources.resources
+D:\sean\magent\magent\obj\Debug\magent.csproj.GenerateResource.Cache
+D:\sean\magent\magent\bin\Debug\magent.exe
+D:\sean\magent\magent\bin\Debug\magent.pdb
+D:\sean\magent\magent\bin\Debug\Interop.AgentObjects.dll
+D:\sean\magent\magent\bin\Debug\AxInterop.AgentObjects.dll
+D:\sean\magent\magent\obj\Debug\magent.exe
+D:\sean\magent\magent\obj\Debug\magent.pdb
+D:\sean\magent\magent\bin\Debug\magent.exe.config
