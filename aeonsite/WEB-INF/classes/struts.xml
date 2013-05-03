@@ -18,6 +18,12 @@
             <result name="success">registerConfirm.jsp</result>
         </action>
 
+		<!-- downloadAction -->
+        <action name="downloadAction" class="edu.kgu.aeon.Action.downloadAction">
+			<result name="success">applettest.html</result>
+        </action>
+		
+		<!-- loginQrAction -->
         <action name="loginQrAction" class="edu.kgu.aeon.Action.loginQrAction">
             <result type="json">
                 <param name="root">result</param>

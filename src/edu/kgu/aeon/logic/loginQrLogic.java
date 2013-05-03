@@ -1,6 +1,7 @@
 package edu.kgu.aeon.logic;
 
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 import edu.kgu.aeon.access.userInfoAccess;
 import edu.kgu.aeon.bean.userInfoBean;
@@ -18,22 +19,42 @@ public class loginQrLogic extends BaseLogic {
 		String rtn = "";
 		JSONObject jsonResult = new JSONObject();
 		
-		
 		try {
 			userInfoBean bean = access.getUserInfoByUserID(qrdecode);
 			
 			if (bean.getUserName().length() <= 0) {
-				this.messagebean.setErrorMsg("Qrコード間違いました。");
+				this.messagebean.setErrorMsg("{Qrコード間違いました。}");
 			} else {
-				jsonResult.put("homeAddress", bean.getHomeAddress());
-				jsonResult.put("workAddress", bean.getWorkAddress());
-				jsonResult.put("schoolAddress", bean.getSchoolAddress());
+				JSONArray allObj = new JSONArray();
+				JSONObject homeObj = new JSONObject();
+				JSONObject schoolObj = new JSONObject();
+				JSONObject workObj = new JSONObject();
+				JSONObject currObj = new JSONObject();
+				
+				homeObj.put("name", "家");
+				homeObj.put("address", bean.getHomeAddress());
+				
+				schoolObj.put("name", "学校");
+				schoolObj.put("address", bean.getSchoolAddress());
+				
+				workObj.put("name", "会社");
+				workObj.put("address", bean.getWorkAddress());
+
+				currObj.put("name", "現在地");
+				currObj.put("address", "大阪府大阪市西区千代崎3丁目北2");
+				
+				allObj.put(homeObj);
+				allObj.put(schoolObj);
+				allObj.put(workObj);
+				allObj.put(currObj); 
+				
+				jsonResult.put("places",allObj);
 			}
 		} catch (Exception e) {
 			LogLogger.error(e);
 		}
-		rtn = jsonResult.toString();
 		
+		rtn = jsonResult.toString();
 		return rtn;
 	}
 }

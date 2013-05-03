@@ -2,7 +2,6 @@
 
 /*** HAZARD MAP RWD ***/
 
-
 @media screen and (min-width: 10px) and (max-width: 854px) {
 	body{font-size: 62.5%}
 	div#wrap {
@@ -65,8 +64,8 @@ table {
 }
 footer { width:100%; padding-top:2em;}
 footer img { width:100%;}
-.bnr-rwd {display: inherit;} 
-.bnr-pc {display: none;} 
+.bnr-rwd {display: none;} 
+/*.bnr-pc {display: none;}*/
 
 h1{ width: 32%; padding: 0.3em 0 0 0;float: left;}
 h1 img {width:100%;}
@@ -115,7 +114,8 @@ h1 img {width:100%;}
 
 #register .i-cap .red {display: none;}
 
-#showcode p img {margin:0 auto; display:block; padding-top: 1em;}
+
+
 
 #aeonlink #main li {font-size:100%;}
 

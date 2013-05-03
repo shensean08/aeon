@@ -60,7 +60,8 @@ body {font: 0.8em "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メ�
 
 nav {padding-top: 50px;}
 
-nav a, #aeonlink #main li a {color: #b42e83; font-weight: bold; text-decoration: none;}
+nav a, #aeonlink #main li a {color: #ffffff; font-weight: bold; text-decoration: none;}
+#aeonlink #main li a {color: #b42e83;}
 
 nav ul li {height: 32px; margin-bottom:20px; padding: 7px 0 0 40px;}
 nav ul li.nav-1 {background:url(images/nav-1.png) 0 0 no-repeat;}
@@ -180,3 +181,4 @@ img.bg {
 	margin-left: -512px; }
 }
 
+.bnr-pc {display: none;} 

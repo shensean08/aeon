@@ -1,21 +1,38 @@
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Random;
 
 import edu.kgu.QrCode.*;
 import edu.kgu.aeon.bean.loginFormBean;
 import edu.kgu.aeon.bean.registerFormBean;
-import edu.kgu.aeon.logic.registerLogic;
 import edu.kgu.aeon.Action.*;
 import edu.kgu.util.*;
+import edu.kgu.aeon.agent.*;
 
 public class test {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		loginQr();
+		try {
+			String a = URLEncoder.encode("咲く教室","utf8");
+			System.out.println(a);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//downloadpic();
 	}
 
+	public static void downloadpic() {
+		DownloadApplet a = new DownloadApplet();
+//		a.DownloadImage("adsfasdfasdf");
+	}
+	public static void agentJSON() {
+		agentJSON agent = new agentJSON(300,330,10,4);
+		agent.addAnimation("Show", 0, 0, 35);
+		agent.addAnimation("Idle", 0, 0, 35);
+		System.out.println(agent.getResult());
+	}
+	
 	public static void loginQrAction() {
 		loginQrAction action = new loginQrAction();
 		action.execute();

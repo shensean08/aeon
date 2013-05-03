@@ -1,0 +1,22 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="build/clippy.css" media="all">
+<script src="js/jquery.js"></script>
+<script src="build/clippy.js"></script>
+<script type="text/javascript">
+var aa;
+    clippy.load('Rocky', function(agent){
+        // do anything with the loaded agent
+        aa = agent;
+        agent.show();
+    });
+    
+    function doa() {
+    	aa.animate();
+    }
+</script>
+</head>
+<body>
+<input type="button" onclick="doa()" id="button1" name="button1" value="do something">
+</body>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<places>
+ <place>
+  <name>家</name>
+  <address>大阪府大阪市浪速区日本橋3丁目2-36</address>
+  <geometry>
+   <location>
+    <lat></lat>
+    <lng></lng>
+   </location>
+  </geometry>
+ </place>
+ <place>
+  <name>学校</name>
+  <address>兵庫県三田市学園2丁目1</address>
+  <geometry>
+   <location>
+    <lat></lat>
+    <lng></lng>
+   </location>
+  </geometry>
+ </place>
+ <place>
+  <name>会社</name>
+  <address>大阪府大阪市北区梅田2丁目1</address>
+  <geometry>
+   <location>
+    <lat></lat>
+    <lng></lng>
+   </location>
+  </geometry>
+ </place>
+</places>
