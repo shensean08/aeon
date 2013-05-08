@@ -1,13 +1,18 @@
 package edu.kgu.aeon.logic;
 
+import edu.kgu.QrCode.QrcodeEncode;
 import edu.kgu.aeon.access.userInfoAccess;
 import edu.kgu.aeon.bean.*;
 import edu.kgu.log.LogLogger;
+import edu.kgu.util.StringProcess;
 
 public class loginLogic extends BaseLogic {
 	private userInfoAccess access = new userInfoAccess();
+	
 	private loginFormBean bean;
 	private registerConfirmFormBean registerConfirmBean = new registerConfirmFormBean();
+	
+	private userInfoBean resultBean;
 	
 	public registerConfirmFormBean getRegisterConfirmBean() {
 		return registerConfirmBean;
@@ -28,15 +33,13 @@ public class loginLogic extends BaseLogic {
 		}
 		
 		// パスワード正しいチェック
-		userInfoBean result = access.getUserInfoByUserName(bean.getUserName());
-		if (!bean.getPassword().equals(result.getPassword())) {
+		resultBean = access.getUserInfoByUserName(bean.getUserName());
+		if (!bean.getPassword().equals(resultBean.getPassword())) {
 			this.messagebean.setErrorMsg("ユーザ名とパスワードが不一致です。");
 			return false;
 		}
 		
-		String path = "QRtmp/";
-		this.registerConfirmBean.setFirstName(result.getFirstname());
-		this.registerConfirmBean.setQrImage(path + result.getUserID() + ".png");
+
 		return true;
 	}
 	
@@ -46,6 +49,16 @@ public class loginLogic extends BaseLogic {
 		
 		// form value check
 		if (CheckFormBean()) {
+			
+			// create LoginQrImage
+			registerLogic.createQrCode(resultBean.getUserID());
+	
+			// set return value
+			String path = "QRtmp/";
+			this.registerConfirmBean.setUserID(resultBean.getUserID());
+			this.registerConfirmBean.setFirstName(resultBean.getFirstname());
+			this.registerConfirmBean.setQrImage(path + resultBean.getUserID() + ".png");
+			
 			rtn = true;
 		}
 		

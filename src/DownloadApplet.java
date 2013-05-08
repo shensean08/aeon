@@ -54,7 +54,7 @@ public class DownloadApplet extends Applet implements ActionListener {
         try {
             // Download and display the contents for the URL.
             final URL url = new URL(this.textField.getText());
-            final String contents = download();
+            final String contents = test();
             this.textArea.setForeground(Color.BLACK);
             this.textArea.setText(contents);
 
@@ -65,18 +65,18 @@ public class DownloadApplet extends Applet implements ActionListener {
         }
     }
 
-    public String download() {
+    public String test() {
     	try {
-    		DownloadImage("1234567890");
+    		DownloadImage("userID1","0","sName1","sLat1","sLng1","dName1","dLat1","dLng1");
         } catch ( Exception e) {
             // Display information about the exception.
             this.textArea.setForeground(Color.RED);
             this.textArea.setText(e.toString());
         }
-        return "ok";
+        return "test ok";
     }
     
-	private static byte[] CaptureScreen() throws Exception {
+	public static byte[] CaptureScreen() throws Exception {
 		byte[] result = null;
 		
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -90,7 +90,7 @@ public class DownloadApplet extends Applet implements ActionListener {
 		return result;
 	}
 	
-	private static String Bytes2BASE64(byte[] value) {
+	public static String Bytes2BASE64(byte[] value) {
 		String result = "";
 
 		result = new BASE64Encoder().encode(value);
@@ -99,7 +99,7 @@ public class DownloadApplet extends Applet implements ActionListener {
 	}
 	
 	
-	public static void DownloadImage(String userID,String sLat,String sLng,) throws Exception {
+	public static void DownloadImage(String userID,String type, String startName, String startLat,String startLng,String destinationName, String destinationLat,String destinationLng) throws Exception {
 			// capture Screen
 			String pic = Bytes2BASE64(CaptureScreen());
 			
@@ -119,7 +119,14 @@ public class DownloadApplet extends Applet implements ActionListener {
 			DataOutputStream out = new DataOutputStream(connection.getOutputStream());
 	
 			String content = URLEncoder.encode("pic", "UTF-8") + "=" + URLEncoder.encode(pic, "UTF-8");
-			content += "&" + URLEncoder.encode("userID", "UTF-8") + "=" + userID;
+			content += "&" + URLEncoder.encode("userID", "UTF-8") + "=" + URLEncoder.encode(userID, "UTF-8");
+			content += "&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode(type, "UTF-8");
+			content += "&" + URLEncoder.encode("startName","UTF-8") + "=" + URLEncoder.encode(startName, "UTF-8");
+			content += "&" + URLEncoder.encode("startLat","UTF-8") + "=" + URLEncoder.encode(startLat, "UTF-8");
+			content += "&" + URLEncoder.encode("startLng","UTF-8") + "=" + URLEncoder.encode(startLng, "UTF-8");
+			content += "&" + URLEncoder.encode("destinationName","UTF-8") + "=" + URLEncoder.encode(destinationName, "UTF-8");
+			content += "&" + URLEncoder.encode("destinationLat","UTF-8") + "=" + URLEncoder.encode(destinationLat, "UTF-8");
+			content += "&" + URLEncoder.encode("destinationLng","UTF-8") + "=" + URLEncoder.encode(destinationLng, "UTF-8");
 			
 			out.writeBytes(content);
 			out.flush();

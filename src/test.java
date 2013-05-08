@@ -6,25 +6,43 @@ import edu.kgu.QrCode.*;
 import edu.kgu.aeon.bean.loginFormBean;
 import edu.kgu.aeon.bean.registerFormBean;
 import edu.kgu.aeon.Action.*;
+import edu.kgu.aeon.logic.*;
 import edu.kgu.util.*;
 import edu.kgu.aeon.agent.*;
 
 public class test {
 
 	public static void main(String[] args) {
+		System.out.println(SystemParameter.getClassesPath());
+	}
+	
+	public static void showDownloadLogic() {
+		showDownloadLogic logic = new showDownloadLogic();
+		logic.execute("000001");
+	}
+	public static void downloadAction () {
+		DownloadApplet a = new DownloadApplet();
+		downloadAction action = new downloadAction();
+		action.setUserID("000002");
+		action.setStartName("sName");
+		action.setStartLat("10");
+		action.setStartLng("20");
+		action.setType("0");
+		action.setDestinationName("dName");
+		action.setDestinationLat("11");
+		action.setDestinationLng("22");
 		try {
-			String a = URLEncoder.encode("咲く教室","utf8");
-			System.out.println(a);
-		} catch (UnsupportedEncodingException e) {
+			action.setPic(DownloadApplet.Bytes2BASE64(DownloadApplet.CaptureScreen()));
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//downloadpic();
+		action.execute();
 	}
-
+	
 	public static void downloadpic() {
 		DownloadApplet a = new DownloadApplet();
-//		a.DownloadImage("adsfasdfasdf");
+		a.test();
 	}
 	public static void agentJSON() {
 		agentJSON agent = new agentJSON(300,330,10,4);
@@ -78,9 +96,21 @@ public class test {
 		bean.setLastnameSpelling("ジネン");
 		bean.setHandPhoneNo("43452345");
 		bean.setAllowSMS("1");
-		bean.setHomePostalcode("532535");
-		bean.setHomeAddress("safsdfasf");
-		
+		bean.setAddress1Name("address1");
+		bean.setAddress1Postalcode("p1");
+		bean.setAddress1Address("ad1");
+		bean.setAddress2Name("address2");
+		bean.setAddress2Postalcode("p2");
+		bean.setAddress2Address("ad2");	
+		bean.setAddress3Name("address3");
+		bean.setAddress3Postalcode("p3");
+		bean.setAddress3Address("ad3");
+		bean.setAddress4Name("address4");
+		bean.setAddress4Postalcode("p4");
+		bean.setAddress4Address("ad4");
+		bean.setAddress5Name("address5");
+		bean.setAddress5Postalcode("p5");
+		bean.setAddress5Address("ad5");
 		registerAction action = new registerAction();
 		action.setRegisterBean(bean);
 		

@@ -1,40 +1,39 @@
 package edu.kgu.aeon.logic;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
-import edu.kgu.log.LogLogger;
-
-import sun.misc.BASE64Decoder;
+import edu.kgu.aeon.access.DLinfoAccess;
+import edu.kgu.aeon.bean.DLinfoBean;
 
 public class downloadLogic extends BaseLogic {
-
+	private DLinfoAccess access = new DLinfoAccess();
+	
 	public boolean CheckFormBean() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public String execute(String fileName, String jpgStream)  {
-		String rtn;
-		BASE64Decoder decoder = new sun.misc.BASE64Decoder(); 
+	/*
+	 * Insert ImageData and MapLink
+	 */
+	public int execute(String pic, String userID,String type, String sName, String sLat, String sLng, String dName, String dLat, String dLng)  {
+		int rtn = -1;
 		
-		try {
-			byte[] tmpBytes = decoder.decodeBuffer(jpgStream);   
-        
+		DLinfoBean bean = new DLinfoBean();
+		bean.setImgData(pic);
+		bean.setUserID(userID);
 		
-			ByteArrayInputStream bais = new ByteArrayInputStream(tmpBytes);   
-			BufferedImage bi =ImageIO.read(bais);   
-			File file = new File(fileName); 
-			ImageIO.write(bi, "jpg", file);
-			rtn = "{0}";
-		} catch (Exception e) {
-			rtn = "{1}";
-			LogLogger.error(e);
-		}
+		// make downloadNo
+		String dlNo = String.valueOf(Integer.parseInt(access.getMaxDLNo(userID)) + 100001).substring(1);
+		bean.setDLNo(dlNo);
+		
+		bean.setType(type);
+		bean.setDLName(sName + "_" + dName);
+		bean.setsName(sName);
+		bean.setsLat(sLat);
+		bean.setsLng(sLng);
+		bean.setdName(dName);
+		bean.setdLat(dLat);
+		bean.setdLng(dLng);
+		
+		rtn = access.insertDLinfo(bean);
 		
 		return rtn;
 	}

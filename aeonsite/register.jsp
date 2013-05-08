@@ -20,7 +20,6 @@
 <ul>
 <li class="nav-1"><a href="register.jsp">ご利用登録（無料）</a></li>
 <li class="nav-2"><a href="login.jsp">ハザードマップとは</a></li>
-<li class="nav-3"><a href="aeonlink.html">ＤＬ一覧</a></li>
 </ul>
 </nav>
 <br class="clear">
@@ -82,36 +81,85 @@
 			<th class="t-title" colspan="3" scope="rowgroup">ハザードマップを確認したい住所</th>
 		</tr>
         
+        <tr>
+			<th scope="row">住所１</th>
+            <td><s:textfield name="registerBean.address1Name" value="%{registerBean.address1Name}" size="20" maxlength="20" /></td>
+            <td>例：家</td>
+		</tr>
 		<tr>
-			<th>お住まい</th>
-            <td class="i-cap2">〒<s:textfield name="registerBean.homePostalcode" value="%{registerBean.homePostalcode}" onKeyUp="value=value.replace(/[^0-9]/g,'');AjaxZip3.zip2addr(this,'','registerBean.homeAddress','registerBean.homeAddress');" size="7" maxlength="7" onpaste="value=value.replace(/[^0-9]/g,'')"/></td>
+			<th></th>
+            <td class="i-cap2">〒<s:textfield name="registerBean.address1Postalcode" value="%{registerBean.address1Postalcode}" onKeyUp="value=value.replace(/[^0-9]/g,'');AjaxZip3.zip2addr(this,'','registerBean.address1Address','registerBean.address1Address');" size="7" maxlength="7" onpaste="value=value.replace(/[^0-9]/g,'')"/></td>
             <td class="i-cap"><input type="button" name="" value="住所表示" id="" class="input-btn"><span class="note red">＊ハイフンなし７桁</span></td>
 		</tr>
 
 		<tr>
 			<th></th>
-            <td colspan="2"><s:textfield name="registerBean.homeAddress" value="%{registerBean.homeAddress}" size="100" maxlength="100"/></td>
+            <td colspan="2"><s:textfield name="registerBean.address1Address" value="%{registerBean.address1Address}" size="100" maxlength="100"/></td>
 		</tr>
 		<tr>
-			<th>勤務地</th>
-            <td class="i-cap2">〒<s:textfield name="registerBean.workPostalcode" value="%{registerBean.workPostalcode}" onKeyUp="value=value.replace(/[^0-9]/g,'');AjaxZip3.zip2addr(this,'','registerBean.workAddress','registerBean.workAddress');" size="7" maxlength="7" onpaste="value=value.replace(/[^0-9]/g,'')"/></td>
+			<th scope="row">住所２</th>
+            <td><s:textfield name="registerBean.address2Name" value="%{registerBean.address2Name}" size="20" maxlength="20" /></td>
+            <td>例：学校</td>
+		</tr>
+		<tr>
+			<th></th>
+            <td class="i-cap2">〒<s:textfield name="registerBean.address2Postalcode" value="%{registerBean.address2Postalcode}" onKeyUp="value=value.replace(/[^0-9]/g,'');AjaxZip3.zip2addr(this,'','registerBean.address2Address','registerBean.address2Address');" size="7" maxlength="7" onpaste="value=value.replace(/[^0-9]/g,'')"/></td>
             <td class="i-cap"><input type="button" name="" value="住所表示" id="" class="input-btn"><span class="note red">＊ハイフンなし７桁</span></td>
 		</tr>
 
 		<tr>
 			<th></th>
-            <td colspan="2"><s:textfield name="registerBean.workAddress" value="%{registerBean.workAddress}" size="100" maxlength="100"/></td>
+            <td colspan="2"><s:textfield name="registerBean.address2Address" value="%{registerBean.address2Address}" size="100" maxlength="100"/></td>
+		</tr>
+		
+		<tr>
+			<th scope="row">住所３</th>
+            <td><s:textfield name="registerBean.address3Name" value="%{registerBean.address3Name}" size="20" maxlength="20" /></td>
+            <td>例：勤務地</td>
 		</tr>
 		<tr>
-			<th>学校</th>
-            <td class="i-cap2">〒<s:textfield name="registerBean.schoolPostalcode" value="%{registerBean.schoolPostalcode}" onKeyUp="value=value.replace(/[^0-9]/g,'');AjaxZip3.zip2addr(this,'','registerBean.schoolAddress','registerBean.schoolAddress');" size="7" maxlength="7" onpaste="value=value.replace(/[^0-9]/g,'')"/></td>
+			<th></th>
+            <td class="i-cap2">〒<s:textfield name="registerBean.address3Postalcode" value="%{registerBean.address3Postalcode}" onKeyUp="value=value.replace(/[^0-9]/g,'');AjaxZip3.zip2addr(this,'','registerBean.address3Address','registerBean.address3Address');" size="7" maxlength="7" onpaste="value=value.replace(/[^0-9]/g,'')"/></td>
             <td class="i-cap"><input type="button" name="" value="住所表示" id="" class="input-btn"><span class="note red">＊ハイフンなし７桁</span></td>
 		</tr>
 
 		<tr>
 			<th></th>
-            <td colspan="2"><s:textfield name="registerBean.schoolAddress" value="%{registerBean.schoolAddress}" size="100" maxlength="100"/></td>
+            <td colspan="2"><s:textfield name="registerBean.address3Address" value="%{registerBean.address3Address}" size="100" maxlength="100"/></td>
 		</tr>
+		
+		<tr>
+			<th scope="row">住所４</th>
+            <td><s:textfield name="registerBean.address4Name" value="%{registerBean.address4Name}" size="20" maxlength="20" /></td>
+            <td>例：勤務地</td>
+		</tr>
+		<tr>
+			<th></th>
+            <td class="i-cap2">〒<s:textfield name="registerBean.address4Postalcode" value="%{registerBean.address4Postalcode}" onKeyUp="value=value.replace(/[^0-9]/g,'');AjaxZip3.zip2addr(this,'','registerBean.address4Address','registerBean.address4Address');" size="7" maxlength="7" onpaste="value=value.replace(/[^0-9]/g,'')"/></td>
+            <td class="i-cap"><input type="button" name="" value="住所表示" id="" class="input-btn"><span class="note red">＊ハイフンなし７桁</span></td>
+		</tr>
+
+		<tr>
+			<th></th>
+            <td colspan="2"><s:textfield name="registerBean.address4Address" value="%{registerBean.address4Address}" size="100" maxlength="100"/></td>
+		</tr>
+		
+		<tr>
+			<th scope="row">住所５</th>
+            <td><s:textfield name="registerBean.address5Name" value="%{registerBean.address5Name}" size="20" maxlength="20" /></td>
+            <td>例：勤務地</td>
+		</tr>
+		<tr>
+			<th></th>
+            <td class="i-cap2">〒<s:textfield name="registerBean.address5Postalcode" value="%{registerBean.address5Postalcode}" onKeyUp="value=value.replace(/[^0-9]/g,'');AjaxZip3.zip2addr(this,'','registerBean.address5Address','registerBean.address5Address');" size="7" maxlength="7" onpaste="value=value.replace(/[^0-9]/g,'')"/></td>
+            <td class="i-cap"><input type="button" name="" value="住所表示" id="" class="input-btn"><span class="note red">＊ハイフンなし７桁</span></td>
+		</tr>
+
+		<tr>
+			<th></th>
+            <td colspan="2"><s:textfield name="registerBean.address5Address" value="%{registerBean.address5Address}" size="100" maxlength="100"/></td>
+		</tr>
+		
 		<tr>
 			<th></th>
 			<td colspan="2"><font color="red"><b>

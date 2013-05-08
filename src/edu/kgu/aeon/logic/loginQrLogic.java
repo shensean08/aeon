@@ -26,26 +26,27 @@ public class loginQrLogic extends BaseLogic {
 				this.messagebean.setErrorMsg("{Qrコード間違いました。}");
 			} else {
 				JSONArray allObj = new JSONArray();
-				JSONObject homeObj = new JSONObject();
-				JSONObject schoolObj = new JSONObject();
-				JSONObject workObj = new JSONObject();
+				JSONObject addressObj[] = new JSONObject[5];
 				JSONObject currObj = new JSONObject();
 				
-				homeObj.put("name", "家");
-				homeObj.put("address", bean.getHomeAddress());
+				addressObj[0] = new JSONObject();
+				addressObj[0].put("name", bean.getAddress1Name());
+				addressObj[0].put("address", bean.getAddress1Address());
 				
-				schoolObj.put("name", "学校");
-				schoolObj.put("address", bean.getSchoolAddress());
-				
-				workObj.put("name", "会社");
-				workObj.put("address", bean.getWorkAddress());
+				addressObj[1] = new JSONObject();
+				addressObj[1].put("name", bean.getAddress2Name());
+				addressObj[1].put("address", bean.getAddress2Address());
 
+				addressObj[2] = new JSONObject();
+				addressObj[2].put("name", bean.getAddress3Name());
+				addressObj[2].put("address", bean.getAddress3Address());
+				
 				currObj.put("name", "現在地");
 				currObj.put("address", "大阪府大阪市西区千代崎3丁目北2");
 				
-				allObj.put(homeObj);
-				allObj.put(schoolObj);
-				allObj.put(workObj);
+				for (int i = 0; i < 3; i++) {
+					allObj.put(addressObj[i]);
+				}
 				allObj.put(currObj); 
 				
 				jsonResult.put("places",allObj);

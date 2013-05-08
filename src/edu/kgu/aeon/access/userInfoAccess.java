@@ -25,12 +25,24 @@ public class userInfoAccess extends BaseAccess {
 		query.append("       ,handPhoneNo");
 		query.append("       ,mailAddress");
 		query.append("       ,allowSMS");
-		query.append("       ,homePostalcode");
-		query.append("       ,homeAddress");
-		query.append("       ,schoolPostalcode");
-		query.append("       ,schoolAddress");
-		query.append("       ,workPostalcode");
-		query.append("       ,workAddress");
+		query.append("       ,address1Name");
+		query.append("       ,address1Postalcode");
+		query.append("       ,address1Address");
+		query.append("       ,address2Name");
+		query.append("       ,address2Postalcode");
+		query.append("       ,address2Address");
+		query.append("       ,address2Name");
+		query.append("       ,address2Postalcode");
+		query.append("       ,address2Address");
+		query.append("       ,address3Name");
+		query.append("       ,address3Postalcode");
+		query.append("       ,address3Address");
+		query.append("       ,address4Name");
+		query.append("       ,address4Postalcode");
+		query.append("       ,address4Address");
+		query.append("       ,address5Name");
+		query.append("       ,address5Postalcode");
+		query.append("       ,address5Address");
 		query.append("       ,isValidate");
 		query.append("   FROM userInfo ");
 		query.append("  WHERE userName = '" + userName + "'");
@@ -52,12 +64,21 @@ public class userInfoAccess extends BaseAccess {
 				rtn.setHandPhoneNo(result.getString("handPhoneNo"));
 				rtn.setMailAddress(result.getString("mailAddress"));
 				rtn.setAllowSMS(result.getString("allowSMS"));
-				rtn.setHomePostalcode(result.getString("homePostalcode"));
-				rtn.setHomeAddress(result.getString("homeAddress"));
-				rtn.setSchoolPostalcode(result.getString("schoolPostalcode"));
-				rtn.setSchoolAddress(result.getString("schoolAddress"));
-				rtn.setWorkPostalcode(result.getString("workPostalcode"));
-				rtn.setWorkAddress(result.getString("workAddress"));
+				rtn.setAddress1Name(result.getString("address1Name"));
+				rtn.setAddress1Postalcode(result.getString("address1Postalcode"));
+				rtn.setAddress1Address(result.getString("address1Address"));
+				rtn.setAddress2Name(result.getString("address2Name"));
+				rtn.setAddress2Postalcode(result.getString("address2Postalcode"));
+				rtn.setAddress2Address(result.getString("address2Address"));
+				rtn.setAddress3Name(result.getString("address3Name"));
+				rtn.setAddress3Postalcode(result.getString("address3Postalcode"));
+				rtn.setAddress3Address(result.getString("address3Address"));
+				rtn.setAddress4Name(result.getString("address4Name"));
+				rtn.setAddress4Postalcode(result.getString("address4Postalcode"));
+				rtn.setAddress4Address(result.getString("address4Address"));
+				rtn.setAddress5Name(result.getString("address5Name"));
+				rtn.setAddress5Postalcode(result.getString("address5Postalcode"));
+				rtn.setAddress5Address(result.getString("address5Address"));
 				rtn.setIsValidate(result.getString("isValidate"));
 			}
 		} catch (Exception e) {
@@ -88,12 +109,24 @@ public class userInfoAccess extends BaseAccess {
 		query.append("       ,handPhoneNo");
 		query.append("       ,mailAddress");
 		query.append("       ,allowSMS");
-		query.append("       ,homePostalcode");
-		query.append("       ,homeAddress");
-		query.append("       ,schoolPostalcode");
-		query.append("       ,schoolAddress");
-		query.append("       ,workPostalcode");
-		query.append("       ,workAddress");
+		query.append("       ,address1Name");
+		query.append("       ,address1Postalcode");
+		query.append("       ,address1Address");
+		query.append("       ,address2Name");
+		query.append("       ,address2Postalcode");
+		query.append("       ,address2Address");
+		query.append("       ,address2Name");
+		query.append("       ,address2Postalcode");
+		query.append("       ,address2Address");
+		query.append("       ,address3Name");
+		query.append("       ,address3Postalcode");
+		query.append("       ,address3Address");
+		query.append("       ,address4Name");
+		query.append("       ,address4Postalcode");
+		query.append("       ,address4Address");
+		query.append("       ,address5Name");
+		query.append("       ,address5Postalcode");
+		query.append("       ,address5Address");
 		query.append("       ,isValidate");
 		query.append("   FROM userInfo ");
 		query.append("  WHERE userID = '" + userID + "'");
@@ -115,12 +148,21 @@ public class userInfoAccess extends BaseAccess {
 				rtn.setHandPhoneNo(result.getString("handPhoneNo"));
 				rtn.setMailAddress(result.getString("mailAddress"));
 				rtn.setAllowSMS(result.getString("allowSMS"));
-				rtn.setHomePostalcode(result.getString("homePostalcode"));
-				rtn.setHomeAddress(result.getString("homeAddress"));
-				rtn.setSchoolPostalcode(result.getString("schoolPostalcode"));
-				rtn.setSchoolAddress(result.getString("schoolAddress"));
-				rtn.setWorkPostalcode(result.getString("workPostalcode"));
-				rtn.setWorkAddress(result.getString("workAddress"));
+				rtn.setAddress1Name(result.getString("address1Name"));
+				rtn.setAddress1Postalcode(result.getString("address1Postalcode"));
+				rtn.setAddress1Address(result.getString("address1Address"));
+				rtn.setAddress2Name(result.getString("address2Name"));
+				rtn.setAddress2Postalcode(result.getString("address2Postalcode"));
+				rtn.setAddress2Address(result.getString("address2Address"));
+				rtn.setAddress3Name(result.getString("address3Name"));
+				rtn.setAddress3Postalcode(result.getString("address3Postalcode"));
+				rtn.setAddress3Address(result.getString("address3Address"));
+				rtn.setAddress4Name(result.getString("address4Name"));
+				rtn.setAddress4Postalcode(result.getString("address4Postalcode"));
+				rtn.setAddress4Address(result.getString("address4Address"));
+				rtn.setAddress5Name(result.getString("address5Name"));
+				rtn.setAddress5Postalcode(result.getString("address5Postalcode"));
+				rtn.setAddress5Address(result.getString("address5Address"));
 				rtn.setIsValidate(result.getString("isValidate"));
 			}
 		} catch (Exception e) {
@@ -151,12 +193,21 @@ public class userInfoAccess extends BaseAccess {
 		query.append("       ,handPhoneNo");
 		query.append("       ,mailAddress");
 		query.append("       ,allowSMS");
-		query.append("       ,homePostalcode");
-		query.append("       ,homeAddress");
-		query.append("       ,schoolPostalcode");
-		query.append("       ,schoolAddress");
-		query.append("       ,workPostalcode");
-		query.append("       ,workAddress");
+		query.append("       ,address1Name");
+		query.append("       ,address1Postalcode");
+		query.append("       ,address1Address");
+		query.append("       ,address2Name");
+		query.append("       ,address2Postalcode");
+		query.append("       ,address2Address");
+		query.append("       ,address3Name");
+		query.append("       ,address3Postalcode");
+		query.append("       ,address3Address");
+		query.append("       ,address4Name");
+		query.append("       ,address4Postalcode");
+		query.append("       ,address4Address");
+		query.append("       ,address5Name");
+		query.append("       ,address5Postalcode");
+		query.append("       ,address5Address");
 		query.append("       ,isValidate)");
 		query.append("   VALUES ('" + value.getUserID() + "'");					//userID
 		query.append("   		,'" + value.getUserName() + "'");				//userName
@@ -171,12 +222,21 @@ public class userInfoAccess extends BaseAccess {
 		query.append("   		,'" + value.getHandPhoneNo() + "'");			//handPhoneNo
 		query.append("   		,'" + value.getMailAddress() + "'");			//handPhoneMailAddress
 		query.append("   		,'" + value.getAllowSMS() + "'");				//allowSMS
-		query.append("   		,'" + value.getHomePostalcode() + "'");			//homePostalcode
-		query.append("   		,'" + value.getHomeAddress() + "'");			//homeAddress
-		query.append("   		,'" + value.getSchoolPostalcode() + "'");		//schoolPostalcode
-		query.append("   		,'" + value.getSchoolAddress() + "'");			//schoolAddress
-		query.append("   		,'" + value.getWorkPostalcode() + "'");			//workPostalcode		
-		query.append("   		,'" + value.getWorkAddress() + "'");			//workAddress
+		query.append("			,'" + value.getAddress1Name() + "'");			//address1Name
+		query.append("   		,'" + value.getAddress1Postalcode() + "'");		//address1Postalcode
+		query.append("   		,'" + value.getAddress1Address() + "'");		//address1Address
+		query.append("			,'" + value.getAddress2Name() + "'");			//address2Name
+		query.append("   		,'" + value.getAddress2Postalcode() + "'");		//address2Postalcode
+		query.append("   		,'" + value.getAddress2Address() + "'");		//address2Address
+		query.append("			,'" + value.getAddress3Name() + "'");			//address3Name
+		query.append("   		,'" + value.getAddress3Postalcode() + "'");		//address3Postalcode
+		query.append("   		,'" + value.getAddress3Address() + "'");		//address3Address
+		query.append("			,'" + value.getAddress4Name() + "'");			//address4Name
+		query.append("   		,'" + value.getAddress4Postalcode() + "'");		//address4Postalcode
+		query.append("   		,'" + value.getAddress4Address() + "'");		//address4Address
+		query.append("			,'" + value.getAddress5Name() + "'");			//address5Name
+		query.append("   		,'" + value.getAddress5Postalcode() + "'");		//address5Postalcode
+		query.append("   		,'" + value.getAddress5Address() + "'");		//address5Address
 		query.append("   		,'" + value.getIsValidate() + "')");			//isValidate		
 		
 		try {

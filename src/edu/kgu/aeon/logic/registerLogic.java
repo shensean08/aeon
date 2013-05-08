@@ -7,6 +7,7 @@ import edu.kgu.aeon.bean.*;
 import edu.kgu.log.LogLogger;
 import edu.kgu.util.NumberProcess;
 import edu.kgu.util.StringProcess;
+import edu.kgu.util.SystemParameter;
 
 public class registerLogic extends BaseLogic {
 	private registerFormBean bean;
@@ -48,6 +49,12 @@ public class registerLogic extends BaseLogic {
 		// パスワード 空チェック
 		if (this.bean.getPassword().length() <= 0) {
 			this.messagebean.setErrorMsg("パスワード入力してください");
+			return false;
+		}
+		
+		// パスワード　4桁以上
+		if (this.bean.getPassword().length() < 4) {
+			this.messagebean.setErrorMsg("パスワードは4~16桁入力してください");
 			return false;
 		}
 		
@@ -98,18 +105,75 @@ public class registerLogic extends BaseLogic {
 			return false;
 		}
 		
-		// お住まい郵便番号 空チェック
-		if (this.bean.getHomePostalcode().length() <= 0) {
-			this.messagebean.setErrorMsg("お住まい郵便番号入力してください");
+		// お住所1~5入力チェック
+		if (this.bean.getAddress1Name().length() <= 0
+		 && this.bean.getAddress2Name().length() <= 0 
+		 && this.bean.getAddress3Name().length() <= 0
+		 && this.bean.getAddress4Name().length() <= 0
+		 && this.bean.getAddress5Name().length() <= 0) {
+			this.messagebean.setErrorMsg("お住まい最低1入力してください");
 			return false;
 		}
 		
-		// お住まい 空チェック
-		if (this.bean.getHomeAddress().length() <= 0) {
-			this.messagebean.setErrorMsg("お住まい入力してください");
-			return false;
+		// 住所1入力チェック
+		if (this.bean.getAddress1Name().length() > 0) {
+			// 1郵便番号
+			if (this.bean.getAddress1Postalcode().length() <= 0) {
+				this.messagebean.setErrorMsg("住所1の郵便番号入力してください");
+			}
+			// 1住所
+			if (this.bean.getAddress1Address().length() <= 0) {
+				this.messagebean.setErrorMsg("住所1の住所入力してください");
+			}
+		}
+
+		// 住所2入力チェック
+		if (this.bean.getAddress2Name().length() > 0) {
+			// 2郵便番号
+			if (this.bean.getAddress2Postalcode().length() <= 0) {
+				this.messagebean.setErrorMsg("住所2の郵便番号入力してください");
+			}
+			// 2住所
+			if (this.bean.getAddress2Address().length() <= 0) {
+				this.messagebean.setErrorMsg("住所2の住所入力してください");
+			}
 		}
 		
+		// 住所3入力チェック
+		if (this.bean.getAddress3Name().length() > 0) {
+			// 3郵便番号
+			if (this.bean.getAddress3Postalcode().length() <= 0) {
+				this.messagebean.setErrorMsg("住所3の郵便番号入力してください");
+			}
+			// 3住所
+			if (this.bean.getAddress3Address().length() <= 0) {
+				this.messagebean.setErrorMsg("住所3の住所入力してください");
+			}
+		}
+		
+		// 住所4入力チェック
+		if (this.bean.getAddress4Name().length() > 0) {
+			// 4郵便番号
+			if (this.bean.getAddress4Postalcode().length() <= 0) {
+				this.messagebean.setErrorMsg("住所4の郵便番号入力してください");
+			}
+			// 4住所
+			if (this.bean.getAddress4Address().length() <= 0) {
+				this.messagebean.setErrorMsg("住所4の住所入力してください");
+			}
+		}
+		
+		// 住所5入力チェック
+		if (this.bean.getAddress5Name().length() > 0) {
+			// 5郵便番号
+			if (this.bean.getAddress5Postalcode().length() <= 0) {
+				this.messagebean.setErrorMsg("住所5の郵便番号入力してください");
+			}
+			// 5住所
+			if (this.bean.getAddress5Address().length() <= 0) {
+				this.messagebean.setErrorMsg("住所5の住所入力してください");
+			}
+		}
 		return true;
 	}
 	
@@ -142,12 +206,21 @@ public class registerLogic extends BaseLogic {
 		} else {
 			rtn.setAllowSMS("0");
 		}
-		rtn.setHomePostalcode(this.bean.getHomePostalcode());
-		rtn.setHomeAddress(this.bean.getHomeAddress());
-		rtn.setWorkPostalcode(this.bean.getWorkPostalcode());
-		rtn.setWorkAddress(this.bean.getWorkAddress());
-		rtn.setSchoolPostalcode(this.bean.getSchoolPostalcode());
-		rtn.setSchoolAddress(this.bean.getSchoolAddress());
+		rtn.setAddress1Name(this.bean.getAddress1Name());
+		rtn.setAddress1Postalcode(this.bean.getAddress1Postalcode());
+		rtn.setAddress1Address(this.bean.getAddress1Address());
+		rtn.setAddress2Name(this.bean.getAddress2Name());
+		rtn.setAddress2Postalcode(this.bean.getAddress2Postalcode());
+		rtn.setAddress2Address(this.bean.getAddress2Address());
+		rtn.setAddress3Name(this.bean.getAddress3Name());
+		rtn.setAddress3Postalcode(this.bean.getAddress3Postalcode());
+		rtn.setAddress3Address(this.bean.getAddress3Address());
+		rtn.setAddress4Name(this.bean.getAddress4Name());
+		rtn.setAddress4Postalcode(this.bean.getAddress4Postalcode());
+		rtn.setAddress4Address(this.bean.getAddress4Address());
+		rtn.setAddress5Name(this.bean.getAddress5Name());
+		rtn.setAddress5Postalcode(this.bean.getAddress5Postalcode());
+		rtn.setAddress5Address(this.bean.getAddress5Address());
 		rtn.setIsValidate("0");
 		
 		return rtn;	
@@ -162,6 +235,7 @@ public class registerLogic extends BaseLogic {
 		if (CheckFormBean()) {
 			userInfoBean in = this.setUserInfoBean();
 			if (access.insertUserInfo(in) == 0) {
+				this.registerconfirmbean.setUserID(in.getUserID());
 				this.registerconfirmbean.setFirstName(this.bean.getFirstname());
 				String filename = createQrCode(in.getUserID());
 				this.registerconfirmbean.setQrImage("QRtmp/" + filename);
@@ -172,13 +246,14 @@ public class registerLogic extends BaseLogic {
 		return rtn;
 	}
 	
-	private String createQrCode(String value) {
+	public static String createQrCode(String value) {
 		String file = "";
 		String fileName = "";
 		QrcodeEncode qr = new QrcodeEncode('B','M',139,139);
     	qr.setQRVer(2);
     	try {
-    		String path = this.getClass().getResource("/").getPath().replaceAll("WEB-INF/classes/", "") + "QRtmp/";
+    		String path = SystemParameter.getClassesPath();
+    		path = path.replaceAll("WEB-INF/classes/", "") + "QRtmp/";
     		fileName = StringProcess.EraseInterpunction(value) + ".png";
     		file = path + fileName;
 			qr.OutQRImage(value, file);

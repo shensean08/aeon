@@ -1,3 +1,5 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <!doctype html>
 <html>
 <head>
@@ -18,7 +20,7 @@
 <ul>
 <li class="nav-1"><a href="register.jsp">ご利用登録（無料）</a></li>
 <li class="nav-2"><a href="login.jsp">ハザードマップとは</a></li>
-<li class="nav-3"><a href="aeonlink.html">ＤＬ一覧</a></li>
+<li class="nav-3"><a href="showDownload.jsp">ＤＬ一覧</a></li>
 </ul>
 </nav>
 <br class="clear">
@@ -27,22 +29,21 @@
 <article>
 <h2>ＤＬ一覧</h2>
 <ul>
-<li>
-<a href="http://192.218.175.137:8080/aeonsite/routeTmp/route1.jpg">経路1</a>
-</li>
-<li>
-<a href="http://192.218.175.137:8080/aeonsite/routeTmp/route2.jpg">経路2</a>
-</li>
-<li>
-<a href="https://maps.google.co.jp/maps?q=34.912822,135.163311&num=1&t=h&brcurrent=3,0x6000655be57a8a2d:0x23364cd66a49d1d2,0,0x6000655eefb52723:0x8544b8564e0aae42&z=16&iwloc=A">関西学院大学神戸三田キャンパス</a>
-</li>
-<li>
-<a href="https://maps.google.co.jp/maps?saddr=Hy%C5%8Dgo-ken,+Sanda-shi,+Gakuen,+%EF%BC%92%E4%B8%81%E7%9B%AE%EF%BC%91&daddr=34.905044,+135.196214&hl=en&ie=UTF8&ll=34.906487,135.178442&spn=0.030091,0.066047&sll=34.909714,135.179024&sspn=0.03009,0.066047&geocode=FWK5FAIdl2sOCCktinrlW2UAYDHS0Ulq1kw2Iw%3BFdSbFAIdNu4OCA&t=h&brcurrent=3,0x60006571ef4380d3:0x3fcb8d0cb9dadf15,0&dirflg=w&mra=ls&z=15">関西学院大学から避難へ</a>
-</li>
-<li>
-<a href="https://maps.google.co.jp/maps?q=34.698865,135.495264&num=1&t=k&brcurrent=3,0x6000e68cbaa9e3a5:0x856ebc92bba1825f,0&z=18&iwloc=A">新桜橋ビルディング</a>
-</li>
-
+<table border="2">
+<s:iterator value="downloadlist" status="st">
+<tr>
+<td>
+	<s:property value="%{DLName}"/>
+</td>
+<td>
+	<s:a href="%{ImageLink}">imagelink</s:a>
+</td>
+<td>
+	<s:a href="%{MapLink}">MapLink</s:a>
+</td>
+</tr>
+</s:iterator>
+</table>
 </ul>
 </article>
 </div><!-- /main -->

@@ -4,9 +4,14 @@ public class DLinfoBean {
 	private String userID = "";
 	private String DLNo = "";
 	private String Type = "";
-	private String Name = "";
-	private String ImageData = "";
-	private String Link = "";
+	private String DLName = "";
+	private String ImgData = "";
+	private String sName = "";
+	private String sLat = "";
+	private String sLng = "";
+	private String dName = "";
+	private String dLat = "";
+	private String dLng = "";
 	
 	public String getUserID() {
 		return userID;
@@ -26,22 +31,52 @@ public class DLinfoBean {
 	public void setType(String type) {
 		Type = type;
 	}
-	public String getName() {
-		return Name;
+	public String getImgData() {
+		return ImgData;
 	}
-	public void setName(String name) {
-		Name = name;
+	public void setImgData(String imgData) {
+		ImgData = imgData;
 	}
-	public String getImageData() {
-		return ImageData;
+	public String getsName() {
+		return sName;
 	}
-	public void setImageData(String imageData) {
-		ImageData = imageData;
+	public void setsName(String sName) {
+		this.sName = sName;
 	}
-	public String getLink() {
-		return Link;
+	public String getsLat() {
+		return sLat;
 	}
-	public void setLink(String link) {
-		Link = link;
+	public void setsLat(String sLat) {
+		this.sLat = sLat;
+	}
+	public String getsLng() {
+		return sLng;
+	}
+	public void setsLng(String sLng) {
+		this.sLng = sLng;
+	}
+	public String getdName() {
+		return dName;
+	}
+	public void setdName(String dName) {
+		this.dName = dName;
+	}
+	public String getdLat() {
+		return dLat;
+	}
+	public void setdLat(String dLat) {
+		this.dLat = dLat;
+	}
+	public String getdLng() {
+		return dLng;
+	}
+	public void setdLng(String dLng) {
+		this.dLng = dLng;
+	}
+	public String getDLName() {
+		return DLName;
+	}
+	public void setDLName(String dLName) {
+		DLName = dLName;
 	}
 }

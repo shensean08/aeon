@@ -20,7 +20,6 @@
 <ul>
 <li class="nav-1"><a href="register.jsp">ご利用登録（無料）</a></li>
 <li class="nav-2"><a href="login.jsp">ハザードマップとは</a></li>
-<li class="nav-3"><a href="aeonlink.html">ＤＬ一覧</a></li>
 </ul>
 </nav>
 <br class="clear">

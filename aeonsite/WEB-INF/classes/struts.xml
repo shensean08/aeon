@@ -20,9 +20,14 @@
 
 		<!-- downloadAction -->
         <action name="downloadAction" class="edu.kgu.aeon.Action.downloadAction">
-			<result name="success">applettest.html</result>
+			<result name="success">ge_main.html</result>
         </action>
-		
+
+		<!-- showDownloadAction -->
+        <action name="showDownloadAction" class="edu.kgu.aeon.Action.showDownloadAction">
+			<result name="success">showDownload.jsp</result>
+        </action>
+        		
 		<!-- loginQrAction -->
         <action name="loginQrAction" class="edu.kgu.aeon.Action.loginQrAction">
             <result type="json">
