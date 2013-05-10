@@ -7,6 +7,7 @@ import java.io.File;
 import sun.misc.BASE64Decoder;
 import javax.imageio.ImageIO;
 import edu.kgu.aeon.logic.downloadLogic;
+import edu.kgu.aeon.logic.showDownloadLogic;
 import edu.kgu.log.LogLogger;
 
 public class downloadAction extends BaseAction {
@@ -100,6 +101,9 @@ public class downloadAction extends BaseAction {
 	// execute
 	public String execute() {
 		try {
+			LogLogger.info(pic);
+			//LogLogger.info(userID);
+			showDownloadLogic.createImage(userID, pic);
 			logic.execute(pic, userID, type, startName, startLat, startLng, destinationName, destinationLat, destinationLng);
 
 		} catch(Exception e) {

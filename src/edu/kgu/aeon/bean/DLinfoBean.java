@@ -1,11 +1,13 @@
 package edu.kgu.aeon.bean;
 
+import java.io.InputStream;
+
 public class DLinfoBean {
 	private String userID = "";
 	private String DLNo = "";
 	private String Type = "";
 	private String DLName = "";
-	private String ImgData = "";
+	private InputStream ImgData = null;
 	private String sName = "";
 	private String sLat = "";
 	private String sLng = "";
@@ -30,12 +32,6 @@ public class DLinfoBean {
 	}
 	public void setType(String type) {
 		Type = type;
-	}
-	public String getImgData() {
-		return ImgData;
-	}
-	public void setImgData(String imgData) {
-		ImgData = imgData;
 	}
 	public String getsName() {
 		return sName;
@@ -78,5 +74,11 @@ public class DLinfoBean {
 	}
 	public void setDLName(String dLName) {
 		DLName = dLName;
+	}
+	public InputStream getImgData() {
+		return ImgData;
+	}
+	public void setImgData(InputStream imgData) {
+		ImgData = imgData;
 	}
 }

@@ -13,12 +13,12 @@ import edu.kgu.aeon.agent.*;
 public class test {
 
 	public static void main(String[] args) {
-		System.out.println(SystemParameter.getClassesPath());
+		downloadpic();
 	}
 	
 	public static void showDownloadLogic() {
 		showDownloadLogic logic = new showDownloadLogic();
-		logic.execute("000001");
+		logic.execute("000002");
 	}
 	public static void downloadAction () {
 		DownloadApplet a = new DownloadApplet();

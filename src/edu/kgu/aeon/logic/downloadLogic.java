@@ -1,7 +1,14 @@
 package edu.kgu.aeon.logic;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import sun.misc.BASE64Decoder;
+
 import edu.kgu.aeon.access.DLinfoAccess;
 import edu.kgu.aeon.bean.DLinfoBean;
+import edu.kgu.log.LogLogger;
 
 public class downloadLogic extends BaseLogic {
 	private DLinfoAccess access = new DLinfoAccess();
@@ -17,7 +24,7 @@ public class downloadLogic extends BaseLogic {
 		int rtn = -1;
 		
 		DLinfoBean bean = new DLinfoBean();
-		bean.setImgData(pic);
+		bean.setImgData(Image2DBStream(pic));
 		bean.setUserID(userID);
 		
 		// make downloadNo
@@ -34,6 +41,20 @@ public class downloadLogic extends BaseLogic {
 		bean.setdLng(dLng);
 		
 		rtn = access.insertDLinfo(bean);
+		
+		return rtn;
+	}
+	
+	public InputStream Image2DBStream(String imageData) {
+		InputStream rtn = null;
+		try {
+			BASE64Decoder decoder = new BASE64Decoder(); 
+			byte[] imgByte = decoder.decodeBuffer(imageData);
+			InputStream imgStream = new ByteArrayInputStream(imgByte);
+			rtn = imgStream;
+		} catch (Exception e) {
+			LogLogger.error(e);
+		}
 		
 		return rtn;
 	}

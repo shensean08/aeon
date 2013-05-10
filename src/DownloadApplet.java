@@ -110,10 +110,12 @@ public class DownloadApplet extends Applet implements ActionListener {
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 			connection.setRequestMethod("POST");
-			connection.setUseCaches(false);
-			connection.setInstanceFollowRedirects(false);
+			connection.setUseCaches(true);
+			//connection.setInstanceFollowRedirects(false);
+			//connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-	
+			connection.setRequestProperty("Connection", "Keep-Alive");
+			
 			// post 
 			connection.connect();
 			DataOutputStream out = new DataOutputStream(connection.getOutputStream());
@@ -128,7 +130,10 @@ public class DownloadApplet extends Applet implements ActionListener {
 			content += "&" + URLEncoder.encode("destinationLat","UTF-8") + "=" + URLEncoder.encode(destinationLat, "UTF-8");
 			content += "&" + URLEncoder.encode("destinationLng","UTF-8") + "=" + URLEncoder.encode(destinationLng, "UTF-8");
 			
-			out.writeBytes(content);
+			while () {
+				out.write(arg0);
+				out.writeBytes(content);
+			}
 			out.flush();
 			out.close();
 			

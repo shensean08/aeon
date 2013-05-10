@@ -24,21 +24,35 @@ public class DLinfoAccess extends BaseAccess {
 		query.append("       ,dName");
 		query.append("       ,dLat");
 		query.append("       ,dLng)");
-		query.append("   VALUES ('" + value.getUserID() + "'");					//userID
-		query.append("   		,'" + value.getDLNo() + "'");					//DLNo
-		query.append("   		,'" + value.getType() + "'");					//Type		
-		query.append("   		,'" + value.getDLName() + "'");					//Name
-		query.append("   		,'" + value.getImgData() + "'");				//ImgData
-		query.append("   		,'" + value.getsName() + "'");					//sName
-		query.append("   		,'" + value.getsLat() + "'");					//sLat
-		query.append("   		,'" + value.getsLng() + "'");					//sLng
-		query.append("   		,'" + value.getdName() + "'");					//dName
-		query.append("   		,'" + value.getdLat() + "'");					//dLat
-		query.append("   		,'" + value.getdLng() + "')");					//dLng	
+		query.append("   VALUES (?,?,?,?,?,?,?,?,?,?,?) ");
+//		query.append("   VALUES ('" + value.getUserID() + "'");					//userID
+//		query.append("   		,'" + value.getDLNo() + "'");					//DLNo
+//		query.append("   		,'" + value.getType() + "'");					//Type		
+//		query.append("   		,'" + value.getDLName() + "'");					//Name
+//		query.append("   		,'" + value.getImgData() + "'");				//ImgData
+//		query.append("   		,'" + value.getsName() + "'");					//sName
+//		query.append("   		,'" + value.getsLat() + "'");					//sLat
+//		query.append("   		,'" + value.getsLng() + "'");					//sLng
+//		query.append("   		,'" + value.getdName() + "'");					//dName
+//		query.append("   		,'" + value.getdLat() + "'");					//dLat
+//		query.append("   		,'" + value.getdLng() + "')");					//dLng	
 		
 		try {
 			dbConn.BeginTransaction();
-			dbConn.Execute(query.toString());
+			dbConn.PrepareExecute(query.toString());
+			dbConn.setExecuteParam(1, value.getUserID());						//userID
+			dbConn.setExecuteParam(2, value.getDLNo());							//DLNo
+			dbConn.setExecuteParam(3, value.getType());							//Type
+			dbConn.setExecuteParam(4, value.getDLName());						//Name
+			dbConn.setExecuteParam(5, value.getImgData());						//ImgData
+			dbConn.setExecuteParam(6, value.getsName());						//sName
+			dbConn.setExecuteParam(7, value.getsLat());							//sLat
+			dbConn.setExecuteParam(8, value.getsLng());							//sLng
+			dbConn.setExecuteParam(9, value.getdName());						//dName
+			dbConn.setExecuteParam(10, value.getdLat());						//dLat
+			dbConn.setExecuteParam(11, value.getdLng());						//dLng
+			dbConn.ExecuteUpdate();
+//			dbConn.Execute(query.toString());
 			dbConn.Commit();
 			rtn = 0;
 		} catch (Exception e) {
@@ -103,7 +117,7 @@ public class DLinfoAccess extends BaseAccess {
 				bean.setDLNo(result.getString("DLNo"));
 				bean.setType(result.getString("Type"));
 				bean.setDLName(result.getString("DLName"));
-				bean.setImgData(result.getString("ImgData"));
+				bean.setImgData(result.getBinaryStream("ImgData"));
 				bean.setsName(result.getString("sName"));
 				bean.setsLat(result.getString("sLat"));
 				bean.setsLng(result.getString("sLng"));

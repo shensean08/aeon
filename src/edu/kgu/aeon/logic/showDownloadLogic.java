@@ -3,6 +3,7 @@ package edu.kgu.aeon.logic;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -42,7 +43,21 @@ public class showDownloadLogic extends BaseLogic {
 		return rtn;
 	}
 	
-	private String createImage(String fileName, String imageData) {
+	private String createImage(String fileName, InputStream imageData) {
+		String rtn = "routeTmp/" + fileName + ".png";
+		try {
+			BufferedImage image = ImageIO.read(imageData);
+			String path = SystemParameter.getClassesPath();
+			path = path.replaceAll("WEB-INF/classes/", "") + "routeTmp/";
+			//ImageIO.write(image,"png", new File("/Users/seanshen/Documents/" + fileName + ".png"));
+			ImageIO.write(image,"png", new File(path + fileName + ".png"));
+		} catch (Exception e) {
+			LogLogger.error(e);
+		}
+		return rtn;
+	}
+	
+	public static void createImage(String fileName, String imageData) {
 		String rtn = "routeTmp/" + fileName + ".png";
 		try {
 			BASE64Decoder decoder = new BASE64Decoder(); 
@@ -57,7 +72,7 @@ public class showDownloadLogic extends BaseLogic {
 			LogLogger.error(e);
 		}
 		
-		return rtn;
+//		return rtn;
 	}
 	
 	private String createLink(DLinfoBean value) {

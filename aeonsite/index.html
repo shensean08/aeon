@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,7 +60,7 @@
 
 function test() {
 	
-	var loginHint = new HtmlHint("QRコードかざす",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+	var loginHint = new HtmlHint("コード読取り機にQRコードをかざしてください",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
 	loginHint.setFontSize(60);
 	loginHint.setBackgroundImage("hazardmap.png");
 	
@@ -110,16 +111,14 @@ function debug(val,flg) {
 //****************************************************************************/
 //****************************************************************************/
 
-var URL_IMG = "http://127.0.0.1:8080/aeonsite/img/";
-var USERINFO_URL = "http://127.0.0.1:8080/aeonsite/placeJSon.jsp?qrcode=";
+var URL_IMG = "http://127.0.0.1:8080/aeonsite/img/";
+var USERINFO_URL = "http://127.0.0.1:8080/aeonsite/placeJSon.jsp?qrcode=";
+//var USERINFO_URL = "http://192.218.175.137:8080/aeonsite/placeInfo.jsp?qrcode=";
 
 
 var SCREEN_WIDTH = 1358;
 var SCREEN_HEIGHT = 768;
-var SCREEN_SAVE_WAITTIME = 20;	//second
-var DOWNLOAD_PATH = "/Users/seanshen/Documents/";
-var DOWNLOAD_FILE = "test.jpg";
-
+var SCREEN_SAVE_WAITTIME = 500;	//second
 //****************************************************************************/
 //****************************************************************************/
 //****************************************************************************/
@@ -191,28 +190,21 @@ function initCB(instance) {
 	directionsService = new google.maps.DirectionsService();
 	// Create an ElevationService
 	elevator = new google.maps.ElevationService();
-	
 	geocoder = new google.maps.Geocoder();
-	
 	ge.getWindow().setVisibility(true);
 	ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
 	ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS_LOW_RESOLUTION, true);
-	
-	
 	Global.showfrontImage();
 	Global.setLookAtInit();
 	screenSave = new ScreenSave(SCREEN_SAVE_WAITTIME);	//[SCREEN_SAVE_WAITTIME]秒間何も触らないとスクリーンサーバーが起動
 	screenSave.ready();
-	
 	QRcodeReader = new QRCodeReader();
 	download = new Download();
 	userSession = new UserSession();
 	sideMenu = new SideMenu();
-	
-	loginHint = new HtmlHint("QRコードかざす",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-	loginHint.setFontSize(60);
+	loginHint = new HtmlHint("コード読取り機にQRコードをかざしてください",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+	loginHint.setFontSize(42);
 	loginHint.setBackgroundImage("hazardmap.png");
-	
 	loginButton = new HtmlButton("登録",500,630,360,60);
 	loginButton.setFontSize(28);
 	loginButton.show();
@@ -298,6 +290,8 @@ Global.reset2Init = function() {
 // Class Global End
 //****************************************************************************/
 
+
+
 //****************************************************************************/
 // Class Download
 //
@@ -305,45 +299,38 @@ Global.reset2Init = function() {
 function Download(second) {
 	
 	var _this = this;
-	this.downloadHint = null;
-	this.downloadComfirm;
+	_this.downloadHint = null;
+	_this.downloadComfirm;
 	
 	// download 
 	// 
 	Download.prototype.download = function() {
-		ge.setBalloon(null);		// sean add start
-		document.dApplet.DownloadImage("1234");
-		// sean add end
-		
-		setTimeout(function(){
-			_this.downloadHint = new HtmlHint("コード読取り機にQRコードをかざしてください",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-			_this.downloadHint.setFontSize(42);
-			_this.downloadHint.setBackgroundImage("hazardmap.png");
-			_this.downloadHint.show();
-			
-			QRcodeReader.read(function(QRCode){
-				
-				_this.downloadHint.hide();
-				
-				//upload img to server
-				
+		ge.setBalloon(null);
+		_this.downloadHint = new HtmlHint("コード読取り機にQRコードをかざしてください",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+		_this.downloadHint.setFontSize(42);
+		_this.downloadHint.setBackgroundImage("hazardmap.png");
+		_this.downloadHint.show();
+		QRcodeReader.read(function(QRCode){
+			_this.downloadHint.hide();			// sean add start
+			//document.DownloadApplet.DownloadImage(QRCode,"0","start","0","1","end","2","3");
+			// sean add end
+				
+			setTimeout(function(){
+				//upload img to server				document.DownloadApplet.DownloadImage("1315492432","0","start","0","1","end","2","3");
 				_this.downloadComfirm = new HtmlHint("ダウンロードが完了しました",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
 				_this.downloadComfirm.setFontSize(42);
 				_this.downloadComfirm.setBackgroundImage("hazardmap.png");
 				_this.downloadComfirm.show();
-				
 				setTimeout(function(){
 					_this.downloadComfirm.hide();
-				},3000);
-			});
-		},200);
-	}
-	
+				},3000);			},200);
+		});
+	}
 	// hide Hint
 	// 
 	Download.prototype.hideHint = function() {
-		if (this.downloadHint != null) {
-			this.downloadHint.hide();
+		if (_this.downloadHint != null) {
+			_this.downloadHint.hide();
 		}
 	}
 }
@@ -435,21 +422,26 @@ function ScreenSave(second) {
 		videoObj.width = 0;
 		videoObj.height = 0;
 		videoObj.pause();
-		
 		document.getElementById("map3d").style.visibility = "visible";
-		
-		if (selectedPlace != null) {
-			selectedPlace.dispose();
-		}
-		selectedPlace = new Place("現在地");
-		selectedPlace.geocode("大阪府大阪市西区千代崎3丁目北2");
-		selectedPlace.show();
-		
-		loginButton.show();
-		
-		_this.ready();
+		
+		var lookat = ge.createLookAt('');		//move to osaka
+		lookat.set(34.7, 135.5,
+			600, // altitude
+			ge.ALTITUDE_RELATIVE_TO_GROUND,
+			0, // heading
+			30, // straight-down tilt
+			120000 // range (inverse of zoom)
+		);
+		ge.getView().setAbstractView(lookat);				setTimeout(function(){			
+			if (selectedPlace != null) {
+				selectedPlace.dispose();
+			}
+			selectedPlace = new Place("現在地");
+			selectedPlace.geocode("大阪府大阪市西区千代崎3丁目北2");
+			selectedPlace.show();
+			loginButton.show();		},5000);		
+		_this.ready();
 	}
-	
 }
 
 //****************************************************************************/
@@ -628,6 +620,7 @@ function Shelter(_selectedPlace) {
 		};
 		
 		placeService.textSearch(request, function(results, status){
+			
 			if (status == google.maps.places.PlacesServiceStatus.OK) {
 				_this.shelterInfo = results;
 				_this.isSearching = 0;
@@ -689,6 +682,7 @@ function Shelter(_selectedPlace) {
 						
 						marker.setStyleSelector(style); //apply the style to the placemark
 						marker.setName(shelter.name);
+						
 						// Set the placemark's location.  
 						var point = ge.createPoint('');
 						point.setLatitude(shelterLoc.lat());
@@ -756,6 +750,7 @@ function Shelter(_selectedPlace) {
 		var myRoute = directionResult.routes[0].legs[0];
 		var slat = _this.selectedPlace.location.lat();
 		var slng = _this.selectedPlace.location.lng();
+		
 		for (var i = 0; i < myRoute.steps.length; i++) {
 			var line = ge.createLineString('');
 			line.getCoordinates().pushLatLngAlt(slat, slng, 0);
@@ -1075,7 +1070,6 @@ function QRCodeReader() {
 				//removeEventHandler(window, 'keydown', keydownHandel);
 				_this.stopRead();
 				screenSave.resetCount();				//callback("1315492432");
-				
 				callback(QRCode);
 			}
 			e.preventDefault();
@@ -1129,6 +1123,7 @@ function UserSession() {
 	UserSession.prototype.requestUserInfo = function(QRCode,callback) {
 		$.getJSON(USERINFO_URL + QRCode ,function(result){
 			userInfo = result;
+			
 			callback();
 		
 		});
@@ -1391,28 +1386,28 @@ function HtmlHint(text,left,top,width,height) {
 	this.isHide = 1;
 	
 	// create div
-	_this.hintDiv = document.createElement("div");
-	_this.hintDiv.className="htmlHint";
-	_this.hintDiv.innerHTML = text;
+	this.hintDiv = document.createElement("div");
+	this.hintDiv.className="htmlHint";
+	this.hintDiv.innerHTML = text;
 	
 	// create an IFRAME shim for the button  
-	_this.iframeShim = document.createElement('iframe');  
-	_this.iframeShim.frameBorder = 0;  
-	_this.iframeShim.scrolling = 'no';  
-	_this.iframeShim.src = (navigator.userAgent.indexOf('MSIE 6') >= 0) ?  
+	this.iframeShim = document.createElement('iframe');  
+	this.iframeShim.frameBorder = 0;  
+	this.iframeShim.scrolling = 'no';  
+	this.iframeShim.src = (navigator.userAgent.indexOf('MSIE 6') >= 0) ?  
 	  '' : 'javascript:void(0);';  
 
 	// position the button and IFRAME shim  
-	_this.hintDiv.style.position = _this.iframeShim.style.position = 'absolute';  
-	_this.hintDiv.style.left = _this.iframeShim.style.left = left + 'px';  
-	_this.hintDiv.style.top = _this.iframeShim.style.top = top + 'px';  
-	_this.hintDiv.style.width = _this.iframeShim.style.width = width + 'px';  
-	_this.hintDiv.style.height = _this.iframeShim.style.height = height + 'px';
-	_this.hintDiv.style.lineHeight =  height + 'px';  
+	this.hintDiv.style.position = this.iframeShim.style.position = 'absolute';  
+	this.hintDiv.style.left = this.iframeShim.style.left = left + 'px';  
+	this.hintDiv.style.top = this.iframeShim.style.top = top + 'px';  
+	this.hintDiv.style.width = this.iframeShim.style.width = width + 'px';  
+	this.hintDiv.style.height = this.iframeShim.style.height = height + 'px';
+	this.hintDiv.style.lineHeight =  height + 'px';  
 	
 	// set up z-orders  
-	_this.hintDiv.style.zIndex = 10;  
-	_this.iframeShim.style.zIndex = _this.hintDiv.style.zIndex - 1;  
+	this.hintDiv.style.zIndex = 10;  
+	this.iframeShim.style.zIndex = this.hintDiv.style.zIndex - 1;  
 	
 	///////////////////////
 	//method start
@@ -1420,10 +1415,10 @@ function HtmlHint(text,left,top,width,height) {
 	
 	//show hint
 	//
-	HtmlHint.prototype.show = function() {
+	HtmlHint.prototype.show = function() {		_this = this;		
 		if (this.isHide == 1) {
-			document.body.appendChild(_this.hintDiv);  
-			document.body.appendChild(_this.iframeShim);  
+			document.body.appendChild(this.hintDiv);  
+			document.body.appendChild(this.iframeShim);  
 			startFlicker();
 			this.isHide = 0;
 		}
@@ -1434,8 +1429,8 @@ function HtmlHint(text,left,top,width,height) {
 	HtmlHint.prototype.hide = function() {
 		try {
 			if (this.isHide == 0) {
-				document.body.removeChild(_this.hintDiv);  
-				document.body.removeChild(_this.iframeShim);  
+				document.body.removeChild(this.hintDiv);  
+				document.body.removeChild(this.iframeShim);  
 				stopFlicker();
 				this.isHide = 1;
 			}
@@ -1447,13 +1442,13 @@ function HtmlHint(text,left,top,width,height) {
 	//set font size
 	//
 	HtmlHint.prototype.setFontSize = function(fontSize) {
-		_this.hintDiv.style.fontSize = fontSize + 'px';
+		this.hintDiv.style.fontSize = fontSize + 'px';
 	};
 	
 	//set Background Image
 	//
 	HtmlHint.prototype.setBackgroundImage = function(image) {
-		_this.hintDiv.style.backgroundImage = "url(" + URL_IMG + image + ")";
+		this.hintDiv.style.backgroundImage = "url(" + URL_IMG + image + ")";
 	};
 	
 	//font flicker
@@ -1490,7 +1485,7 @@ function HtmlHint(text,left,top,width,height) {
 		flickerInterval = null;
 	}
 	
-	return _this;
+	return this;
 }
 
 	//<input type="text" id="debug">
@@ -1500,16 +1495,11 @@ function HtmlHint(text,left,top,width,height) {
 	
 </head>
 <body  onKeyDown="return keyDown(event);" onKeyUp="return keyUp(event);">
-	<div style="height:0px; width:0px;">
-	<applet
-        	ID='dApplet'
-        	Name='dApplet'
-            code="DownloadApplet.class"
-            archive="DownloadApplet.jar"
-            width="0"
-            height="0">
-            Your browser does not support Applets.
-        </applet>
+	<div style="height:100px; width:100px;">
+      <applet ID='DownloadApplet' Name = 'DownloadApplet' codebase='.'
+    	code='DownloadApplet.class' archive='DownloadApplet.jar'
+    	width='100' height='100'>
+      </applet>
     </div>
     <div id="map3d" style="height:768px; width:1358px;"></div>
     <div id="map_canvas" style="height:0px; width:0px;"></div>
