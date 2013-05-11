@@ -1,11 +1,9 @@
 package edu.kgu.aeon.Action;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
+import java.io.InputStream;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.struts2.ServletActionContext;
 
-import sun.misc.BASE64Decoder;
-import javax.imageio.ImageIO;
 import edu.kgu.aeon.logic.downloadLogic;
 import edu.kgu.aeon.logic.showDownloadLogic;
 import edu.kgu.log.LogLogger;
@@ -13,9 +11,8 @@ import edu.kgu.log.LogLogger;
 public class downloadAction extends BaseAction {
 	// logic
 	downloadLogic logic = new downloadLogic();
-	
+
 	// request param
-	private String pic;
 	private String userID;
 	private String type;
 	private String startName;
@@ -24,14 +21,9 @@ public class downloadAction extends BaseAction {
 	private String destinationName;
 	private String destinationLat;
 	private String destinationLng;
-	
-	public String getPic() {
-		return pic;
-	}
 
-	public void setPic(String pic) {
-		this.pic = pic;
-	}
+	// return value
+	private String result;
 	
 	public String getUserID() {
 		return userID;
@@ -97,16 +89,35 @@ public class downloadAction extends BaseAction {
 		this.destinationLng = destinationLng;
 	}
 	
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
 	
 	// execute
 	public String execute() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		
 		try {
-			LogLogger.info(pic);
-			//LogLogger.info(userID);
-			showDownloadLogic.createImage(userID, pic);
+//			LogLogger.info("userID:" + userID);
+//			LogLogger.info("type:" + type);
+//			LogLogger.info("startName:" + startName);
+//			LogLogger.info("startLat:" + startLat);
+//			LogLogger.info("startLng:" + startLng);
+//			LogLogger.info("destinationName:" + destinationName);
+//			LogLogger.info("destinationLat:" + destinationLat);
+//			LogLogger.info("destinationLng:" + destinationLng);
+			
+			InputStream pic = request.getInputStream();
+			
 			logic.execute(pic, userID, type, startName, startLat, startLng, destinationName, destinationLat, destinationLng);
-
+			
+			this.result = "{0}";
 		} catch(Exception e) {
+			this.result = "{1}";
 			LogLogger.error(e);
 		}
 		

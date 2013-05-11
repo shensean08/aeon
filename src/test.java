@@ -1,4 +1,11 @@
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Random;
 
@@ -11,9 +18,49 @@ import edu.kgu.util.*;
 import edu.kgu.aeon.agent.*;
 
 public class test {
-
 	public static void main(String[] args) {
-		downloadpic();
+		downloadAction();
+	}
+	
+	public static void HttpUrlConnection () {
+		try {    
+	           URL url = new URL("http://127.0.0.1:8080/aeonsite/downloadAction.action?userID=111&fileName=test.zip");  
+	           HttpURLConnection conn = (HttpURLConnection)url.openConnection();   
+	  
+	           conn.setDoOutput(true);  
+	           conn.setUseCaches(false);  
+	           conn.setRequestMethod("POST");  
+	           conn.setRequestProperty("Content-Type","text/html");   
+//	           conn.setRequestProperty("User-Agent","Mozilla/5.0 ( compatible ) ");
+//	           conn.setRequestProperty("Accept","*/*");
+	           
+	           conn.connect();  
+	           conn.setConnectTimeout(10000);  
+	           OutputStream out =conn.getOutputStream();  
+	  
+	           File file = new File("/Users/seanshen/Documents/0510.pptx");  
+	   
+	           DataInputStream in = new DataInputStream(new FileInputStream(file));  
+	  
+	           int bytes = 0;  
+	           byte[] buffer = new byte[1024];  
+	           while ((bytes = in.read(buffer)) != -1) {  
+	               out.write(buffer, 0, bytes);  
+	           }  
+	           in.close();  
+	           out.flush();  
+	           out.close();   
+	      
+	           System.out.println(conn.getResponseCode());
+	           conn.getInputStream();  
+	           
+//	           conn.getResponseCode();
+	           conn.disconnect();  
+	       } catch (Exception e) {  
+	            System.out.println(e);
+
+	            e.printStackTrace();  
+	       }  
 	}
 	
 	public static void showDownloadLogic() {
@@ -32,12 +79,11 @@ public class test {
 		action.setDestinationLat("11");
 		action.setDestinationLng("22");
 		try {
-			action.setPic(DownloadApplet.Bytes2BASE64(DownloadApplet.CaptureScreen()));
+//			action.execute(new ByteArrayInputStream(DownloadApplet.CaptureScreen()));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		action.execute();
 	}
 	
 	public static void downloadpic() {

@@ -20,7 +20,9 @@
 
 		<!-- downloadAction -->
         <action name="downloadAction" class="edu.kgu.aeon.Action.downloadAction">
-			<result name="success">ge_main.html</result>
+        	<result type="json">
+				<param name="root">result</param>
+            </result>
         </action>
 
 		<!-- showDownloadAction -->

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -110,18 +111,14 @@ function debug(val,flg) {
 //****************************************************************************/
 //****************************************************************************/
 
-var URL_IMG = "http://192.218.175.137:8080/aeonsite/img/";
-//var URL_IMG = "http://localhost:8080/aeonsite/img/";
-var USERINFO_URL = "http://192.218.175.137:8080/aeonsite/placeJSon.jsp?qrcode=";
+var URL_IMG = "http://127.0.0.1:8080/aeonsite/img/";
+var USERINFO_URL = "http://127.0.0.1:8080/aeonsite/placeJSon.jsp?qrcode=";
 //var USERINFO_URL = "http://192.218.175.137:8080/aeonsite/placeInfo.jsp?qrcode=";
 
 
 var SCREEN_WIDTH = 1358;
 var SCREEN_HEIGHT = 768;
-var SCREEN_SAVE_WAITTIME = 20;	//second
-var DOWNLOAD_PATH = "C:\\workspace\\googleEarth\\";
-//var DOWNLOAD_FILE = "test.jpg";
-var DOWNLOAD_FILE = "screen_capture_";
+var SCREEN_SAVE_WAITTIME = 500;	//second
 //****************************************************************************/
 //****************************************************************************/
 //****************************************************************************/
@@ -306,31 +303,21 @@ function Download(second) {
 	_this.downloadComfirm;
 	
 	// download 
-	// type 0 GOOGLE MAP 1 picture
+	// 
 	Download.prototype.download = function() {
-		ge.setBalloon(null);				if (userSession.isLoginIn() == false) {			
-			_this.downloadComfirm = new HtmlHint("先に登録してください。",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-			_this.downloadComfirm.setFontSize(42);
-			_this.downloadComfirm.setBackgroundImage("hazardmap.png");
-			_this.downloadComfirm.show();
-			setTimeout(function(){
-				_this.downloadComfirm.hide();
-			},3000);						return;		}		
+		ge.setBalloon(null);
 		_this.downloadHint = new HtmlHint("コード読取り機にQRコードをかざしてください",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
 		_this.downloadHint.setFontSize(42);
 		_this.downloadHint.setBackgroundImage("hazardmap.png");
 		_this.downloadHint.show();
 		QRcodeReader.read(function(QRCode){
-			_this.downloadHint.hide();
-			setTimeout(function(){				var msg = "";								if (userSession.authenticate(QRCode) == true) {
-					//upload img to server											//var datetime = new Date();
-					//var msg = document.captureApplet.captureScreenS(DOWNLOAD_PATH + DOWNLOAD_FILE + QRCode + "_" + datetime.getTime());					
-					// sean add start
-					//document.DownloadApplet.DownloadImage("1315492432","0","start","0","1","end","2","3");
-					document.DownloadApplet.DownloadImage(QRCode,"0",selectedPlace.name,selectedPlace.location.lat(),selectedPlace.location.lng(),"","","");
-					// sean add end
-										msg = "ダウンロードが完了しました。";				} else {					msg = "認証が失敗しまいました。";				}				
-				_this.downloadComfirm = new HtmlHint(msg,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+			_this.downloadHint.hide();			// sean add start
+			//document.DownloadApplet.DownloadImage(QRCode,"0","start","0","1","end","2","3");
+			// sean add end
+				
+			setTimeout(function(){
+				//upload img to server				document.DownloadApplet.DownloadImage("1315492432","0","start","0","1","end","2","3");
+				_this.downloadComfirm = new HtmlHint("ダウンロードが完了しました",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
 				_this.downloadComfirm.setFontSize(42);
 				_this.downloadComfirm.setBackgroundImage("hazardmap.png");
 				_this.downloadComfirm.show();
@@ -338,38 +325,7 @@ function Download(second) {
 					_this.downloadComfirm.hide();
 				},3000);			},200);
 		});
-		//},200);
-	}	Download.prototype.downloadRoute = function(name,lat,lng) {				//alert(selectedPlace.name + ",  " + selectedPlace.location.lat() + ":" + selectedPlace.location.lng());		//alert(name + ", " + lat + " : " + lng);	
-		ge.setBalloon(null);		if (userSession.isLoginIn() == false) {			
-			_this.downloadComfirm = new HtmlHint("先に登録してください。",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-			_this.downloadComfirm.setFontSize(42);
-			_this.downloadComfirm.setBackgroundImage("hazardmap.png");
-			_this.downloadComfirm.show();
-			setTimeout(function(){
-				_this.downloadComfirm.hide();
-			},3000);						return;		}		
-		_this.downloadHint = new HtmlHint("コード読取り機にQRコードをかざしてください",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-		_this.downloadHint.setFontSize(42);
-		_this.downloadHint.setBackgroundImage("hazardmap.png");
-		_this.downloadHint.show();
-		QRcodeReader.read(function(QRCode){
-			_this.downloadHint.hide();
-			setTimeout(function(){				var msg = "";								if (userSession.authenticate(QRCode) == true) {
-					//upload img to server					//alert(QRCode);					//var datetime = new Date();
-					//var msg = document.captureApplet.captureScreenS(DOWNLOAD_PATH + DOWNLOAD_FILE + QRCode + "_" + datetime.getTime());
-					
-					// sean add start
-					//document.DownloadApplet.DownloadImage("1315492432","0","start","0","1","end","2","3");					document.DownloadApplet.DownloadImage(QRCode,0,selectedPlace.name,selectedPlace.location.lat(),selectedPlace.location.lng(),name,lat,lng);					// sean add end
-										msg = "ダウンロードが完了しました。";				} else {					msg = "認証が失敗しまいました。";				}				
-				_this.downloadComfirm = new HtmlHint(msg,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-				_this.downloadComfirm.setFontSize(42);
-				_this.downloadComfirm.setBackgroundImage("hazardmap.png");
-				_this.downloadComfirm.show();
-				setTimeout(function(){
-					_this.downloadComfirm.hide();
-				},3000);			},200);
-		});
-		//},200);	}
+	}
 	// hide Hint
 	// 
 	Download.prototype.hideHint = function() {
@@ -581,7 +537,7 @@ function SideMenu() {
 //****************************************************************************/
 
 function ShelterBalloon(shelter,idx,event) {
-	var shelterLoc = shelter.geometry.location;
+	
 	this.balloon = ge.createHtmlDivBalloon('');
 	this.balloon.setFeature(event.getTarget());
 	this.balloon.setMaxWidth(500);
@@ -609,7 +565,7 @@ function ShelterBalloon(shelter,idx,event) {
 							//+ '<td valign="middle" align="center"><div style="width:140px;height:40px; line-height:40px; align:center;background-position:9px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="showDirection(' + shelter.geometry.location.lat() + ',' + shelter.geometry.location.lng() + ');" >' + selectedPlace.name + 'からの経路</div>'
 							+ '<td valign="middle" align="center"><div style="width:140px;height:40px; line-height:40px; align:center;background-position:9px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="shelter.shelterRoute(' + idx + ');" >' + selectedPlace.name + 'からの経路</div>'
 							+ '</td>'
-							+ '<td valign="middle" align="center"><div style="width:140px;height:40px; line-height:30px; align:center;background-position:9px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="download.downloadRoute(' + "'" + shelter.name + "'" + ',' + shelterLoc.lat() + ',' + shelterLoc.lng() + ');" ><table style="height:30px" ><tr><td><img style="max-width: 23px;max-height: 23px; margin-top:6px;" src="' + URL_IMG + 'dl_shelter-balloon.png"></td><td valign="top" style="padding-top:3px">ダウンロード</td></tr></table></div>'
+							+ '<td valign="middle" align="center"><div style="width:140px;height:40px; line-height:30px; align:center;background-position:9px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="download.download();" ><table style="height:30px" ><tr><td><img style="max-width: 23px;max-height: 23px; margin-top:6px;" src="' + URL_IMG + 'dl_shelter-balloon.png"></td><td valign="top" style="padding-top:3px">ダウンロード</td></tr></table></div>'
 							+ '</td>'
 							+ '</tr>'
 							+ '</table>';
@@ -726,6 +682,7 @@ function Shelter(_selectedPlace) {
 						
 						marker.setStyleSelector(style); //apply the style to the placemark
 						marker.setName(shelter.name);
+						
 						// Set the placemark's location.  
 						var point = ge.createPoint('');
 						point.setLatitude(shelterLoc.lat());
@@ -915,7 +872,7 @@ function PlaceBalloon(info,event) {
 		+ ''
 		+ '</tr>'
 		+ '<tr>'
-		+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:30px; align:center;background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="download.download();" ><table style="height:30px" ><tr><td><img style="max-width: 23px;max-height: 23px; margin-top:6px;" src="' + URL_IMG + 'dl_shelter-balloon.png"></td><td valign="top" style="padding-top:3px">ダウンロード&nbsp;</td></tr></table></div>'
+		+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:30px; align:center;background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="download();" ><table style="height:30px" ><tr><td><img style="max-width: 23px;max-height: 23px; margin-top:6px;" src="' + URL_IMG + 'dl_shelter-balloon.png"></td><td valign="top" style="padding-top:3px">ダウンロード&nbsp;</td></tr></table></div>'
 		+ '</td>'
 		+ ''
 		+ '</tr>'
@@ -1160,22 +1117,18 @@ function QRCodeReader() {
 function UserSession() {
 	
 	var userInfo;		//JSON String
-	var userQRCode;		
+	
 	//Request UserInfo through call WEB API
 	//
-	UserSession.prototype.requestUserInfo = function(QRCode,callback) {		userQRCode = null;		
+	UserSession.prototype.requestUserInfo = function(QRCode,callback) {
 		$.getJSON(USERINFO_URL + QRCode ,function(result){
 			userInfo = result;
-			userQRCode = QRCode;
+			
 			callback();
 		
 		});
 	};
-	//get user QRCode
-	//
-	UserSession.prototype.getQRCode = function() {
-		return userQRCode;
-	};
+	
 		/*
 		$.each(result.places,function(i, place) {
 			alert(place.name);
@@ -1203,14 +1156,10 @@ function UserSession() {
 	
 	//login out
 	//
-	UserSession.prototype.loginOut = function() {
-		userInfo = null;				userQRCode = null;
+	UserSession.prototype.loginOut = function(idx) {
+		userInfo = null;
 	}
-	//is Login in
-	//
-	UserSession.prototype.isLoginIn = function() {		if (userQRCode == null) {			return false;		} 		return true;
-	}		// authenticate		//		UserSession.prototype.authenticate = function(QRCode) {		if (userQRCode == QRCode) {			return true;		} 		return false;
-	}
+	
 	return this;
 }
 
@@ -1546,10 +1495,10 @@ function HtmlHint(text,left,top,width,height) {
 	
 </head>
 <body  onKeyDown="return keyDown(event);" onKeyUp="return keyUp(event);">
-	<div style="height:0px; width:0px;">
+	<div style="height:100px; width:100px;">
       <applet ID='DownloadApplet' Name = 'DownloadApplet' codebase='.'
     	code='DownloadApplet.class' archive='DownloadApplet.jar'
-    	width='0' height='0'>
+    	width='100' height='100'>
       </applet>
     </div>
     <div id="map3d" style="height:768px; width:1358px;"></div>
