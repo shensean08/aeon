@@ -15,10 +15,10 @@ public class downloadAction extends BaseAction {
 	// request param
 	private String userID;
 	private String type;
-	private String startName;
+//	private String startName;
 	private String startLat;
 	private String startLng;
-	private String destinationName;
+//	private String destinationName;
 	private String destinationLat;
 	private String destinationLng;
 
@@ -41,13 +41,13 @@ public class downloadAction extends BaseAction {
 		this.type = type;
 	}
 
-	public String getStartName() {
-		return startName;
-	}
-
-	public void setStartName(String startName) {
-		this.startName = startName;
-	}
+//	public String getStartName() {
+//		return startName;
+//	}
+//
+//	public void setStartName(String startName) {
+//		this.startName = startName;
+//	}
 
 	public String getStartLat() {
 		return startLat;
@@ -65,13 +65,13 @@ public class downloadAction extends BaseAction {
 		this.startLng = startLng;
 	}
 
-	public String getDestinationName() {
-		return destinationName;
-	}
-
-	public void setDestinationName(String destinationName) {
-		this.destinationName = destinationName;
-	}
+//	public String getDestinationName() {
+//		return destinationName;
+//	}
+//
+//	public void setDestinationName(String destinationName) {
+//		this.destinationName = destinationName;
+//	}
 
 	public String getDestinationLat() {
 		return destinationLat;
@@ -102,6 +102,9 @@ public class downloadAction extends BaseAction {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		
 		try {
+			String startName = new String(request.getParameter("startName").getBytes("ISO-8859-1"),"utf-8");
+			String destinationName = new String(request.getParameter("destinationName").getBytes("ISO-8859-1"),"utf-8");
+			
 //			LogLogger.info("userID:" + userID);
 //			LogLogger.info("type:" + type);
 //			LogLogger.info("startName:" + startName);

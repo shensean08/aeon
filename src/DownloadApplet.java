@@ -14,14 +14,13 @@ import java.applet.Applet;
 
 import java.io.*;
 import java.net.*;
-  
-import sun.misc.BASE64Encoder; 
 
 public class DownloadApplet extends Applet implements ActionListener {
 	private static final long serialVersionUID = 7973760697552446266L;
 	
 	private static final String urlString = "http://192.218.175.137:8080/aeonsite/downloadAction.action";
-
+	//private static final String urlString = "http://127.0.0.1:8080/aeonsite/downloadAction.action";
+	
     private JTextArea textArea;
     private JTextField textField;
 	
@@ -67,32 +66,26 @@ public class DownloadApplet extends Applet implements ActionListener {
 
     public String test() {
     	String rtn = "test ok";
-    	try {
-    		DownloadImage("userID1","0","sName1","sLat1","sLng1","dName1","dLat1","dLng1");
-        } catch ( Exception e) {
-        	rtn = e.toString();
-            // Display information about the exception.
-            this.textArea.setForeground(Color.RED);
-            this.textArea.setText(e.toString());
-        }
+    	DownloadImage("userID","0","sName1","sLat1","sLng1","dName1","dLat1","dLng1");
         return rtn;
     }
     
 	public static byte[] CaptureScreen() throws Exception {
 		byte[] result = null;
 		
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			Rectangle screenRectangle = new Rectangle(screenSize);
-			Robot robot = new Robot();
-			BufferedImage image = robot.createScreenCapture(screenRectangle);
-			ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-			ImageIO.write(image, "png", outStream);
-			result = outStream.toByteArray();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Rectangle screenRectangle = new Rectangle(screenSize);
+		Robot robot = new Robot();
+		BufferedImage image = robot.createScreenCapture(screenRectangle);
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+		ImageIO.write(image, "png", outStream);
+		result = outStream.toByteArray();
 		
 		return result;
 	}
 	
-	public static void DownloadImage(String userID,String type, String startName, String startLat,String startLng,String destinationName, String destinationLat,String destinationLng) throws Exception {
+	public void DownloadImage(String userID,String type, String startName, String startLat,String startLng,String destinationName, String destinationLat,String destinationLng) {
+		try {
 			// capture Screen
 			byte[] pic = CaptureScreen();
 			
@@ -137,5 +130,10 @@ public class DownloadApplet extends Applet implements ActionListener {
 			
 			connection.getInputStream();
 			connection.disconnect();
+		} catch (Exception e) {
+            // Display information about the exception.
+            this.textArea.setForeground(Color.RED);
+            this.textArea.setText(e.toString());
+		}
 	}
 }

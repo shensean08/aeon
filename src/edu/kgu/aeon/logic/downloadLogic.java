@@ -1,20 +1,9 @@
 package edu.kgu.aeon.logic;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-
-import javax.imageio.ImageIO;
-
-import sun.misc.BASE64Decoder;
 
 import edu.kgu.aeon.access.DLinfoAccess;
 import edu.kgu.aeon.bean.DLinfoBean;
-import edu.kgu.log.LogLogger;
-import edu.kgu.util.SystemParameter;
 
 public class downloadLogic extends BaseLogic {
 	private DLinfoAccess access = new DLinfoAccess();
@@ -38,7 +27,11 @@ public class downloadLogic extends BaseLogic {
 		bean.setDLNo(dlNo);
 		
 		bean.setType(type);
-		bean.setDLName(sName + "_" + dName);
+		if (dName.trim().length() > 0) {
+			bean.setDLName(sName + "_" + dName);
+		} else {
+			bean.setDLName(sName);
+		}
 		bean.setsName(sName);
 		bean.setsLat(sLat);
 		bean.setsLng(sLng);

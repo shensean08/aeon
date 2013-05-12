@@ -71,11 +71,11 @@ public class test {
 		DownloadApplet a = new DownloadApplet();
 		downloadAction action = new downloadAction();
 		action.setUserID("000002");
-		action.setStartName("sName");
+//		action.setStartName("sName");
 		action.setStartLat("10");
 		action.setStartLng("20");
 		action.setType("0");
-		action.setDestinationName("dName");
+//		action.setDestinationName("dName");
 		action.setDestinationLat("11");
 		action.setDestinationLng("22");
 		try {
