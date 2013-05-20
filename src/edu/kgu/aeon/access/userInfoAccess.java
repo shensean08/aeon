@@ -252,4 +252,51 @@ public class userInfoAccess extends BaseAccess {
 		
 		return rtn;
 	}
+	
+	public int updateUserInfoAddressByUserName(userInfoBean value) {
+		int rtn = -1;
+		
+		dbConn = conn.getDBConnect();
+		StringBuffer query = new StringBuffer();
+		query.append(" UPDATE userInfo ");
+		if (value.getAddress1Name().trim().length() > 0) {
+			query.append("    SET address1Name = '" + value.getAddress1Name() + "'");					//address1Name
+			query.append("   	 ,address1Postalcode = '" + value.getAddress1Postalcode() + "'");		//address1Postalcode
+			query.append("   	 ,address1Address = '" + value.getAddress1Address() + "'");				//address1Address
+		}
+		if (value.getAddress2Name().trim().length() > 0) {
+			query.append("    SET address2Name = '" + value.getAddress2Name() + "'");					//address2Name
+			query.append("   	 ,address2Postalcode = '" + value.getAddress2Postalcode() + "'");		//address2Postalcode
+			query.append("   	 ,address2Address = '" + value.getAddress2Address() + "'");				//address2Address
+		}
+		if (value.getAddress3Name().trim().length() > 0) {
+			query.append("    SET address3Name = '" + value.getAddress3Name() + "'");					//address3Name
+			query.append("   	 ,address3Postalcode = '" + value.getAddress3Postalcode() + "'");		//address3Postalcode
+			query.append("   	 ,address3Address = '" + value.getAddress3Address() + "'");				//address3Address
+		}
+		if (value.getAddress4Name().trim().length() > 0) {
+			query.append("    SET address4Name = '" + value.getAddress4Name() + "'");					//address4Name
+			query.append("   	 ,address4Postalcode = '" + value.getAddress4Postalcode() + "'");		//address4Postalcode
+			query.append("   	 ,address4Address = '" + value.getAddress4Address() + "'");				//address4Address
+		}
+		if (value.getAddress5Name().trim().length() > 0) {
+			query.append("    SET address5Name = '" + value.getAddress1Name() + "'");					//address5Name
+			query.append("   	 ,address5Postalcode = '" + value.getAddress1Postalcode() + "'");		//address5Postalcode
+			query.append("   	 ,address5Address = '" + value.getAddress1Address() + "'");				//address5Address
+		}
+		query.append(" WHERE userName = '" + value.getUserName() + "'");
+		
+		try {
+			dbConn.BeginTransaction();
+			dbConn.Execute(query.toString());
+			dbConn.Commit();
+			rtn = 0;
+		} catch (Exception e) {
+			LogLogger.error(e);
+		} finally {
+			dbConn.Close();
+		}
+		
+		return rtn;
+	}
 }

@@ -77,7 +77,7 @@ public class showDownloadLogic extends BaseLogic {
 		if (value.getdLat().length() > 0) {
 			rtn += "&daddr=" + value.getdLat() + "," + value.getdLng();
 		}
-		rtn += "&hl=jp&ie=UTF8&geocode=FbfH3AEdAw48Bw%3BFXU53AEdCMw8Bw&dirflg=w&mra=ls&t=m&z=14";
+		rtn += "&hl=jp&ie=UTF8&geocode=FVytHAId8L4rCA%3BFSQWGQIdLTMyCA&dirflg=w&mra=ls&t=m&z=14";
 		return rtn;
 	}
 }
