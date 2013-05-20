@@ -112,8 +112,8 @@ function debug(val,flg) {
 
 var URL_IMG = "http://192.218.175.137:8080/aeonsite/img/";
 //var URL_IMG = "http://localhost:8080/aeonsite/img/";
-var USERINFO_URL = "http://192.218.175.137:8080/aeonsite/placeJSon.jsp?qrcode=";
-//var USERINFO_URL = "http://192.218.175.137:8080/aeonsite/placeInfo.jsp?qrcode=";
+//var USERINFO_URL = "http://192.218.175.137:8080/aeonsite/placeJSon.jsp?qrcode=";
+var USERINFO_URL = "http://192.218.175.137:8080/aeonsite/placeInfo.jsp?qrcode=";
 
 
 var SCREEN_WIDTH = 1358;
@@ -150,6 +150,17 @@ var shelter;			//避難所
 var screenSave;			//
 
 var download;
+
+/////////////////////
+var viewLat;		//where camera is looking
+var viewLng;
+var currentKmlObject = {'shelter' : null,'tsunami2' : null};		//used to show and hide kml
+var currentClickedObject = {'name' : null, 'lat' : null, 'lng' : null};	//used to read from 
+var currentLine = null;
+directionsDisplay = new google.maps.DirectionsRenderer();
+var nowAddress;
+var routeButton;
+var returnButton;
 
 //****************************************************************************/
 // Main
@@ -204,13 +215,18 @@ function initCB(instance) {
 	QRcodeReader = new QRCodeReader();
 	download = new Download();
 	userSession = new UserSession();
-	sideMenu = new SideMenu();
+	sideMenu = new SideMenu();
+	routeButton = new RouteButton();
+	returnButton = new ReturnButton();
 	loginHint = new HtmlHint("コード読取り機にQRコードをかざしてください",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
 	loginHint.setFontSize(42);
 	loginHint.setBackgroundImage("hazardmap.png");
 	loginButton = new HtmlButton("登録",500,630,360,60);
 	loginButton.setFontSize(28);
-	loginButton.show();
+	//loginButton.show();
+
+	sideMenu.show();
+
 	loginButton.addClickListener(function() { 
 		loginButton.hide();
 		loginHint.show();
@@ -224,7 +240,10 @@ function initCB(instance) {
 			});
 		});
 	});
-	
+	/////////////
+	google.earth.addEventListener(ge.getView(), "viewchange", viewEventListener);
+	////////////
+
 }
 
 function failureCB(errorCode) {}
@@ -287,7 +306,11 @@ Global.reset2Init = function() {
 	sideMenu.hide();
 	loginButton.hide();
 	loginHint.hide();
-	download.hideHint();
+	download.hideHint();
+	routeButton.hide();
+	releaseKml('shelter');
+	releaseKml('tsunami2');
+	releaseLine();
 }
 //****************************************************************************/
 // Class Global End
@@ -323,13 +346,10 @@ function Download(second) {
 		QRcodeReader.read(function(QRCode){
 			_this.downloadHint.hide();
 			setTimeout(function(){				var msg = "";								if (userSession.authenticate(QRCode) == true) {
-					//upload img to server											//var datetime = new Date();
-					//var msg = document.captureApplet.captureScreenS(DOWNLOAD_PATH + DOWNLOAD_FILE + QRCode + "_" + datetime.getTime());					
-					// sean add start
+					//upload img to server											/// sean add start
 					//document.DownloadApplet.DownloadImage("1315492432","0","start","0","1","end","2","3");
 					document.DownloadApplet.DownloadImage(QRCode,"0",selectedPlace.name,selectedPlace.location.lat(),selectedPlace.location.lng(),"","","");
-					// sean add end
-										msg = "ダウンロードが完了しました。";				} else {					msg = "認証が失敗しまいました。";				}				
+					// sean add end					msg = "ダウンロードが完了しました。";				} else {					msg = "認証が失敗しまいました。";				}				
 				_this.downloadComfirm = new HtmlHint(msg,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
 				_this.downloadComfirm.setFontSize(42);
 				_this.downloadComfirm.setBackgroundImage("hazardmap.png");
@@ -355,10 +375,7 @@ function Download(second) {
 		QRcodeReader.read(function(QRCode){
 			_this.downloadHint.hide();
 			setTimeout(function(){				var msg = "";								if (userSession.authenticate(QRCode) == true) {
-					//upload img to server					//alert(QRCode);					//var datetime = new Date();
-					//var msg = document.captureApplet.captureScreenS(DOWNLOAD_PATH + DOWNLOAD_FILE + QRCode + "_" + datetime.getTime());
-					
-					// sean add start
+					//upload img to server					// sean add start
 					//document.DownloadApplet.DownloadImage("1315492432","0","start","0","1","end","2","3");					document.DownloadApplet.DownloadImage(QRCode,0,selectedPlace.name,selectedPlace.location.lat(),selectedPlace.location.lng(),name,lat,lng);					// sean add end
 										msg = "ダウンロードが完了しました。";				} else {					msg = "認証が失敗しまいました。";				}				
 				_this.downloadComfirm = new HtmlHint(msg,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
@@ -467,7 +484,9 @@ function ScreenSave(second) {
 		videoObj.height = 0;
 		videoObj.pause();
 		document.getElementById("map3d").style.visibility = "visible";
-		
+		flyToOsaka();
+
+/*		
 		var lookat = ge.createLookAt('');		//move to osaka
 		lookat.set(34.7, 135.5,
 			600, // altitude
@@ -483,7 +502,8 @@ function ScreenSave(second) {
 			selectedPlace = new Place("現在地");
 			selectedPlace.geocode("大阪府大阪市西区千代崎3丁目北2");
 			selectedPlace.show();
-			loginButton.show();		},5000);		
+			//loginButton.show();
+			sideMenu.show();		},5000);	*/	
 		_this.ready();
 	}
 }
@@ -496,30 +516,82 @@ function SideMenu() {
 
 	var _this = this;
 	this.isHide = 1;
-	
-	var sideBtnAddrSelLeft = SCREEN_WIDTH - 800;
-	var sideBtnAddrSelTop = SCREEN_HEIGHT -130;
-	var sideBtnAddrSelWidth = 60;
-	var sideBtnAddrSelHeight = 60;
-	
-	var sideBtnQuitLeft = SCREEN_WIDTH - 700;
+	
+
+	var sideBtnTsunamiLeft = (SCREEN_WIDTH / 2) - 120;
+	var sideBtnTsunamiTop = SCREEN_HEIGHT -130;
+	var sideBtnTsunamiWidth = 60;
+	var sideBtnTsunamiHeight = 60;
+
+	var sideBtnShelterLeft = (SCREEN_WIDTH / 2) - 40;
+	var sideBtnShelterTop = SCREEN_HEIGHT -130;
+	var sideBtnShelterWidth = 60;
+	var sideBtnShelterHeight = 60;
+
+	var sideBtnLoginLeft = (SCREEN_WIDTH / 2) + 40;
+	var sideBtnLoginTop = SCREEN_HEIGHT -130;
+	var sideBtnLoginWidth = 60;
+	var sideBtnLoginHeight = 60;
+
+	var sideBtnDLLeft = (SCREEN_WIDTH / 2) + 120;
+	var sideBtnDLTop = SCREEN_HEIGHT -130;
+	var sideBtnDLWidth = 60;
+	var sideBtnDLHeight = 60;
+
+
+	var sideBtnQuitLeft = SCREEN_WIDTH - 300;
 	var sideBtnQuitTop = SCREEN_HEIGHT -130;
 	var sideBtnQuitWidth = 150;
 	var sideBtnQuitHeight = 60;
+
+	var routeBtn1Left = (SCREEN_WIDTH / 2);
+	var routeBtn1Top = SCREEN_HEIGHT - 210;
+	var routeBtn1Width = 60;
+	var routeBtn1Height = 60;	
+	
+	var sideBtnTsunamiIcon = ge.createIcon('');
+	sideBtnTsunamiIcon.setHref(URL_IMG + 'hazardmap-btn-01.png');
+
+	this.sideBtnTsunami = ge.createScreenOverlay('');
+	this.sideBtnTsunami.setIcon(sideBtnTsunamiIcon);
+	this.sideBtnTsunami.getOverlayXY().set(sideBtnTsunamiLeft, ge.UNITS_PIXELS, sideBtnTsunamiTop, ge.UNITS_INSET_PIXELS);
+	this.sideBtnTsunami.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
+	this.sideBtnTsunami.getSize().set(sideBtnTsunamiWidth, ge.UNITS_PIXELS, sideBtnTsunamiHeight, ge.UNITS_PIXELS);
+	//ge.getFeatures().appendChild(sideBtnTsunami);
 	
-	var sideBtnAddrSelIcon = ge.createIcon('');
-	sideBtnAddrSelIcon.setHref(URL_IMG + 'icon_scene.png');
-	
-	this.sideBtnAddrSel = ge.createScreenOverlay('');
-	this.sideBtnAddrSel.setIcon(sideBtnAddrSelIcon);
-	this.sideBtnAddrSel.getOverlayXY().set(sideBtnAddrSelLeft, ge.UNITS_PIXELS, sideBtnAddrSelTop, ge.UNITS_INSET_PIXELS);
-	this.sideBtnAddrSel.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
-	this.sideBtnAddrSel.getSize().set(sideBtnAddrSelWidth, ge.UNITS_PIXELS, sideBtnAddrSelHeight, ge.UNITS_PIXELS);
+	var sideBtnShelterIcon = ge.createIcon('');
+	sideBtnShelterIcon.setHref(URL_IMG + 'hazardmap-btn-02.png');
+
+	this.sideBtnShelter = ge.createScreenOverlay('');
+	this.sideBtnShelter.setIcon(sideBtnShelterIcon);
+	this.sideBtnShelter.getOverlayXY().set(sideBtnShelterLeft, ge.UNITS_PIXELS, sideBtnShelterTop, ge.UNITS_INSET_PIXELS);
+	this.sideBtnShelter.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
+	this.sideBtnShelter.getSize().set(sideBtnShelterWidth, ge.UNITS_PIXELS, sideBtnShelterHeight, ge.UNITS_PIXELS);
 	//ge.getFeatures().appendChild(sideBtnAddrSel);
-	
-	
+
+	var sideBtnLoginIcon = ge.createIcon('');
+	sideBtnLoginIcon.setHref(URL_IMG + 'hazardmap-btn-03.png');
+
+	this.sideBtnLogin = ge.createScreenOverlay('');
+	this.sideBtnLogin.setIcon(sideBtnLoginIcon);
+	this.sideBtnLogin.getOverlayXY().set(sideBtnLoginLeft, ge.UNITS_PIXELS, sideBtnLoginTop, ge.UNITS_INSET_PIXELS);
+	this.sideBtnLogin.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
+	this.sideBtnLogin.getSize().set(sideBtnLoginWidth, ge.UNITS_PIXELS, sideBtnLoginHeight, ge.UNITS_PIXELS);
+	//ge.getFeatures().appendChild(sideBtnAddrSel);
+
+	var sideBtnDLIcon = ge.createIcon('');
+	sideBtnDLIcon.setHref(URL_IMG + 'hazardmap-btn-04.png');
+
+	this.sideBtnDL = ge.createScreenOverlay('');
+	this.sideBtnDL.setIcon(sideBtnDLIcon);
+	this.sideBtnDL.getOverlayXY().set(sideBtnDLLeft, ge.UNITS_PIXELS, sideBtnDLTop, ge.UNITS_INSET_PIXELS);
+	this.sideBtnDL.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
+	this.sideBtnDL.getSize().set(sideBtnDLWidth, ge.UNITS_PIXELS, sideBtnDLHeight, ge.UNITS_PIXELS);
+	//ge.getFeatures().appendChild(sideBtnAddrSel);
+
+
 	var sideBtnQuitIcon = ge.createIcon('');
-	sideBtnQuitIcon.setHref(URL_IMG + 'icon_quit.png');
+	sideBtnQuitIcon.setHref(URL_IMG + 'hazardmap-btn-quit.png');
 	
 	this.sideBtnQuit = ge.createScreenOverlay('');
 	this.sideBtnQuit.setIcon(sideBtnQuitIcon);
@@ -527,30 +599,121 @@ function SideMenu() {
 	this.sideBtnQuit.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
 	this.sideBtnQuit.getSize().set(sideBtnQuitWidth, ge.UNITS_PIXELS, sideBtnQuitHeight, ge.UNITS_PIXELS);
 	//ge.getFeatures().appendChild(sideBtnQuit);
-	
+
+	var routeBtn1Icon = ge.createIcon('');
+	routeBtn1Icon.setHref(URL_IMG + 'hazardmap-btn-04.png');
+
+	this.routeBtn1 = ge.createScreenOverlay('');
+	this.routeBtn1.setIcon(routeBtn1Icon);
+	this.routeBtn1.getOverlayXY().set(routeBtn1Left, ge.UNITS_PIXELS, routeBtn1Top, ge.UNITS_INSET_PIXELS);
+	this.routeBtn1.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
+	this.routeBtn1.getSize().set(routeBtn1Width, ge.UNITS_PIXELS, routeBtn1Height, ge.UNITS_PIXELS);
 	
 	google.earth.addEventListener(ge.getWindow(), 'click', function(evt) {
+		if(userSession.isLoginIn()){
 		//resetScreenSaveTime();
-		if (evt.getButton() === 0 &&
-			isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnAddrSelLeft,sideBtnAddrSelTop,sideBtnAddrSelWidth,sideBtnAddrSelHeight)) {
-				placeSelectMenu.show();
-		} else if (evt.getButton() === 0 &&
-			isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnQuitLeft,sideBtnQuitTop,sideBtnQuitWidth,sideBtnQuitHeight)) {
+			if (evt.getButton() === 0 &&
+				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnTsunamiLeft,sideBtnTsunamiTop,sideBtnTsunamiWidth,sideBtnTsunamiHeight)) {
+
+					toggleKml('tsunami2');
+					//alert('hoge');
+
+			} else if (evt.getButton() === 0 &&
+				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnShelterLeft,sideBtnShelterTop,sideBtnShelterWidth,sideBtnShelterHeight)) {
+
+					toggleKml('shelter');
+
+			} else if (evt.getButton() === 0 &&
+				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnLoginLeft,sideBtnLoginTop,sideBtnLoginWidth,sideBtnLoginHeight)) {
+			
+				//	SideMenu.hide();
+					loginHint.show();
+					QRcodeReader.read(function(QRCode){
+						userSession.requestUserInfo(QRCode,function() {
+						placeSelectMenu = new PlaceSelectMenu(userSession);
+						loginHint.hide();
+						Global.reset2Init();
+						placeSelectMenu.show();
+						sideMenu.show();
+					});
+				});
 			
-				userSession.loginOut();
-				Global.reset2Init();
-				loginButton.show();
+			} else if (evt.getButton() === 0 &&
+				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnDLLeft,sideBtnDLTop,sideBtnDLWidth,sideBtnDLHeight)) {
+
+				download.download();
+
+			} else if (evt.getButton() === 0 &&
+				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnQuitLeft,sideBtnQuitTop,sideBtnQuitWidth,sideBtnQuitHeight)) {
+
+					userSession.loginOut();
+					Global.reset2Init();
+					flyToOsaka();
+					ScreenSave.ready();
+			}
+
+			return true;
+		}else{
+			//resetScreenSaveTime();
+			if (evt.getButton() === 0 &&
+				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnTsunamiLeft,sideBtnTsunamiTop,sideBtnTsunamiWidth,sideBtnTsunamiHeight)) {
+		
+					toggleKml('tsunami2');
+					//alert('hoge');
+	
+			} else if (evt.getButton() === 0 &&
+				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnShelterLeft,sideBtnShelterTop,sideBtnShelterWidth,sideBtnShelterHeight)) {
+
+					toggleKml('shelter');
+	
+			} else if (evt.getButton() === 0 &&
+				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnLoginLeft,sideBtnLoginTop,sideBtnLoginWidth,sideBtnLoginHeight)) {
+			
+				//	SideMenu.hide();
+					loginHint.show();
+					QRcodeReader.read(function(QRCode){
+						userSession.requestUserInfo(QRCode,function() {
+						placeSelectMenu = new PlaceSelectMenu(userSession);
+						loginHint.hide();
+						Global.reset2Init();
+						placeSelectMenu.show();
+						sideMenu.show();
+						});
+					});
+			
+			} else if (evt.getButton() === 0 &&
+				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnQuitLeft,sideBtnQuitTop,sideBtnQuitWidth,sideBtnQuitHeight)) {
+
+					userSession.loginOut();
+					Global.reset2Init();
+					flyToOsaka();
+					ScreenSave.ready();
+			}
+
+			return true;
+
+
 		}
-		return true;
 	});
-	
+
 	// hide side menu
 	//
 	SideMenu.prototype.hide = function() {
 		
-		if (this.isHide == 0) {
-			ge.getFeatures().removeChild(this.sideBtnAddrSel);
-			ge.getFeatures().removeChild(this.sideBtnQuit);
+		if (this.isHide == 0) {
+			if(userSession.isLoginIn()){
+				ge.getFeatures().removeChild(this.sideBtnTsunami);
+				ge.getFeatures().removeChild(this.sideBtnShelter);
+				ge.getFeatures().removeChild(this.sideBtnLogin);
+				ge.getFeatures().removeChild(this.sideBtnDL);
+				ge.getFeatures().removeChild(this.sideBtnQuit);						
+			}else{
+				ge.getFeatures().removeChild(this.sideBtnTsunami);
+				ge.getFeatures().removeChild(this.sideBtnShelter);
+				ge.getFeatures().removeChild(this.sideBtnLogin);
+				ge.getFeatures().removeChild(this.sideBtnQuit);
+
+			}
 			this.isHide = 1;
 		}
 	}
@@ -559,9 +722,21 @@ function SideMenu() {
 	//
 	SideMenu.prototype.show = function() {
 		
-		if (this.isHide == 1) {
-			ge.getFeatures().appendChild(this.sideBtnAddrSel);
-			ge.getFeatures().appendChild(this.sideBtnQuit);
+		if (this.isHide == 1) {
+			if(userSession.isLoginIn()){
+				ge.getFeatures().appendChild(this.sideBtnTsunami);
+				ge.getFeatures().appendChild(this.sideBtnShelter);
+				ge.getFeatures().appendChild(this.sideBtnLogin);
+				ge.getFeatures().appendChild(this.sideBtnDL);
+				ge.getFeatures().appendChild(this.sideBtnQuit);
+			}else{
+				ge.getFeatures().appendChild(this.sideBtnTsunami);
+				ge.getFeatures().appendChild(this.sideBtnShelter);
+				ge.getFeatures().appendChild(this.sideBtnLogin);
+				ge.getFeatures().appendChild(this.sideBtnQuit);
+			}
+
+
 			this.isHide = 0;
 		}
 	}
@@ -571,9 +746,128 @@ function SideMenu() {
 	var isMouseOnButton = function(mx, my, x, y, width, height) {
 		return x <= mx && mx <= x + width && y <= my && my <= y + height;
 	}
-	
+
 	return this;
 }
+
+//****************************************************************************/
+// Class draw route button (temp)
+//
+//****************************************************************************/
+
+function RouteButton() {
+
+	var _this = this;
+	this.isHide = 1;
+
+	var routeBtn1Left = (SCREEN_WIDTH / 2);
+	var routeBtn1Top = SCREEN_HEIGHT - 190;
+	var routeBtn1Width = 60;
+	var routeBtn1Height = 60;	
+
+	var routeBtn1Icon = ge.createIcon('');
+	routeBtn1Icon.setHref(URL_IMG + 'hazardmap-btn-quit.png');
+
+	this.routeBtn1 = ge.createScreenOverlay('');
+	this.routeBtn1.setIcon(routeBtn1Icon);
+	this.routeBtn1.getOverlayXY().set(routeBtn1Left, ge.UNITS_PIXELS, routeBtn1Top, ge.UNITS_INSET_PIXELS);
+	this.routeBtn1.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
+	this.routeBtn1.getSize().set(routeBtn1Width, ge.UNITS_PIXELS, routeBtn1Height, ge.UNITS_PIXELS);
+	
+	google.earth.addEventListener(ge.getWindow(), 'click', function(evt) {
+	
+	if (evt.getButton() === 0 &&
+			isMouseOnButton(evt.getClientX(), evt.getClientY(), routeBtn1Left, routeBtn1Top, routeBtn1Width, routeBtn1Height)){
+			//alert('1');
+			shelter.shelterRoute(' + idx + ');
+			
+		}
+		return true;
+	});
+
+	var isMouseOnButton = function(mx, my, x, y, width, height) {
+		return x <= mx && mx <= x + width && y <= my && my <= y + height;
+	}
+
+
+	RouteButton.prototype.hide = function() {
+		if(this.isHide == 0){
+			ge.getFeatures().removeChild(this.routeBtn1);
+
+			this.isHide = 1;
+		}
+	}
+
+	RouteButton.prototype.show = function(){
+		if(this.isHide == 1){
+			ge.getFeatures().appendChild(this.routeBtn1);
+
+			this.isHide = 0;
+		}
+	}
+
+	return this;
+}
+
+//****************************************************************************/
+// Class return button (temp)
+//
+//****************************************************************************/
+
+function ReturnButton() {
+
+	var _this = this;
+	this.isHide = 1;
+
+	var returnBtnLeft = SCREEN_WIDTH - 300;
+	var returnBtnTop = SCREEN_HEIGHT - 130;
+	var returnBtnWidth = 150;
+	var returnBtnHeight = 60;	
+
+	var returnBtnIcon = ge.createIcon('');
+	returnBtnIcon.setHref(URL_IMG + 'hazardmap-btn-04.png');
+
+	this.returnBtn = ge.createScreenOverlay('');
+	this.returnBtn.setIcon(routeBtnIcon);
+	this.returnBtn.getOverlayXY().set(returnBtnLeft, ge.UNITS_PIXELS, returnBtnTop, ge.UNITS_INSET_PIXELS);
+	this.returnBtn.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
+	this.returnBtn.getSize().set(returnBtnWidth, ge.UNITS_PIXELS, returnBtnHeight, ge.UNITS_PIXELS);
+	
+	google.earth.addEventListener(ge.getWindow(), 'click', function(evt) {
+	
+		if (evt.getButton() === 0 &&
+			isMouseOnButton(evt.getClientX(), evt.getClientY(), returnBtnLeft, returnBtnTop, returnBtnWidth, returnBtnHeight)){
+			//alert('1');
+			//shelter.shelterRoute(' + idx + ');
+			
+		}
+		return true;
+	});
+
+	var isMouseOnButton = function(mx, my, x, y, width, height) {
+		return x <= mx && mx <= x + width && y <= my && my <= y + height;
+	}
+
+
+	ReturnButton.prototype.hide = function() {
+		if(this.isHide == 0){
+			ge.getFeatures().removeChild(this.returnBtn);
+
+			this.isHide = 1;
+		}
+	}
+
+	ReturnButton.prototype.show = function(){
+		if(this.isHide == 1){
+			ge.getFeatures().appendChild(this.returnBtn);
+
+			this.isHide = 0;
+		}
+	}
+
+	return this;
+}
+
 
 //****************************************************************************/
 // Class Shelter Balloon
@@ -607,7 +901,7 @@ function ShelterBalloon(shelter,idx,event) {
 							+ '<td valign="middle" align="center"><div style="width:140px;height:40px; line-height:40px; align:center;background-position:9px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="ge.setBalloon(null);" >ストリートビュー</div>'
 							+ '</td>'
 							//+ '<td valign="middle" align="center"><div style="width:140px;height:40px; line-height:40px; align:center;background-position:9px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="showDirection(' + shelter.geometry.location.lat() + ',' + shelter.geometry.location.lng() + ');" >' + selectedPlace.name + 'からの経路</div>'
-							+ '<td valign="middle" align="center"><div style="width:140px;height:40px; line-height:40px; align:center;background-position:9px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="shelter.shelterRoute(' + idx + ');" >' + selectedPlace.name + 'からの経路</div>'
+							+ '<td valign="middle" align="center"><div style="width:140px;height:40px; line-height:40px; align:center;background-position:9px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="shelter.shelterRoute();" >' + selectedPlace.name + 'からの経路</div>'
 							+ '</td>'
 							+ '<td valign="middle" align="center"><div style="width:140px;height:40px; line-height:30px; align:center;background-position:9px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="download.downloadRoute(' + "'" + shelter.name + "'" + ',' + shelterLoc.lat() + ',' + shelterLoc.lng() + ');" ><table style="height:30px" ><tr><td><img style="max-width: 23px;max-height: 23px; margin-top:6px;" src="' + URL_IMG + 'dl_shelter-balloon.png"></td><td valign="top" style="padding-top:3px">ダウンロード</td></tr></table></div>'
 							+ '</td>'
@@ -690,7 +984,7 @@ function Shelter(_selectedPlace) {
 		
 		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
 		lookAt.setAltitude(60);
-		lookAt.setRange(15000.0); //default is 0.0
+		lookAt.setRange(2000.0); //default is 0.0
 		ge.getView().setAbstractView(lookAt);
 		
 	};
@@ -756,23 +1050,27 @@ function Shelter(_selectedPlace) {
 		});
 			
 	};
+
+
 	
-	// shelter route
+	// shelter route from selected place
 	//
-	Shelter.prototype.shelterRoute = function(idx) {
-		
+	Shelter.prototype.shelterRoute = function() {
+		var des = new google.maps.LatLng(currentClickedObject['lat'],currentClickedObject['lng'])
 		ge.setBalloon(null);
 		var request = {
 			origin: this.selectedPlace.location,//new google.maps.LatLng(latCur,lngCur),
-			destination: this.shelterInfo[idx].geometry.location,//new google.maps.LatLng(lat,lng),
+			destination: des,
 			travelMode: google.maps.TravelMode.WALKING
 		};
 		// Route the directions and pass the response to a
 		// function to create markers for each step.
 		directionsService.route(request, function(response, status) {
 			if (status == google.maps.DirectionsStatus.OK) {
-				
-				drawSteps(response, _this.shelterInfo[idx].geometry.location);
+				drawSteps(response,des);
+				//drawSteps(response, _this.shelterInfo[idx].geometry.location);
+				currentClickedObject['lat'] = null;
+				currentClickedObject['lng'] = null;		
 			}
 		});
 	}
@@ -783,7 +1081,13 @@ function Shelter(_selectedPlace) {
 		// For each step, place a marker, and add the text to the marker's
 		// info window. Also attach the marker to an array so we
 		// can keep track of it and remove it when calculating new
-		// routes.
+		// routes.
+		
+		if(currentLine){
+			ge.getFeatures().removeChild(currentLine);
+			currentLine = null;	
+		}
+
 		if (_this.routePlaceMark != null) {
 			_this.routePlaceMark.setGeometry(null);
 		}
@@ -835,7 +1139,10 @@ function Shelter(_selectedPlace) {
 		lineStyle.setWidth(5);
 		lineStyle.getColor().set('990088ff');
 
-		ge.getFeatures().appendChild(_this.routePlaceMark);
+		ge.getFeatures().appendChild(_this.routePlaceMark);
+		currentLine = _this.routePlaceMark;
+
+
 	}
 	
 	// shelter dispose
@@ -859,7 +1166,10 @@ function Shelter(_selectedPlace) {
 	
 	return this;
 }
-
+
+
+
+
 //****************************************************************************/
 // Class PlaceBalloon
 //
@@ -875,13 +1185,17 @@ function PlaceBalloon(info,event) {
 		+ '<td align="left" valign="top"><img style="max-width: 35px;max-height: 35px;padding-left:23px;" src = "' + URL_IMG + 'close_shelter-balloon-y.png" onclick="ge.setBalloon(null);">'
 		+ '</td>'
 		+ '</tr>'
-		+ '<tr>'
-		+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:40px; background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="selectedPlace.showNextBalloon();" >津波ハザードマップ</div>'
+		+ '<tr>'
+
+		+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:40px; background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="toggleKml(\tsunami2\');" >津波ハザードマップ</div>'
+		//+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:40px; background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="selectedPlace.showNextBalloon();" >津波ハザードマップ</div>'
 		+ '</td>'
 		+ ''
 		+ '</tr>'
 		+ '<tr>'
-		+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:40px; background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="shelter.searchAndShow(0);" >近くの避難所</div>'
+		+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:40px; background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="toggleKml(\'shelter\');" >避難所の表示</div>' 
+		//+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:40px; background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="shelter.searchAndShow(0);" >近くの避難所</div>'
+				
 		+ '</td>'
 		+ ''
 		+ '</tr>'
@@ -1542,6 +1856,238 @@ function HtmlHint(text,left,top,width,height) {
 	//<input type="text" id="debug">
 	//<input type="button" id="test1" value ="test1" onclick="testBtn1();">
 	//<input type="button" id="test2" value ="test2" onclick="testBtn2();">
+
+//****************************************************************************/
+// Getting latlng of place where camera is looking
+//
+//****************************************************************************/
+function viewEventListener(event) {
+  var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+	//document.getElementById("id_lat_la").innerHTML = lookAt.getLatitude().toFixed(10);
+	//document.getElementById("id_lng_la").innerHTML = lookAt.getLongitude().toFixed(10);
+	viewLat = lookAt.getLatitude();
+	viewLng = lookAt.getLongitude();
+}
+
+//****************************************************************************/
+// Class getAddress
+//
+//****************************************************************************/
+
+	function getAddress(lat1,lng1) {
+		var geocoder = new google.maps.Geocoder();
+		var latlngmap = new google.maps.LatLng(lat1,lng1);
+		geocoder.geocode({
+			latLng: latlngmap
+		}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				if (results[0].geometry) {
+					var address = results[0].formatted_address.replace(/^日本, /, '');
+					//alert(address);
+					nowAddress = address; /////////////////////////////////かえる
+				}
+			}
+		});
+	}
+
+//****************************************************************************/
+// Functions for showing and hiding KML
+//
+//****************************************************************************/
+//////for Shelter
+// I think there is a lot better way to do this.
+
+function loadKml(file) {
+
+	var kmlUrl = 'http://192.218.175.137:8080/aeonsite/kml/' + file + '.kml';
+	
+	google.earth.fetchKml(ge, kmlUrl,  function(kmlObject) {
+    	if (kmlObject) {
+      		// show it on Earth
+      		currentKmlObject[file] = kmlObject;
+      		ge.getFeatures().appendChild(kmlObject);
+	
+		google.earth.addEventListener(kmlObject, 'click', function(event) {
+
+ 			var kmlPlacemark = event.getTarget();
+			currentClickedObject['name'] = kmlPlacemark.getName();
+			currentClickedObject['lat'] = kmlPlacemark.getGeometry().getLatitude();
+			currentClickedObject['lng'] = kmlPlacemark.getGeometry().getLongitude();
+			//alert(currentClickedObject['name']+currentClickedObject['lat']+currentClickedObject['lng']);
+			routeButton.show();
+		});
+
+	
+    	} else {
+      		// bad KML
+		alert('kmlLoadFailed');
+      		currentKmlObject[file] = null;
+	}});
+}
+
+function toggleKml(file){
+
+  	if (!currentKmlObject[file]) {
+		loadKml(file);
+    	}else if(currentKmlObject[file]){
+		ge.getFeatures().removeChild(currentKmlObject[file]);
+    		currentKmlObject[file] = null;
+	}
+}
+
+function releaseKml(file){
+	
+	if(currentKmlObject[file]){
+	ge.getFeatures().removeChild(currentKmlObject[file]);
+    	currentKmlObject[file] = null;
+	}
+}
+
+function releaseLine(){
+	if(currentLine){
+	ge.getFeatures().removeChild(currentLine);
+    	currentLine = null;
+	}
+}
+
+//****************************************************************************/
+// Shelter route new
+//
+//****************************************************************************/
+/**************************************************************************/
+
+
+	//shelter route from lookingAt
+	//
+
+function shelterRoute1(){
+	//directionsDisplay = new google.maps.DirectionsRenderer();
+	var org = new google.maps.LatLng(viewLat,viewLng);
+	var des = new google.maps.LatLng(currentClickedObject['lat'],currentClickedObject['lng']);	
+	
+	//ge.setBalloon(null);
+	var request = {
+		origin: org,
+		destination: des,
+		travelMode: google.maps.TravelMode.WALKING
+	};
+	directionsService.route(request,function(response, status) {
+		if (status == google.maps.DirectionsStatus.OK) {
+			//directionsDisplay.setDirections(response);
+			drawSteps1(response,des);
+		}else {alert(status);}
+	});
+}
+	//draw route from lookingAt
+	//
+	// draw route step by step
+	//選択した地点からのルートと現在地からのルートはわける
+	//これは現在地から
+
+function drawSteps1(directionResult,destination) {
+		// For each step, place a marker, and add the text to the marker's
+		// info window. Also attach the marker to an array so we
+		// can keep track of it and remove it when calculating new
+		// routes.
+		
+		if(currentLine){
+			ge.getFeatures().removeChild(currentLine);
+			currentLine = null;	
+		}		
+
+		var routeGeometry = ge.createMultiGeometry('');
+		
+		var myRoute = directionResult.routes[0].legs[0];
+		var slat = viewLat;
+		var slng = viewLng;
+		
+		for (var i = 0; i < myRoute.steps.length; i++) {
+			var line = ge.createLineString('');
+			line.getCoordinates().pushLatLngAlt(slat, slng, 0);
+			line.getCoordinates().pushLatLngAlt(myRoute.steps[i].start_point.lat(), myRoute.steps[i].start_point.lng(), 0);
+			line.setTessellate(true);
+			line.setAltitudeMode(ge.ALTITUDE_CLAMP_TO_GROUND);
+			//alert('hoge');
+			routeGeometry.getGeometries().appendChild(line);
+			
+			slat = myRoute.steps[i].start_point.lat();
+			slng = myRoute.steps[i].start_point.lng();
+		}
+		if (myRoute.steps.length > 0) {
+			var line = ge.createLineString('');
+			line.getCoordinates().pushLatLngAlt(slat, slng, 0);
+			line.getCoordinates().pushLatLngAlt(myRoute.steps[myRoute.steps.length-1].end_point.lat(), myRoute.steps[myRoute.steps.length-1].end_point.lng(), 0);
+			line.setTessellate(true);
+			line.setAltitudeMode(ge.ALTITUDE_CLAMP_TO_GROUND);
+			
+			routeGeometry.getGeometries().appendChild(line);
+			//alert('end');
+			slat = myRoute.steps[myRoute.steps.length-1].end_point.lat();
+			slng = myRoute.steps[myRoute.steps.length-1].end_point.lng();
+		}
+		var line = ge.createLineString('');
+		line.getCoordinates().pushLatLngAlt(slat, slng, 0);
+		line.getCoordinates().pushLatLngAlt(destination.lat(), destination.lng(), 0);
+		line.setTessellate(true);
+		line.setAltitudeMode(ge.ALTITUDE_CLAMP_TO_GROUND);
+		
+		routeGeometry.getGeometries().appendChild(line);
+		
+		
+		this.routePlaceMark = ge.createPlacemark('');
+		this.routePlaceMark.setGeometry(routeGeometry);
+		this.routePlaceMark.setStyleSelector(ge.createStyle(''));
+		var lineStyle = this.routePlaceMark.getStyleSelector().getLineStyle();
+		lineStyle.setWidth(5);
+		lineStyle.getColor().set('990088ff');
+		ge.getFeatures().appendChild(this.routePlaceMark);
+		currentLine = this.routePlaceMark;
+		
+	}
+
+//****************************************************************************/
+// flyToOsaka
+//
+//****************************************************************************/
+	
+
+function flyToOsaka(){
+		var lookat = ge.createLookAt('');		//move to osaka
+		lookat.set(34.7, 135.5,
+			600, // altitude
+			ge.ALTITUDE_RELATIVE_TO_GROUND,
+			0, // heading
+			30, // straight-down tilt
+			120000 // range (inverse of zoom)
+		);
+		ge.getView().setAbstractView(lookat);				setTimeout(function(){			
+			if (selectedPlace != null) {
+				selectedPlace.dispose();
+			}
+			selectedPlace = new Place("現在地");
+			selectedPlace.geocode("大阪府大阪市西区千代崎3丁目北2");
+			selectedPlace.show();
+			//loginButton.show();
+			sideMenu.show();		},5000);	
+}
+
+
+///////////////////////////////////
+//memo
+/*	
+	//alert(getAddress(viewLat,viewLng) + 'から' + currentClickedObject['name'] + 'へのルート');
+	shelterRoute1();
+	getAddress(viewLat,viewLng);
+	alert(nowAddress+'から'+currentClickedObject['name']+'へのルート');
+*/
+
+
+
+
+
+
+
+
 </script>
 	
 </head>
@@ -1559,6 +2105,12 @@ function HtmlHint(text,left,top,width,height) {
 		<source src="video/screen.mp4" type="video/mp4">
 		Your browser does not support the video tag.
 		</video>
-	</div>
+	</div>
+<!--
+<p><input type="button" value="getAddress" onclick="getAddress(viewLat,viewLng)">
+<input type="button" value="toggleShelter" onclick="toggleKml('shelter')">
+<input type="button" value="toggleTsunami" onclick="toggleKml('tsunami2')">
+<input type="button" value="route" onclick="shelterRoute1()"></p>
+-->
 </body>
 </html>
