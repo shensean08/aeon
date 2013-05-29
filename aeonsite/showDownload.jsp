@@ -1,34 +1,32 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>AEON HAZARDMAP</title>
-<meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1">
-<link rel="stylesheet" href="style.css" type="text/css" media="screen">
-<link rel="stylesheet" media="screen and (max-width: 854px)" href="rwd.css" type="text/css">
-<script type="text/javascript" src="js/jquery.js"></script>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css">
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+<link rel="stylesheet" href="jquery.mobile-1.1.0.custom.css?" />
+</head>
 <body>
-<img class="bg" src="images/bg.jpg" alt="" />
-<div id="wrap">
-<div id="aeonlink">
-<div id="side">
-<header><h1><a href="login.jsp"><img src="images/aeon-logo.png" alt="AEON HAZARDMAP"></a></h1></header>
-<nav>
+
+<div id="AccountInformationDL" data-url="AccountInformationDL" data-role="page">
+<div data-role="header" data-theme="b" data-position="fixed">
+<h1>取得済み地図</h1>
+<div data-role="navbar">
 <ul>
-<li class="nav-1"><a href="register.jsp">ご利用登録（無料）</a></li>
-<li class="nav-2"><a href="login.jsp">ハザードマップとは</a></li>
-<li class="nav-3"><a href="showDownload.jsp">ＤＬ一覧</a></li>
+<li><a href="myQRAction.action?userName=<s:property value='userName'/>">MyＱＲ</a></li>
+<li><a href="showDownloadAction?userID=<s:property value='userID'/>&userName=<s:property value='userName'/>" class="ui-btn-active">My地図</a></li>
+<li><a href="userInfoMain.jsp?userID=<s:property value='userID'/>&userName=<s:property value='userName'/>">My情報</a></li>
 </ul>
-</nav>
-<br class="clear">
 </div>
-<div id="main">
-<article>
-<h2>ＤＬ一覧</h2>
-<ul>
+
+</div>
+
+<div data-role="content">
+<img  src="./images/aeon-logo.png" alt="">
 <table border="2">
 <s:iterator value="downloadlist" status="st">
 <tr>
@@ -44,15 +42,8 @@
 </tr>
 </s:iterator>
 </table>
-</ul>
-</article>
-</div><!-- /main -->
-<footer>
-<ul class="bnr-pc"><li><a href=""><img src="images/bnr-pc-1.png" alt="APP STORE"></a></li><li><a href=""><img src="images/bnr-pc-2.png" alt="Android STORE"></a></li></ul>
-<ul class="bnr-rwd"><li><a href=""><img src="images/bnr-rwd-1.png" alt="APP STORE"></a></li></ul>
-<p><small>Disaster Preparedness and Visualization Public Service .NPO &copy;&nbsp;2013</small></p></footer>
-</div><!-- /aeonlink -->
-</div><!-- /wrap -->
+</div></div>
+
 
 </body>
-</html>>
+</html>

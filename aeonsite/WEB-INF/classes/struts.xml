@@ -11,7 +11,22 @@
             <result name="input">login.jsp</result>
             <result name="success">registerConfirm.jsp</result>
         </action>
-        
+ 
+         <!-- myQRAction -->
+        <action name="myQRAction" class="edu.kgu.aeon.Action.myQRAction">
+            <result name="success">registerConfirm.jsp</result>
+        </action>
+       
+        <!-- userInfoEditAction -->
+        <action name="userInfoEditAction" class="edu.kgu.aeon.Action.userInfoEditAction">
+            <result name="BASEINFO">userInfoEdit.jsp</result>
+            <result name="ADDRESS1">userInfoAddress1.jsp</result>
+            <result name="ADDRESS2">userInfoAddress2.jsp</result>
+            <result name="ADDRESS3">userInfoAddress3.jsp</result>
+            <result name="ADDRESS4">userInfoAddress4.jsp</result>
+            <result name="ADDRESS5">userInfoAddress5.jsp</result>
+        </action>
+                
         <!-- registerAction -->
         <action name="registerAction" class="edu.kgu.aeon.Action.registerAction">
             <result name="input">register.jsp</result>

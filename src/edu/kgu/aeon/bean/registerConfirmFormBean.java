@@ -2,6 +2,7 @@ package edu.kgu.aeon.bean;
 
 public class registerConfirmFormBean {
 	public String userID = "";
+	public String userName = "";
 	public String firstName = "";
 	public String qrImage = "";
 	
@@ -23,5 +24,10 @@ public class registerConfirmFormBean {
 	public void setUserID(String userID) {
 		this.userID = userID;
 	}
-
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 }

@@ -1,8 +1,10 @@
 package edu.kgu.aeon.bean;
 
 public class registerFormBean {
+	private String userID = "";
 	private String userName = "";
 	private String mailAddress = "";
+	private String oldPassword = "";
 	private String password = "";
 	private String passwordConfirm = "";
 	private String firstname = "";
@@ -176,5 +178,17 @@ public class registerFormBean {
 	}
 	public void setAddress5Address(String address5Address) {
 		this.address5Address = address5Address;
+	}
+	public String getOldPassword() {
+		return oldPassword;
+	}
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+	public String getUserID() {
+		return userID;
+	}
+	public void setUserID(String userID) {
+		this.userID = userID;
 	}
 }

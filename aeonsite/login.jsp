@@ -1,74 +1,45 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>AEON HAZARDMAP</title>
-<meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1">
-<link rel="stylesheet" href="style.css" type="text/css" media="screen">
-<link rel="stylesheet" media="screen and (max-width: 854px)" href="rwd.css" type="text/css" />
-<script type="text/javascript" src="js/jquery.js"></script>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css">
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+<link rel="stylesheet" href="css/mobile.css" />
+</head>
 <body>
-<img class="bg" src="images/bg.jpg" alt="" />
-<div id="wrap">
-<div id="login">
-<div id="side">
-<header><h1><a href="login.jsp"><img src="images/aeon-logo.png" alt="AEON HAZARDMAP"></a></h1></header>
-<nav>
-<ul>
-<li class="nav-1"><a href="register.jsp">ご利用登録（無料）</a></li>
-<li class="nav-2"><a href="login.jsp">ハザードマップとは</a></li>
-</ul>
-</nav>
-<br class="clear">
 
+<div id="Login" data-url="Login" data-role="page" data-theme="b">
+<div data-role="header" data-theme="b">
+<h1>ログイン</h1>
 </div>
-<div id="main">
-<article>
-<h2>ハザードマップ&nbsp;ログイン</h2>
+
+<div data-role="content">
+<br><br><a href="#Login" data-rel=""><img  src="images/aeon-logo.png" class="selected " style="width: 165px; height: 115px;" align="left" alt=""></a>
+
 <s:form name="frmLogin" action="loginAction">
-<table>
-<tbody>
-<tr>
-<th>
-ユーザー名
-</th>
-<td>
-<s:textfield name="loginBean.userName" value="%{loginBean.userName}" maxlength="100"/>
-</td>
-</tr>
-<tr>
-<th>
-パスワード
-</th>
-<td>
-<s:password name="loginBean.password" value="%{loginBean.password}" maxlength="100"/>
-</td>
-</tr>
-<tr>
-<th>
-</th>
-<td>
+
+<div data-role="fieldcontain">
+<label for="inp_5419">ユーザー名</label>
+<s:textfield name="loginBean.userName" value="%{loginBean.userName}" maxlength="100" id="inp_5419" />
+</div>
+
+<div data-role="fieldcontain">
+<label for="inp_5432">パスワード</label>
+<s:password name="loginBean.password" value="%{loginBean.password}" maxlength="100" id="inp_5432" />
+</div>
+
+<p class="input-btn"><s:submit id="btnlogin" value="Login" cssClass="input-btn"/>
+<input type="button" id="" onClick="location.href='register.jsp'" value="新規ご利用登録" class="input-btn"></p>
 <font color="red"><b>
 <s:property value="%{messagebean.errorMsg}"/>
-</b></font>
-</td>
-</tr>
-</tbody>
-</table>
 
-<p class="sabmit"><s:submit id="btnlogin" value="LOGIN" cssClass="input-btn"/>　<input type="button" id="" onClick="location.href='register.jsp'" value="新規ご利用登録" class="input-btn"></p>
+</b></font>
 </s:form>
-</article>
-</div><!-- /main -->
-<footer>
-<ul class="bnr-pc"><li><a href=""><img src="images/bnr-pc-1.png" alt="APP STORE"></a></li><li><a href=""><img src="images/bnr-pc-2.png" alt="Android STORE"></a></li></ul>
-<ul class="bnr-rwd"><li><a href=""><img src="images/bnr-rwd-1.png" alt="APP STORE"></a></li></ul>
-<p><small>Disaster Preparedness and Visualization Public Service .NPO &copy;&nbsp;2013</small></p></footer>
-</div><!-- /login -->
-</div><!-- /wrap -->
+
 
 </body>
 </html>

@@ -25,7 +25,7 @@ public class showDownloadLogic extends BaseLogic {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	public ArrayList<showDownloadFormBean> execute(String userID) {
 		ArrayList<showDownloadFormBean> rtn = new ArrayList<showDownloadFormBean>();
 		ArrayList<DLinfoBean> result = access.getDownloadListByUserID(userID);

@@ -1,11 +1,8 @@
 package edu.kgu.aeon.Action;
 
-import javax.servlet.http.HttpServletRequest;
-
 import edu.kgu.aeon.bean.loginFormBean;
 import edu.kgu.aeon.bean.registerConfirmFormBean;
 import edu.kgu.aeon.logic.loginLogic;
-import edu.kgu.log.LogLogger;
 
 public class loginAction extends BaseAction {
 

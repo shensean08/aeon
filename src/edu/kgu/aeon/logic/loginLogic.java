@@ -55,10 +55,12 @@ public class loginLogic extends BaseLogic {
 	
 			// set return value
 			String path = "QRtmp/";
+			// userID
 			this.registerConfirmBean.setUserID(resultBean.getUserID());
+			this.registerConfirmBean.setUserName(resultBean.getUserName());
 			this.registerConfirmBean.setFirstName(resultBean.getFirstname());
 			this.registerConfirmBean.setQrImage(path + resultBean.getUserID() + ".png");
-			
+
 			rtn = true;
 		}
 		

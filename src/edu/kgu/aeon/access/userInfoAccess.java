@@ -259,28 +259,42 @@ public class userInfoAccess extends BaseAccess {
 		dbConn = conn.getDBConnect();
 		StringBuffer query = new StringBuffer();
 		query.append(" UPDATE userInfo ");
+		query.append("    SET isValidate = isValidate");
+		// password
+		if (value.getPassword().trim().length() > 0) {
+			query.append("       ,password = '" + value.getPassword() + "'");			
+		}
+		// mailAddress
+		if (value.getMailAddress().length() > 0) {
+			query.append("		 ,mailAddress = '" + value.getMailAddress() + "'");
+		}
+		// address1
 		if (value.getAddress1Name().trim().length() > 0) {
-			query.append("    SET address1Name = '" + value.getAddress1Name() + "'");					//address1Name
+			query.append("       ,address1Name = '" + value.getAddress1Name() + "'");					//address1Name
 			query.append("   	 ,address1Postalcode = '" + value.getAddress1Postalcode() + "'");		//address1Postalcode
 			query.append("   	 ,address1Address = '" + value.getAddress1Address() + "'");				//address1Address
 		}
+		// address2
 		if (value.getAddress2Name().trim().length() > 0) {
-			query.append("    SET address2Name = '" + value.getAddress2Name() + "'");					//address2Name
+			query.append("     	 ,address2Name = '" + value.getAddress2Name() + "'");					//address2Name
 			query.append("   	 ,address2Postalcode = '" + value.getAddress2Postalcode() + "'");		//address2Postalcode
 			query.append("   	 ,address2Address = '" + value.getAddress2Address() + "'");				//address2Address
 		}
+		// address3
 		if (value.getAddress3Name().trim().length() > 0) {
-			query.append("    SET address3Name = '" + value.getAddress3Name() + "'");					//address3Name
+			query.append("       ,address3Name = '" + value.getAddress3Name() + "'");					//address3Name
 			query.append("   	 ,address3Postalcode = '" + value.getAddress3Postalcode() + "'");		//address3Postalcode
 			query.append("   	 ,address3Address = '" + value.getAddress3Address() + "'");				//address3Address
 		}
+		// address4
 		if (value.getAddress4Name().trim().length() > 0) {
-			query.append("    SET address4Name = '" + value.getAddress4Name() + "'");					//address4Name
+			query.append("       ,address4Name = '" + value.getAddress4Name() + "'");					//address4Name
 			query.append("   	 ,address4Postalcode = '" + value.getAddress4Postalcode() + "'");		//address4Postalcode
 			query.append("   	 ,address4Address = '" + value.getAddress4Address() + "'");				//address4Address
 		}
+		// address5
 		if (value.getAddress5Name().trim().length() > 0) {
-			query.append("    SET address5Name = '" + value.getAddress1Name() + "'");					//address5Name
+			query.append("       ,address5Name = '" + value.getAddress1Name() + "'");					//address5Name
 			query.append("   	 ,address5Postalcode = '" + value.getAddress1Postalcode() + "'");		//address5Postalcode
 			query.append("   	 ,address5Address = '" + value.getAddress1Address() + "'");				//address5Address
 		}
