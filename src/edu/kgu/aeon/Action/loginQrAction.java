@@ -23,7 +23,8 @@ public class loginQrAction extends BaseAction {
 	
 	public String execute() {
 		this.result = logic.execute(qrdecode);
-		this.messagebean = logic.messagebean;
+		this.setMessagebean(logic.messagebean);
+		
 		return SUCCESS;
 	}
 }

@@ -3,7 +3,7 @@ package edu.kgu.aeon.Action;
 import edu.kgu.aeon.bean.*;
 import edu.kgu.aeon.logic.*;
 
-public class registerAction extends BaseAction{
+public class registerAction extends BaseAction {
 	
 	// logic
 	private registerLogic logic = new registerLogic();
@@ -36,12 +36,15 @@ public class registerAction extends BaseAction{
 		
 		if (logic.execute(this.registerBean)) {
 			this.registerConfirmBean = logic.getRegisterconfirmbean();
+			this.setUserID(this.registerConfirmBean.getUserID());
+			this.setUserName(this.registerConfirmBean.getUserName());
+			
 			rtn = SUCCESS;
 		} else {
-			rtn = INPUT;	
+			rtn = INPUT;
 		}
 
-		this.messagebean = logic.messagebean;
+		this.setMessagebean(logic.messagebean);
 		return rtn;
 	}
 }

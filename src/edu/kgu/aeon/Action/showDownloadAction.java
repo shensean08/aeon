@@ -1,34 +1,16 @@
 package edu.kgu.aeon.Action;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.kgu.aeon.logic.showDownloadLogic;
 import edu.kgu.aeon.bean.showDownloadFormBean;
 
 public class showDownloadAction extends BaseAction {
+	private static final long serialVersionUID = 1L;
 
 	private showDownloadLogic logic = new showDownloadLogic();
-	
-	private String userID;
-	private String userName;
+
 	private List<showDownloadFormBean> downloadlist = null;
-	
-	public String getUserID() {
-		return userID;
-	}
-	
-	public void setUserID(String userID) {
-		this.userID = userID;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 	
 	public List<showDownloadFormBean> getDownloadlist() {
 		return downloadlist;
@@ -39,7 +21,7 @@ public class showDownloadAction extends BaseAction {
 	}
 	
 	public String execute() {
-		downloadlist = logic.execute(userID);
+		downloadlist = logic.execute(this.getUserID());
 		
 		return SUCCESS;
 	}

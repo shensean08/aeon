@@ -19,7 +19,7 @@ import edu.kgu.aeon.agent.*;
 
 public class test {
 	public static void main(String[] args) {
-		downloadAction();
+		register();
 	}
 	
 	public static void HttpUrlConnection () {
@@ -136,27 +136,9 @@ public class test {
 		bean.setPassword("1234567");
 		bean.setPasswordConfirm("1234567");
 		bean.setMailAddress("sdfsdf@ggg.com");
-		bean.setFirstname("沈");
-		bean.setFirstnameSpelling("チン");
-		bean.setLastname("治年");
-		bean.setLastnameSpelling("ジネン");
-		bean.setHandPhoneNo("43452345");
-		bean.setAllowSMS("1");
 		bean.setAddress1Name("address1");
 		bean.setAddress1Postalcode("p1");
 		bean.setAddress1Address("ad1");
-		bean.setAddress2Name("address2");
-		bean.setAddress2Postalcode("p2");
-		bean.setAddress2Address("ad2");	
-		bean.setAddress3Name("address3");
-		bean.setAddress3Postalcode("p3");
-		bean.setAddress3Address("ad3");
-		bean.setAddress4Name("address4");
-		bean.setAddress4Postalcode("p4");
-		bean.setAddress4Address("ad4");
-		bean.setAddress5Name("address5");
-		bean.setAddress5Postalcode("p5");
-		bean.setAddress5Address("ad5");
 		registerAction action = new registerAction();
 		action.setRegisterBean(bean);
 		

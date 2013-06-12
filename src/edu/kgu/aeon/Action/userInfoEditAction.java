@@ -4,29 +4,12 @@ import edu.kgu.aeon.bean.registerFormBean;
 import edu.kgu.aeon.logic.userInfoEditLogic;
 
 public class userInfoEditAction extends BaseAction {
+
 	private userInfoEditLogic logic = new userInfoEditLogic();
 	
-	private String userID;
-	private String userName;
 	private String infoParten;
 	
 	private registerFormBean userInfoBean;
-	
-	public String getUserID() {
-		return userID;
-	}
-
-	public void setUserID(String userID) {
-		this.userID = userID;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 	
 	public String getInfoParten() {
 		return infoParten;
@@ -47,7 +30,7 @@ public class userInfoEditAction extends BaseAction {
 	@Override
 	public String execute() {
 		String rtn = "BASEINFO";
-		userInfoBean = logic.execute(userID);
+		userInfoBean = logic.execute(this.getUserID());
 		
 		if (infoParten.equals("base")) {
 			rtn = "BASEINFO";

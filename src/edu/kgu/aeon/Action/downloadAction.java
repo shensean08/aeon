@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.ServletActionContext;
 
 import edu.kgu.aeon.logic.downloadLogic;
-import edu.kgu.aeon.logic.showDownloadLogic;
 import edu.kgu.log.LogLogger;
 
 public class downloadAction extends BaseAction {
@@ -13,25 +12,14 @@ public class downloadAction extends BaseAction {
 	downloadLogic logic = new downloadLogic();
 
 	// request param
-	private String userID;
 	private String type;
-//	private String startName;
 	private String startLat;
 	private String startLng;
-//	private String destinationName;
 	private String destinationLat;
 	private String destinationLng;
 
 	// return value
 	private String result;
-	
-	public String getUserID() {
-		return userID;
-	}
-
-	public void setUserID(String userID) {
-		this.userID = userID;
-	}
 
 	public String getType() {
 		return type;
@@ -40,14 +28,6 @@ public class downloadAction extends BaseAction {
 	public void setType(String type) {
 		this.type = type;
 	}
-
-//	public String getStartName() {
-//		return startName;
-//	}
-//
-//	public void setStartName(String startName) {
-//		this.startName = startName;
-//	}
 
 	public String getStartLat() {
 		return startLat;
@@ -64,14 +44,6 @@ public class downloadAction extends BaseAction {
 	public void setStartLng(String startLng) {
 		this.startLng = startLng;
 	}
-
-//	public String getDestinationName() {
-//		return destinationName;
-//	}
-//
-//	public void setDestinationName(String destinationName) {
-//		this.destinationName = destinationName;
-//	}
 
 	public String getDestinationLat() {
 		return destinationLat;
@@ -116,7 +88,7 @@ public class downloadAction extends BaseAction {
 			
 			InputStream pic = request.getInputStream();
 			
-			logic.execute(pic, userID, type, startName, startLat, startLng, destinationName, destinationLat, destinationLng);
+			logic.execute(pic, this.getUserID(), type, startName, startLat, startLng, destinationName, destinationLat, destinationLng);
 			
 			this.result = "{0}";
 		} catch(Exception e) {

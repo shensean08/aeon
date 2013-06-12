@@ -65,115 +65,120 @@ public class registerLogic extends BaseLogic {
 		}
 		
 		// 氏(カタカナ) 空チェック
-		if (this.bean.getFirstnameSpelling().length() <= 0) {
-			this.messagebean.setErrorMsg("氏(カタカナ)入力してください");
-			return false;
-		}
+//		if (this.bean.getFirstnameSpelling().length() <= 0) {
+//			this.messagebean.setErrorMsg("氏(カタカナ)入力してください");
+//			return false;
+//		}
 		
 		// 名(カタカナ) 空チェック
-		if (this.bean.getLastnameSpelling().length() <= 0) {
-			this.messagebean.setErrorMsg("名(カタカナ)入力してください");
-			return false;
-		}
+//		if (this.bean.getLastnameSpelling().length() <= 0) {
+//			this.messagebean.setErrorMsg("名(カタカナ)入力してください");
+//			return false;
+//		}
 		
 		// 氏名 カタカナチェック
-		if (!StringProcess.chkKatakana(bean.getFirstnameSpelling()) || !StringProcess.chkKatakana(bean.getLastnameSpelling())) {
-			this.messagebean.setErrorMsg("氏名(カタカナ)の値はカタカナではありません");
-			return false;
-		}
+//		if (!StringProcess.chkKatakana(bean.getFirstnameSpelling()) || !StringProcess.chkKatakana(bean.getLastnameSpelling())) {
+//			this.messagebean.setErrorMsg("氏名(カタカナ)の値はカタカナではありません");
+//			return false;
+//		}
 		
 		// 氏(漢字) 空チェック
-		if (this.bean.getFirstname().length() <= 0) {
-			this.messagebean.setErrorMsg("氏(漢字)入力してください");
-			return false;
-		}
+//		if (this.bean.getFirstname().length() <= 0) {
+//			this.messagebean.setErrorMsg("氏(漢字)入力してください");
+//			return false;
+//		}
 		
 		// 名(漢字) 空チェック
-		if (this.bean.getLastname().length() <= 0) {
-			this.messagebean.setErrorMsg("名(漢字)入力してください");
-			return false;
-		}
+//		if (this.bean.getLastname().length() <= 0) {
+//			this.messagebean.setErrorMsg("名(漢字)入力してください");
+//			return false;
+//		}
 		
 		// 携帯番号　空チェック
-		if (this.bean.getHandPhoneNo().length() <= 0) {
-			this.messagebean.setErrorMsg("携帯番号入力してください");
-			return false;
-		}
+//		if (this.bean.getHandPhoneNo().length() <= 0) {
+//			this.messagebean.setErrorMsg("携帯番号入力してください");
+//			return false;
+//		}
 		
-		if (!NumberProcess.chkNumber(bean.getHandPhoneNo())) {
-			this.messagebean.setErrorMsg("携帯番号数字のみ入力してください");
-			return false;
-		}
+//		if (!NumberProcess.chkNumber(bean.getHandPhoneNo())) {
+//			this.messagebean.setErrorMsg("携帯番号数字のみ入力してください");
+//			return false;
+//		}
 		
 		// お住所1~5入力チェック
-		if (this.bean.getAddress1Name().length() <= 0
-		 && this.bean.getAddress2Name().length() <= 0 
-		 && this.bean.getAddress3Name().length() <= 0
-		 && this.bean.getAddress4Name().length() <= 0
-		 && this.bean.getAddress5Name().length() <= 0) {
-			this.messagebean.setErrorMsg("お住まい最低1入力してください");
+//		if (this.bean.getAddress1Name().length() <= 0
+//		 && this.bean.getAddress2Name().length() <= 0 
+//		 && this.bean.getAddress3Name().length() <= 0
+//		 && this.bean.getAddress4Name().length() <= 0
+//		 && this.bean.getAddress5Name().length() <= 0) {
+//			this.messagebean.setErrorMsg("お住まい最低1入力してください");
+//			return false;
+//		}
+		
+		// 住所1入力チェック
+		if (this.bean.getAddress1Name().length() <= 0) {
+			this.messagebean.setErrorMsg("住所1の名前入力してください");
 			return false;
 		}
 		
-		// 住所1入力チェック
-		if (this.bean.getAddress1Name().length() > 0) {
-			// 1郵便番号
-			if (this.bean.getAddress1Postalcode().length() <= 0) {
-				this.messagebean.setErrorMsg("住所1の郵便番号入力してください");
-			}
-			// 1住所
-			if (this.bean.getAddress1Address().length() <= 0) {
-				this.messagebean.setErrorMsg("住所1の住所入力してください");
-			}
+		// 1郵便番号
+		if (this.bean.getAddress1Postalcode().length() <= 0) {
+			this.messagebean.setErrorMsg("住所1の郵便番号入力してください");
+			return false;
 		}
-
+		// 1住所
+		if (this.bean.getAddress1Address().length() <= 0) {
+			this.messagebean.setErrorMsg("住所1の住所入力してください");
+			return false;
+		}
+		
 		// 住所2入力チェック
-		if (this.bean.getAddress2Name().length() > 0) {
-			// 2郵便番号
-			if (this.bean.getAddress2Postalcode().length() <= 0) {
-				this.messagebean.setErrorMsg("住所2の郵便番号入力してください");
-			}
-			// 2住所
-			if (this.bean.getAddress2Address().length() <= 0) {
-				this.messagebean.setErrorMsg("住所2の住所入力してください");
-			}
-		}
+//		if (this.bean.getAddress2Name().length() > 0) {
+//			// 2郵便番号
+//			if (this.bean.getAddress2Postalcode().length() <= 0) {
+//				this.messagebean.setErrorMsg("住所2の郵便番号入力してください");
+//			}
+//			// 2住所
+//			if (this.bean.getAddress2Address().length() <= 0) {
+//				this.messagebean.setErrorMsg("住所2の住所入力してください");
+//			}
+//		}
 		
 		// 住所3入力チェック
-		if (this.bean.getAddress3Name().length() > 0) {
-			// 3郵便番号
-			if (this.bean.getAddress3Postalcode().length() <= 0) {
-				this.messagebean.setErrorMsg("住所3の郵便番号入力してください");
-			}
-			// 3住所
-			if (this.bean.getAddress3Address().length() <= 0) {
-				this.messagebean.setErrorMsg("住所3の住所入力してください");
-			}
-		}
+//		if (this.bean.getAddress3Name().length() > 0) {
+//			// 3郵便番号
+//			if (this.bean.getAddress3Postalcode().length() <= 0) {
+//				this.messagebean.setErrorMsg("住所3の郵便番号入力してください");
+//			}
+//			// 3住所
+//			if (this.bean.getAddress3Address().length() <= 0) {
+//				this.messagebean.setErrorMsg("住所3の住所入力してください");
+//			}
+//		}
 		
 		// 住所4入力チェック
-		if (this.bean.getAddress4Name().length() > 0) {
-			// 4郵便番号
-			if (this.bean.getAddress4Postalcode().length() <= 0) {
-				this.messagebean.setErrorMsg("住所4の郵便番号入力してください");
-			}
-			// 4住所
-			if (this.bean.getAddress4Address().length() <= 0) {
-				this.messagebean.setErrorMsg("住所4の住所入力してください");
-			}
-		}
+//		if (this.bean.getAddress4Name().length() > 0) {
+//			// 4郵便番号
+//			if (this.bean.getAddress4Postalcode().length() <= 0) {
+//				this.messagebean.setErrorMsg("住所4の郵便番号入力してください");
+//			}
+//			// 4住所
+//			if (this.bean.getAddress4Address().length() <= 0) {
+//				this.messagebean.setErrorMsg("住所4の住所入力してください");
+//			}
+//		}
 		
 		// 住所5入力チェック
-		if (this.bean.getAddress5Name().length() > 0) {
-			// 5郵便番号
-			if (this.bean.getAddress5Postalcode().length() <= 0) {
-				this.messagebean.setErrorMsg("住所5の郵便番号入力してください");
-			}
-			// 5住所
-			if (this.bean.getAddress5Address().length() <= 0) {
-				this.messagebean.setErrorMsg("住所5の住所入力してください");
-			}
-		}
+//		if (this.bean.getAddress5Name().length() > 0) {
+//			// 5郵便番号
+//			if (this.bean.getAddress5Postalcode().length() <= 0) {
+//				this.messagebean.setErrorMsg("住所5の郵便番号入力してください");
+//			}
+//			// 5住所
+//			if (this.bean.getAddress5Address().length() <= 0) {
+//				this.messagebean.setErrorMsg("住所5の住所入力してください");
+//			}
+//		}
 		return true;
 	}
 	
@@ -236,9 +241,9 @@ public class registerLogic extends BaseLogic {
 			userInfoBean in = this.setUserInfoBean();
 			if (access.insertUserInfo(in) == 0) {
 				this.registerconfirmbean.setUserID(in.getUserID());
-				this.registerconfirmbean.setFirstName(this.bean.getFirstname());
-				String filename = createQrCode(in.getUserID());
-				this.registerconfirmbean.setQrImage("QRtmp/" + filename);
+				this.registerconfirmbean.setUserName(in.getUserName());
+				//String filename = createQrCode(in.getUserID());
+				//this.registerconfirmbean.setQrImage("QRtmp/" + filename);
 				rtn = true;
 			}
 		}

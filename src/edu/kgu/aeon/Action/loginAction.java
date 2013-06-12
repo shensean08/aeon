@@ -40,7 +40,7 @@ public class loginAction extends BaseAction {
 			rtn = SUCCESS;
 		}
 		
-		this.messagebean = logic.messagebean;
+		this.setMessagebean(logic.messagebean);
 		
 		return rtn;
 	}

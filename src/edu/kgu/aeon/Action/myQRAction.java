@@ -7,16 +7,7 @@ public class myQRAction extends BaseAction{
 
 	private myQRLogic logic = new myQRLogic();
 	
-	private String userName;
 	private registerConfirmFormBean registerConfirmBean;
-	
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 	
 	public registerConfirmFormBean getRegisterConfirmBean() {
 		return registerConfirmBean;
@@ -28,7 +19,7 @@ public class myQRAction extends BaseAction{
 	
 	@Override
 	public String execute() {
-		this.registerConfirmBean = logic.execute(this.userName);
+		this.registerConfirmBean = logic.execute(this.getUserName());
 		return SUCCESS;
 	}
 }

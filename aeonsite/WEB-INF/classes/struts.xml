@@ -30,7 +30,7 @@
         <!-- registerAction -->
         <action name="registerAction" class="edu.kgu.aeon.Action.registerAction">
             <result name="input">register.jsp</result>
-            <result name="success">registerConfirm.jsp</result>
+            <result name="success">userInfoMain.jsp?userID=${userID}&amp;userName=${userName}</result>
         </action>
 
 		<!-- downloadAction -->
