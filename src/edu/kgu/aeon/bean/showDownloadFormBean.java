@@ -6,12 +6,6 @@ public class showDownloadFormBean {
 	private String MapLink = "";
 	private String DLName = "";
 	
-	public String getDLNo() {
-		return DLNo;
-	}
-	public void setDLNo(String dLNo) {
-		DLNo = dLNo;
-	}
 	public String getImageLink() {
 		return ImageLink;
 	}
@@ -29,5 +23,11 @@ public class showDownloadFormBean {
 	}
 	public void setDLName(String dLName) {
 		DLName = dLName;
+	}
+	public String getDLNo() {
+		return DLNo;
+	}
+	public void setDLNo(String dLNo) {
+		DLNo = dLNo;
 	}
 }

@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div id="Login" data-url="Login" data-role="page" data-theme="b">
+<div id="Login" data-role="page" data-theme="b">
 <div data-role="header" data-theme="b">
 <h1>ログイン</h1>
 </div>
@@ -23,16 +23,17 @@
 
 <div data-role="fieldcontain">
 <label for="inp_5419">ユーザー名</label>
-<s:textfield name="loginBean.userName" value="%{loginBean.userName}" maxlength="100" id="inp_5419" />
+<s:textfield name="loginBean.userName" value="%{loginBean.userName}" size="20" maxlength="20" id="inp_5419" />
 </div>
 
 <div data-role="fieldcontain">
 <label for="inp_5432">パスワード</label>
-<s:password name="loginBean.password" value="%{loginBean.password}" maxlength="100" id="inp_5432" />
+<s:password name="loginBean.password" value="%{loginBean.password}" size="16" maxlength="16" id="inp_5432" />
 </div>
 
 <p class="input-btn"><s:submit id="btnlogin" value="Login" cssClass="input-btn"/>
 <input type="button" id="" onClick="location.href='register.jsp'" value="新規ご利用登録" class="input-btn"></p>
+
 <font color="red"><b>
 <s:property value="%{messagebean.errorMsg}"/>
 

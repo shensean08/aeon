@@ -30,6 +30,9 @@
 <s:iterator value="downloadlist" status="st">
 <tr>
 <td>
+<a href="delDownloadAction?userID=<s:property value='userID'/>&userName=<s:property value='userName'/>&DLNo=<s:property value='%{DLNo}'/>">Del</a>
+</td>
+<td>
 	<s:property value="%{DLName}"/>
 </td>
 <td>
@@ -41,6 +44,7 @@
 </tr>
 </s:iterator>
 </table>
+
 </div></div>
 
 

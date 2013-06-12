@@ -12,11 +12,10 @@
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css">
 <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
-<link rel="stylesheet" href="jquery.mobile-1.1.0.custom.css?" />
 </head>
 <body>
 
-<div id="AccountInformationUser" data-url="AccountInformationUser" data-role="page">
+<div data-role="page">
 <div data-role="header" data-theme="b">
 <h1>アカウント情報</h1>
 <div data-role="navbar">
@@ -32,12 +31,12 @@
 <div data-role="content">
 
 <div data-role="controlgroup">
-<a href="userInfoEditAction?userID=<%=userID%>&infoParten=base" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b">ユーザー情報</a>
-<a href="userInfoEditAction?userID=<%=userID%>&infoParten=address1" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b">確認したい住所１</a>
-<a href="userInfoEditAction?userID=<%=userID%>&infoParten=address2" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b">確認したい住所２</a>
-<a href="userInfoEditAction?userID=<%=userID%>&infoParten=address3" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b">確認したい住所３</a>
-<a href="userInfoEditAction?userID=<%=userID%>&infoParten=address4" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b">確認したい住所４</a>
-<a href="userInfoEditAction?userID=<%=userID%>&infoParten=address5" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b">確認したい住所５</a>
+<a href="userInfoMainAction?userID=<%=userID%>&userName=<%=userName%>&infoParten=base" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="b">ユーザー情報</a>
+<input type="button" id="" onClick="location.href='userInfoMainAction?userID=<%=userID%>&userName=<%=userName%>&infoParten=address1'" value="確認したい住所１" data-icon="arrow-r" data-iconpos="right" data-theme="b">
+<input type="button" id="" onClick="location.href='userInfoMainAction?userID=<%=userID%>&userName=<%=userName%>&infoParten=address2'" value="確認したい住所２" data-icon="arrow-r" data-iconpos="right" data-theme="b">
+<input type="button" id="" onClick="location.href='userInfoMainAction?userID=<%=userID%>&userName=<%=userName%>&infoParten=address3'" value="確認したい住所３" data-icon="arrow-r" data-iconpos="right" data-theme="b">
+<input type="button" id="" onClick="location.href='userInfoMainAction?userID=<%=userID%>&userName=<%=userName%>&infoParten=address4'" value="確認したい住所４" data-icon="arrow-r" data-iconpos="right" data-theme="b">
+<input type="button" id="" onClick="location.href='userInfoMainAction?userID=<%=userID%>&userName=<%=userName%>&infoParten=address5'" value="確認したい住所５" data-icon="arrow-r" data-iconpos="right" data-theme="b">
 </div>
 
 </div></div>

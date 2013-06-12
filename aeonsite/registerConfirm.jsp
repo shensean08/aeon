@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div id="AccountInformationQR.html" data-url="AccountInformationQR.html" data-role="page">
+<div data-role="page">
 <div data-role="header" data-theme="b">
 <h1>個人QRコード</h1>
 <div data-role="navbar">
@@ -26,7 +26,6 @@
 
 <div data-role="content">
 <br><img  src="./images/aeon-logo.png" alt=""><br><br>
-<p><s:property value="%{registerConfirmBean.firstName}"/>&nbsp;様、あなたのQRコードは以下です。</p>
 <p><img src="<s:property value='registerConfirmBean.qrImage'/>" height="200" width="200"/></p>
 </div></div>
 

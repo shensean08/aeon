@@ -19,7 +19,36 @@ import edu.kgu.aeon.agent.*;
 
 public class test {
 	public static void main(String[] args) {
-		register();
+		deletedl();
+	}
+	
+	public static void deletedl() {
+		delDownloadAction action = new delDownloadAction();
+		action.setUserID("1315492432");
+		action.setDLNo("00001");
+		action.execute();
+	}
+	public static void updateUserInfo() {
+		userInfoEditAction action = new userInfoEditAction();
+		
+		registerFormBean bean = new registerFormBean();
+		//bean.setUserName("shensean08");
+		
+		bean.setPassword("1234567");
+		bean.setPasswordConfirm("1234567");
+		bean.setMailAddress("sdfsdf@ggg.com");
+		bean.setAddress1Name("address1");
+		bean.setAddress1Postalcode("p1");
+		bean.setAddress1Address("ad1");
+		
+		action.setUserID("1315492432");
+		action.setUserName("shensean08");
+		action.setInfoParten("base");
+		
+		action.setUserInfoBean(bean);
+		
+		action.execute();
+		
 	}
 	
 	public static void HttpUrlConnection () {

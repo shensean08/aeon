@@ -17,8 +17,13 @@
             <result name="success">registerConfirm.jsp</result>
         </action>
        
+        <!-- delDownloadAction -->
+        <action name="delDownloadAction" class="edu.kgu.aeon.Action.delDownloadAction">
+            <result name="success">showDownload.jsp</result>
+        </action>
+        
         <!-- userInfoEditAction -->
-        <action name="userInfoEditAction" class="edu.kgu.aeon.Action.userInfoEditAction">
+        <action name="userInfoMainAction" class="edu.kgu.aeon.Action.userInfoMainAction">
             <result name="BASEINFO">userInfoEdit.jsp</result>
             <result name="ADDRESS1">userInfoAddress1.jsp</result>
             <result name="ADDRESS2">userInfoAddress2.jsp</result>
@@ -33,6 +38,17 @@
             <result name="success">userInfoMain.jsp?userID=${userID}&amp;userName=${userName}</result>
         </action>
 
+        <!-- userInfoUpdateAction -->
+        <action name="userInfoEditAction" class="edu.kgu.aeon.Action.userInfoEditAction">
+            <result name="BASEINFO">userInfoEdit.jsp</result>
+            <result name="ADDRESS1">userInfoAddress1.jsp</result>
+            <result name="ADDRESS2">userInfoAddress2.jsp</result>
+            <result name="ADDRESS3">userInfoAddress3.jsp</result>
+            <result name="ADDRESS4">userInfoAddress4.jsp</result>
+            <result name="ADDRESS5">userInfoAddress5.jsp</result>
+            <result name="success">userInfoMain.jsp?userID=${userID}&amp;userName=${userName}</result>
+        </action>
+        
 		<!-- downloadAction -->
         <action name="downloadAction" class="edu.kgu.aeon.Action.downloadAction">
         	<result type="json">

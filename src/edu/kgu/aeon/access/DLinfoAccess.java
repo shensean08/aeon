@@ -7,6 +7,29 @@ import edu.kgu.aeon.bean.DLinfoBean;
 import edu.kgu.log.LogLogger;
 
 public class DLinfoAccess extends BaseAccess {
+	public int deleteDLinfo(DLinfoBean value) {
+		int rtn = -1;
+		
+		dbConn = conn.getDBConnect();
+		StringBuffer query = new StringBuffer();
+		query.append("DELETE FROM DLinfo ");
+		query.append(" WHERE userID = '" + value.getUserID() + "'");
+		query.append("   AND DLNo = '" + value.getDLNo() + "'");
+		
+		try {
+			dbConn.BeginTransaction();
+			dbConn.Execute(query.toString());
+			dbConn.Commit();
+			rtn = 0;
+		} catch (Exception e) {
+			LogLogger.error(e);
+		} finally {
+			dbConn.Close();
+		}
+		
+		return rtn;
+	}
+	
 	public int insertDLinfo(DLinfoBean value) {
 		int rtn = -1;
 		
