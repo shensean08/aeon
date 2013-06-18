@@ -38,7 +38,7 @@ public class registerAction extends BaseAction {
 			this.registerConfirmBean = logic.getRegisterconfirmbean();
 			this.setUserID(this.registerConfirmBean.getUserID());
 			this.setUserName(this.registerConfirmBean.getUserName());
-			
+			this.setAppSession();
 			rtn = SUCCESS;
 		} else {
 			rtn = INPUT;

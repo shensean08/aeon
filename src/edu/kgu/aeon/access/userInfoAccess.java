@@ -294,9 +294,9 @@ public class userInfoAccess extends BaseAccess {
 		}
 		// address5
 		if (value.getAddress5Name().trim().length() > 0) {
-			query.append("       ,address5Name = '" + value.getAddress1Name() + "'");					//address5Name
-			query.append("   	 ,address5Postalcode = '" + value.getAddress1Postalcode() + "'");		//address5Postalcode
-			query.append("   	 ,address5Address = '" + value.getAddress1Address() + "'");				//address5Address
+			query.append("       ,address5Name = '" + value.getAddress5Name() + "'");					//address5Name
+			query.append("   	 ,address5Postalcode = '" + value.getAddress5Postalcode() + "'");		//address5Postalcode
+			query.append("   	 ,address5Address = '" + value.getAddress5Address() + "'");				//address5Address
 		}
 		query.append(" WHERE userName = '" + value.getUserName() + "'");
 		

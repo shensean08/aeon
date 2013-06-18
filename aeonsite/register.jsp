@@ -54,7 +54,7 @@
 
 <div data-role="fieldcontain">
 <label for="inp_5428">住所確認</label>
-<s:textfield name="registerBean.address1Address" value="%{registerBean.address1Address}" size="100" maxlength="100" id="inp_5428" />
+<s:textfield id="addressAddress" name="registerBean.address1Address" value="%{registerBean.address1Address}" size="100" maxlength="100" id="inp_5428" />
 </div>
 
 <p class="input-btn"><s:submit id="btnlogin" value="登録" cssClass="input-btn"/></p>

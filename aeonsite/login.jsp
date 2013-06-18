@@ -1,5 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
+<%
+	session.invalidate();
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +13,6 @@
 <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
 </head>
 <body>
-
 <div id="Login" data-role="page" data-theme="b">
 <div data-role="header" data-theme="b">
 <h1>ログイン</h1>
@@ -31,15 +33,14 @@
 <s:password name="loginBean.password" value="%{loginBean.password}" size="16" maxlength="16" id="inp_5432" />
 </div>
 
-<p class="input-btn"><s:submit id="btnlogin" value="Login" cssClass="input-btn"/>
-<input type="button" id="" onClick="location.href='register.jsp'" value="新規ご利用登録" class="input-btn"></p>
+<s:submit id="btnlogin" value="Login" data-theme="b"/>
+<input type="button" id="" onClick="location.href='register.jsp'" value="新規ご利用登録" data-theme="b" />
 
 <font color="red"><b>
 <s:property value="%{messagebean.errorMsg}"/>
-
 </b></font>
-</s:form>
 
+</s:form>
 
 </body>
 </html>

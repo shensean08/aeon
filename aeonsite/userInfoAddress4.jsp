@@ -14,10 +14,10 @@
 
 <div id="address4Edit" data-role="page">
 <div data-role="header" data-theme="b">
-<h1>住所編集</h1>
+<h1>住所④編集</h1>
 <div data-role="navbar">
 <ul>
-<li><a href="userInfoMain.jsp?userID=<s:property value='userInfoBean.userID'/>&userName=<s:property value='userInfoBean.userName'/>" data-theme="b" data-icon="arrow-l">戻る</a></li>
+<li><a href="userInfoShowAction.action?infoParten=address4" data-theme="b" data-icon="arrow-l">戻る</a></li>
 </ul>
 </div>
 
@@ -25,7 +25,7 @@
 
 <div data-role="content">
 
-<s:form name="frmUserInfoEdit" action="userInfoEditAction">
+<s:form name="frmUserInfoUpdate" action="userInfoUpdateAction">
 
 <div data-role="fieldcontain">
 <label for="inp_5521">ハーザドマップで表示住所名</label>
@@ -42,8 +42,6 @@
 <s:textfield name="userInfoBean.address4Address" value="%{userInfoBean.address4Address}" size="100" maxlength="100" id="inp_5520" />
 </div>
 
-<s:hidden name="userID" value="%{userID}" />
-<s:hidden name="userName" value="%{userName}" />
 <s:hidden name="infoParten" value="%{infoParten}" />
 
 <s:submit id="btnlogin" value="更新" data-theme="b"/>

@@ -19,6 +19,7 @@ public class myQRAction extends BaseAction{
 	
 	@Override
 	public String execute() {
+		this.getAppSession();
 		this.registerConfirmBean = logic.execute(this.getUserName());
 		return SUCCESS;
 	}

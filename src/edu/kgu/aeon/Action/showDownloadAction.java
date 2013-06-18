@@ -6,7 +6,6 @@ import edu.kgu.aeon.logic.showDownloadLogic;
 import edu.kgu.aeon.bean.showDownloadFormBean;
 
 public class showDownloadAction extends BaseAction {
-	private static final long serialVersionUID = 1L;
 
 	private showDownloadLogic logic = new showDownloadLogic();
 
@@ -21,6 +20,7 @@ public class showDownloadAction extends BaseAction {
 	}
 	
 	public String execute() {
+		this.getAppSession();
 		downloadlist = logic.execute(this.getUserID());
 		
 		return SUCCESS;

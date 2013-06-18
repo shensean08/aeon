@@ -11,12 +11,12 @@
 </head>
 <body>
 
-<div id="UserInformationEdit" data-url="UserInformationEdit" data-role="b">
+<div id="userInfoEdit"  data-role="b">
 <div data-role="header" data-theme="b">
 <h1>ユーザー編集</h1>
 <div data-role="navbar">
 <ul>
-<li><a href="userInfoMain.jsp?userID=<s:property value='userInfoBean.userID'/>&userName=<s:property value='userInfoBean.userName'/>" data-theme="b" data-icon="arrow-l">戻る</a></li>
+<li><a href="userInfoShowAction.action?infoParten=base" data-theme="b" data-icon="arrow-l">戻る</a></li>
 </ul>
 </div>
 
@@ -24,7 +24,7 @@
 
 <div data-role="content">
 
-<s:form name="frmUserInfoEdit" action="userInfoEditAction">
+<s:form name="frmUserInfoUpdate" action="userInfoUpdateAction">
 
 <div data-role="fieldcontain">
 <label for="inp_5511">メールアドレス</label>
@@ -46,8 +46,6 @@
 <s:password name="userInfoBean.passwordConfirm" value="%{userInfoBean.passwordConfirm}" maxlength="16" size="16" id="inp_5507" />
 </div>
 
-<s:hidden name="userID" value="%{userID}" />
-<s:hidden name="userName" value="%{userName}" />
 <s:hidden name="infoParten" value="%{infoParten}" />
 
 <s:submit id="btnlogin" value="更新" data-theme="b"/>

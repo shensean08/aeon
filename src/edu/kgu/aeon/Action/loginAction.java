@@ -37,6 +37,9 @@ public class loginAction extends BaseAction {
 		if (logic.execute(this.loginBean)) {
 			// jump to register confirm page
 			this.registerConfirmBean = logic.getRegisterConfirmBean();
+			this.setUserID(registerConfirmBean.getUserID());
+			this.setUserName(registerConfirmBean.getUserName());
+			this.setAppSession();
 			rtn = SUCCESS;
 		}
 		

@@ -12,9 +12,10 @@ public class delDownloadAction extends BaseAction {
 	
 	private showDownloadLogic showlogic = new showDownloadLogic();
 	
-	
 	private String DLNo;
 
+	private String showMinus = "";
+	
 	public String getDLNo() {
 		return DLNo;
 	}
@@ -33,11 +34,22 @@ public class delDownloadAction extends BaseAction {
 		this.downloadlist = downloadlist;
 	}
 	
+	public String getShowMinus() {
+		return showMinus;
+	}
+
+	public void setShowMinus(String showMinus) {
+		this.showMinus = showMinus;
+	}
+	
 	public String execute() {
+		this.getAppSession();
 		logic.execute(this.getUserID(), DLNo);
 		
 		downloadlist = showlogic.execute(this.getUserID());
-		
+		this.showMinus = "show";
 		return SUCCESS;
 	}
+
+
 }
