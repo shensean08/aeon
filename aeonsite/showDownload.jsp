@@ -92,9 +92,9 @@
 		<s:property value="%{DLName}"/>
 	</div>
 	<div class="ui-block-b">
-		<s:a href="#" onclick="location.href='%{ImageLink}'">image</s:a>
+		<s:a href="#" onclick="location.href=<s:property value='%{ImageLink}'/>">image</s:a>
 		&nbsp;		
-		<s:a href="#" onclick="location.href='%{MapLink}'">Map</s:a>
+		<s:a href="#" onclick="location.href=<s:property value='%{MapLink}'/>">Map</s:a>
 		<img id="del<s:property value='%{DLNo}'/>" src="images/del.png" onclick="location.href='delDownloadAction.action?&DLNo=<s:property value='%{DLNo}'/>'" style="visibility: hidden" align="right" width=37 height=23/>
 	</div>
 </s:iterator>
