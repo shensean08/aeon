@@ -5,7 +5,15 @@
 
 <struts>
 	<constant name="struts.ui.theme" value="simple" />
-    <package name="edu.kgu.aeon.Action" extends="json-default">      
+    <package name="edu.kgu.aeon.Action" extends="json-default">
+    	<interceptors>  
+            <interceptor name="permission" class="edu.kgu.aeon.Action.SessionIterceptor" />
+            <interceptor-stack name="permissionStack">  
+                <interceptor-ref name="defaultStack" />  
+                <interceptor-ref name="permission" />
+            </interceptor-stack>  
+        </interceptors>
+        
         <!-- loginAction -->
         <action name="loginAction" class="edu.kgu.aeon.Action.loginAction">
             <result name="input">login.jsp</result>
@@ -15,11 +23,15 @@
          <!-- myQRAction -->
         <action name="myQRAction" class="edu.kgu.aeon.Action.myQRAction">
             <result name="success">userInfoQR.jsp</result>
+            <result name="login">login.jsp</result>
+            <interceptor-ref name="permissionStack" />  
         </action>
        
         <!-- delDownloadAction -->
         <action name="delDownloadAction" class="edu.kgu.aeon.Action.delDownloadAction">
             <result name="success">showDownload.jsp</result>
+            <result name="login">login.jsp</result> 
+            <interceptor-ref name="permissionStack" />  
         </action>
         
         <!-- userInfoShowAction -->
@@ -30,6 +42,8 @@
             <result name="ADDRESS3_SHOW">userInfoAddress3Show.jsp</result>
             <result name="ADDRESS4_SHOW">userInfoAddress4Show.jsp</result>
             <result name="ADDRESS5_SHOW">userInfoAddress5Show.jsp</result>
+            <result name="login">login.jsp</result> 
+            <interceptor-ref name="permissionStack" />  
         </action>
         
         <!-- userInfoEditAction -->
@@ -40,12 +54,16 @@
             <result name="ADDRESS3_EDIT">userInfoAddress3.jsp</result>
             <result name="ADDRESS4_EDIT">userInfoAddress4.jsp</result>
             <result name="ADDRESS5_EDIT">userInfoAddress5.jsp</result>
+            <result name="login">login.jsp</result> 
+            <interceptor-ref name="permissionStack" />  
         </action>
                 
         <!-- registerAction -->
         <action name="registerAction" class="edu.kgu.aeon.Action.registerAction">
             <result name="input">register.jsp</result>
             <result name="success">userInfoMain.jsp</result>
+            <result name="login">login.jsp</result> 
+            <interceptor-ref name="permissionStack" />  
         </action>
 
         <!-- userInfoUpdateAction -->
@@ -62,6 +80,8 @@
             <result name="ADDRESS3_SHOW">userInfoAddress3Show.jsp</result>
             <result name="ADDRESS4_SHOW">userInfoAddress4Show.jsp</result>
             <result name="ADDRESS5_SHOW">userInfoAddress5Show.jsp</result>
+            <result name="login">login.jsp</result> 
+            <interceptor-ref name="permissionStack" />  
         </action>
         
 		<!-- downloadAction -->
@@ -74,6 +94,8 @@
 		<!-- showDownloadAction -->
         <action name="showDownloadAction" class="edu.kgu.aeon.Action.showDownloadAction">
 			<result name="success">showDownload.jsp</result>
+			<result name="login">login.jsp</result> 
+			<interceptor-ref name="permissionStack" />  
         </action>
         		
 		<!-- loginQrAction -->

@@ -1,1 +1,0 @@
-clippy.ready('Rocky', {"overlayCount": 3, "sounds": ["1"], "framesize": [550, 500],"animations":{"Show":{"frames":[{"duation":10},{"duartion":10,"images":[[0,0]]}]}}});

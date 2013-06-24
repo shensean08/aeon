@@ -24,12 +24,12 @@
 
 <div data-role="fieldcontain">
 <label for="inp_5416">ユーザー名</label>
-<s:textfield name="registerBean.userName" value="%{registerBean.userName}" size="20" maxlength="20" id="inp_5416" />
+<s:textfield name="registerBean.userName" value="%{registerBean.userName}" onkeyup="this.value=this.value.toLowerCase();value=value.replace(/[\W]/g,'');" size="20" maxlength="20" id="inp_5416" />
 </div>
 
 <div data-role="fieldcontain">
 <label for="inp_5415">メールアドレス</label>
-<s:textfield name="registerBean.mailAddress" value="%{registerBean.mailAddress}" size="30" maxlength="30" id="inp_5415" />
+<s:textfield name="registerBean.mailAddress" value="%{registerBean.mailAddress}" onkeyup="this.value=this.value.toLowerCase();" size="30" maxlength="30" id="inp_5415" />
 </div>
 
 <div data-role="fieldcontain">

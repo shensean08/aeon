@@ -1,2116 +1,251 @@
-<!DOCTYPE html>
-<html>
-<head>
+<!DOCTYPE html>
+<html>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-<style type="text/css">
-	
-	html { height: 100% }
-	body { height: 100%; margin: 0px; padding: 0px }
-	
-	.htmlButton{
-		//margin-top:5px;
-		font:14px "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; color: #333333;letter-spacing:0.1em;
-		//font-size:16px;
+<style type="text/css">
+
+	html { height: 100% }
+	body { height: 100%; margin: 0px; padding: 0px }
+
+	.htmlButton{
+		//margin-top:5px;
+		font:14px "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; color: #333333;letter-spacing:0.1em;
+		//font-size:16px;
 		font-weight:bold;
-		text-align:center;
-	}
-	
-	.htmlHint{
-		//margin-top:5px;
-		font:14px "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; color: #000000;letter-spacing:0.1em;
-		//font-size:16px;
+		text-align:center;
+	}
+
+	.htmlHint{
+		//margin-top:5px;
+		font:14px "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; color: #000000;letter-spacing:0.1em;
+		//font-size:16px;
 		font-weight:bold;
-		text-align:center;
-		background-color:#000000;
-	}
-	
-	.shelterImg{
-		max-width: 180px;
-		max-height: 120px;
-	}
-	
-	.balloonClose{
-		max-width: 30px;
-		max-height: 30px;
-	}
-	
-	.placeBalloonText {
-		font:12px "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; color: #000000;letter-spacing:0.1em;
-	}
-	
-</style>
-<link rel="stylesheet" type="text/css" href="css/clippy.css" media="all">
-<script type="text/javascript" src="js/clippy.js"></script>
-
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?libraries=places&sensor=true&language=ja"></script>
-
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-
-<script type="text/javascript">
-
-
-//****************************************************************************/
-// Debug
-// 
-//****************************************************************************/
-
-function test() {
-	
-	var loginHint = new HtmlHint("コード読取り機にQRコードをかざしてください",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-	loginHint.setFontSize(60);
-	loginHint.setBackgroundImage("hazardmap.png");
-	
-	
-	var loginBtn = new HtmlButton("登録",500,350,300,50);
-	loginBtn.setFontSize(32);
-	loginBtn.show();
-	loginBtn.addClickListener(function() { 
-		loginBtn.hide();
-		loginHint.show();
-		
-		window.setTimeout(function(){loginHint.hide();},10000);
-	});
-	
-}
-
-function debug(val,flg) {
-	try {
-		if (flg == 1) {
-			document.getElementById("debug").value = document.getElementById("debug").value + val;
-		} else {
-			document.getElementById("debug").value = val;
-		}
-	} catch (err) {}
-}
-
-
-
-//****************************************************************************/
-//****************************************************************************/
-//****************************************************************************/
-//****************************************************************************/
-//****************************************************************************/
-//****************************************************************************/
-//new code wrote with class
-//****************************************************************************/
-//****************************************************************************/
-//****************************************************************************/
-//****************************************************************************/
-//****************************************************************************/
-
-//****************************************************************************/
-//****************************************************************************/
-//****************************************************************************/
-// Global Const 
-//
-//****************************************************************************/
-//****************************************************************************/
-//****************************************************************************/
-
-var URL_IMG = "http://192.218.175.137:8080/aeonsite/img/";
-//var URL_IMG = "http://localhost:8080/aeonsite/img/";
-//var USERINFO_URL = "http://192.218.175.137:8080/aeonsite/placeJSon.jsp?qrcode=";
-var USERINFO_URL = "http://192.218.175.137:8080/aeonsite/placeInfo.jsp?qrcode=";
-
-
-var SCREEN_WIDTH = 1358;
-var SCREEN_HEIGHT = 768;
-var SCREEN_SAVE_WAITTIME = 20;	//second
-var DOWNLOAD_PATH = "C:\\workspace\\googleEarth\\";
-//var DOWNLOAD_FILE = "test.jpg";
-var DOWNLOAD_FILE = "screen_capture_";
-//****************************************************************************/
-//****************************************************************************/
-//****************************************************************************/
-// Global Variable 
-//
-//****************************************************************************/
-//****************************************************************************/
-//****************************************************************************/
-
-var ge;
-var map;
-var placeService;
-var directionsService;
-var elevator;
-var geocoder;
-
-var loginHint;			//登録Hint
-var loginButton;		//登録ボタン
-var QRcodeReader;		//QRCode読む
-var userSession;		//登録したユーザ情報
-var placeSelectMenu;	//住所選択メニュー
-var sideMenu;			//
-
-var selectedPlace;		//選択されている住所 place that be selected
-var shelter;			//避難所
-var screenSave;			//
-
-var download;
+		text-align:center;
+		background-color:#000000;
+	}
 
-/////////////////////
-var viewLat;		//where camera is looking
-var viewLng;
-var currentKmlObject = {'shelter' : null,'tsunami2' : null};		//used to show and hide kml
-var currentClickedObject = {'name' : null, 'lat' : null, 'lng' : null};	//used to read from 
-var currentLine = null;
-directionsDisplay = new google.maps.DirectionsRenderer();
-var nowAddress;
-var routeButton;
-var returnButton;
-
-//****************************************************************************/
-// Main
-// init google earth and google map
-//****************************************************************************/
-// sean add
-var antAgent;
-var agentTimer;
+	.shelterImg{
+		max-width: 180px;
+		max-height: 120px;
+	}
 
-    clippy.load('Rocky', function(agent){
-        antAgent = agent;
-        agent.show();
-    });
+	.balloonClose{
+		max-width: 30px;
+		max-height: 30px;
+	}
 
-function Ant_ScreenSaver() {
-	antAgent.play("Show");
-	antAgent.speak("タッチしてください");
+	.placeBalloonText {
+		font:12px "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; color: #000000;letter-spacing:0.1em;
+	}
+
+</style>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?libraries=places&sensor=true&language=ja"></script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+
+<script type="text/javascript" src="./js/globalConst.js"></script>
+<script type="text/javascript" src="./js/globalVar.js"></script>
+
+<script type="text/javascript" src="./js/keyboard.js"></script>
+<script type="text/javascript" src="./js/download.js"></script>
+<script type="text/javascript" src="./js/flyToOsaka.js"></script>
+<script type="text/javascript" src="./js/getAddress.js"></script>
+<script type="text/javascript" src="./js/global.js"></script>
+<script type="text/javascript" src="./js/htmlButton.js"></script>
+<script type="text/javascript" src="./js/htmlHint.js"></script>
+<script type="text/javascript" src="./js/place.js"></script>
+<script type="text/javascript" src="./js/placeBaloon.js"></script>
+<script type="text/javascript" src="./js/placeSelectMenu.js"></script>
+<script type="text/javascript" src="./js/qrcodeReader.js"></script>
+<script type="text/javascript" src="./js/screenSave.js"></script>
+<script type="text/javascript" src="./js/shelter.js"></script>
+<script type="text/javascript" src="./js/sideMenu.js"></script>
+<script type="text/javascript" src="./js/toggleKml.js"></script>
+<script type="text/javascript" src="./js/userSession.js"></script>
+<script type="text/javascript" src="./js/routeBtn.js"></script>
+
+<script type="text/javascript">
+
+//****************************************************************************/
+// Main
+// init google earth and google map
+//****************************************************************************/
+
+google.load("earth", "1");
+
+// init
+//
+function init() {
+
+	google.earth.createInstance('map3d', initCB, failureCB);
+	map = new google.maps.Map(document.getElementById('map_canvas'), {
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			center: new google.maps.LatLng(0,0),
+			zoom: 13
+		});
 }
-// sean add end
-google.load("earth", "1");
-
-// init
-//
-function init() {
-	
-	google.earth.createInstance('map3d', initCB, failureCB);
-	map = new google.maps.Map(document.getElementById('map_canvas'), {
-			mapTypeId: google.maps.MapTypeId.ROADMAP,
-			center: new google.maps.LatLng(0,0),
-			zoom: 13
-		});
-}
-
-// initCB
-//
-function initCB(instance) {
-	
-	ge = instance;
-	placeService = new google.maps.places.PlacesService(map);
-	// Instantiate a directions service.
-	directionsService = new google.maps.DirectionsService();
-	// Create an ElevationService
-	elevator = new google.maps.ElevationService();
-	geocoder = new google.maps.Geocoder();
-	ge.getWindow().setVisibility(true);
-	ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
-	ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS_LOW_RESOLUTION, true);
-	Global.showfrontImage();
-	Global.setLookAtInit();
-	screenSave = new ScreenSave(SCREEN_SAVE_WAITTIME);	//[SCREEN_SAVE_WAITTIME]秒間何も触らないとスクリーンサーバーが起動
-	screenSave.ready();
-	QRcodeReader = new QRCodeReader();
-	download = new Download();
-	userSession = new UserSession();
+
+// initCB
+//
+function initCB(instance) {
+
+	ge = instance;
+	placeService = new google.maps.places.PlacesService(map);
+	// Instantiate a directions service.
+	directionsService = new google.maps.DirectionsService();
+	// Create an ElevationService
+	elevator = new google.maps.ElevationService();
+	geocoder = new google.maps.Geocoder();
+	ge.getWindow().setVisibility(true);
+	ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
+	ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS_LOW_RESOLUTION, true);
+	Global.showfrontImage();
+	Global.setLookAtInit();
+	screenSave = new ScreenSave(SCREEN_SAVE_WAITTIME);	//[SCREEN_SAVE_WAITTIME]秒間何も触らないとスクリーンサーバーが起動
+	screenSave.ready();
+	QRcodeReader = new QRCodeReader();
+	download = new Download();
+	userSession = new UserSession();
 	sideMenu = new SideMenu();
 	routeButton = new RouteButton();
-	returnButton = new ReturnButton();
-	loginHint = new HtmlHint("コード読取り機にQRコードをかざしてください",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-	loginHint.setFontSize(42);
-	loginHint.setBackgroundImage("hazardmap.png");
-	loginButton = new HtmlButton("登録",500,630,360,60);
-	loginButton.setFontSize(28);
+	loginHint = new HtmlHint("",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+	loginHint.setFontSize(42);
+	loginHint.setBackgroundImage("coment-1.jpg");
+	loginButton = new HtmlButton("登録",500,630,360,60);
+	loginButton.setFontSize(28);
+	appHint1 = new HtmlHint("",HINT_X,HINT_Y,SCREEN_WIDTH,SCREEN_HEIGHT);
+	appHint1.setBackgroundImage("howto-1.png");
+	appHint2 = new HtmlHint("",HINT_X,HINT_Y,SCREEN_WIDTH,SCREEN_HEIGHT);
+	appHint2.setBackgroundImage("howto-2.png");
+
 	//loginButton.show();
-
+	cancelButton = new HtmlButton("キャンセル",500,(SCREEN_HEIGHT/2+25),360,60);
+	cancelButton.setFontSize(20);
+	flyToOsaka();
 	sideMenu.show();
-
-	loginButton.addClickListener(function() { 
-		loginButton.hide();
-		loginHint.show();
-		QRcodeReader.read(function(QRCode){
-			userSession.requestUserInfo(QRCode,function() {
-				placeSelectMenu = new PlaceSelectMenu(userSession);
-				loginHint.hide();
-				Global.reset2Init();
-				placeSelectMenu.show();
-				sideMenu.show();
-			});
-		});
-	});
-	/////////////
-	google.earth.addEventListener(ge.getView(), "viewchange", viewEventListener);
-	////////////
-
-}
-
-function failureCB(errorCode) {}
-
-google.setOnLoadCallback(init);
-
-//****************************************************************************/
-// Class Global
-// define global Variable and global method
-//****************************************************************************/
-
-function Global() {
-	
-}
-
-// show image over google earth
-//
-Global.showfrontImage = function() {
-	
-	var icon = ge.createIcon('');
-    icon.setHref(URL_IMG + "hazardmap_new.png");
-    var overlay = ge.createScreenOverlay('');
-	overlay.setIcon(icon);
-    overlay.getOverlayXY().set(1, ge.UNITS_PIXELS, 1, ge.UNITS_INSET_PIXELS);
-    overlay.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
-    overlay.getSize().set(SCREEN_WIDTH-1, ge.UNITS_PIXELS, SCREEN_HEIGHT-1, ge.UNITS_PIXELS);
-    ge.getFeatures().appendChild(overlay);
-};
-
-// set LookAt that can see whole earth
-//
-Global.setLookAtInit = function() {
-	var lookat = ge.createLookAt('');
-	lookat.set(30, 135,
-		0, // altitude
-		ge.ALTITUDE_RELATIVE_TO_GROUND,
-		0, // heading
-		0, // straight-down tilt
-		30000000 // range (inverse of zoom)
-	);
-	ge.getView().setAbstractView(lookat);
-}
-
-// reset to init
-//
-Global.reset2Init = function() {
-	
-	QRcodeReader.stopRead();
-	Global.setLookAtInit();
-	ge.setBalloon(null);
-	if (selectedPlace != null) {
-		selectedPlace.dispose();
-	}
-	if (shelter != null) {
-		shelter.dispose();
-	}
-	if (placeSelectMenu != null) {
-		placeSelectMenu.dispose();
-	}
-	sideMenu.hide();
-	loginButton.hide();
-	loginHint.hide();
-	download.hideHint();
-	routeButton.hide();
-	releaseKml('shelter');
-	releaseKml('tsunami2');
-	releaseLine();
-}
-//****************************************************************************/
-// Class Global End
-//****************************************************************************/
-
-
-
-//****************************************************************************/
-// Class Download
-//
-//****************************************************************************/
-function Download(second) {
-	
-	var _this = this;
-	_this.downloadHint = null;
-	_this.downloadComfirm;
-	
-	// download 
-	// type 0 GOOGLE MAP 1 picture
-	Download.prototype.download = function() {
-		ge.setBalloon(null);				if (userSession.isLoginIn() == false) {			
-			_this.downloadComfirm = new HtmlHint("先に登録してください。",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-			_this.downloadComfirm.setFontSize(42);
-			_this.downloadComfirm.setBackgroundImage("hazardmap.png");
-			_this.downloadComfirm.show();
-			setTimeout(function(){
-				_this.downloadComfirm.hide();
-			},3000);						return;		}		
-		_this.downloadHint = new HtmlHint("コード読取り機にQRコードをかざしてください",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-		_this.downloadHint.setFontSize(42);
-		_this.downloadHint.setBackgroundImage("hazardmap.png");
-		_this.downloadHint.show();
-		QRcodeReader.read(function(QRCode){
-			_this.downloadHint.hide();
-			setTimeout(function(){				var msg = "";								if (userSession.authenticate(QRCode) == true) {
-					//upload img to server											/// sean add start
-					//document.DownloadApplet.DownloadImage("1315492432","0","start","0","1","end","2","3");
-					document.DownloadApplet.DownloadImage(QRCode,"0",selectedPlace.name,selectedPlace.location.lat(),selectedPlace.location.lng(),"","","");
-					// sean add end					msg = "ダウンロードが完了しました。";				} else {					msg = "認証が失敗しまいました。";				}				
-				_this.downloadComfirm = new HtmlHint(msg,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-				_this.downloadComfirm.setFontSize(42);
-				_this.downloadComfirm.setBackgroundImage("hazardmap.png");
-				_this.downloadComfirm.show();
-				setTimeout(function(){
-					_this.downloadComfirm.hide();
-				},3000);			},200);
-		});
-		//},200);
-	}	Download.prototype.downloadRoute = function(name,lat,lng) {				//alert(selectedPlace.name + ",  " + selectedPlace.location.lat() + ":" + selectedPlace.location.lng());		//alert(name + ", " + lat + " : " + lng);	
-		ge.setBalloon(null);		if (userSession.isLoginIn() == false) {			
-			_this.downloadComfirm = new HtmlHint("先に登録してください。",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-			_this.downloadComfirm.setFontSize(42);
-			_this.downloadComfirm.setBackgroundImage("hazardmap.png");
-			_this.downloadComfirm.show();
-			setTimeout(function(){
-				_this.downloadComfirm.hide();
-			},3000);						return;		}		
-		_this.downloadHint = new HtmlHint("コード読取り機にQRコードをかざしてください",0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-		_this.downloadHint.setFontSize(42);
-		_this.downloadHint.setBackgroundImage("hazardmap.png");
-		_this.downloadHint.show();
-		QRcodeReader.read(function(QRCode){
-			_this.downloadHint.hide();
-			setTimeout(function(){				var msg = "";								if (userSession.authenticate(QRCode) == true) {
-					//upload img to server					// sean add start
-					//document.DownloadApplet.DownloadImage("1315492432","0","start","0","1","end","2","3");					document.DownloadApplet.DownloadImage(QRCode,0,selectedPlace.name,selectedPlace.location.lat(),selectedPlace.location.lng(),name,lat,lng);					// sean add end
-										msg = "ダウンロードが完了しました。";				} else {					msg = "認証が失敗しまいました。";				}				
-				_this.downloadComfirm = new HtmlHint(msg,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-				_this.downloadComfirm.setFontSize(42);
-				_this.downloadComfirm.setBackgroundImage("hazardmap.png");
-				_this.downloadComfirm.show();
-				setTimeout(function(){
-					_this.downloadComfirm.hide();
-				},3000);			},200);
-		});
-		//},200);	}
-	// hide Hint
-	// 
-	Download.prototype.hideHint = function() {
-		if (_this.downloadHint != null) {
-			_this.downloadHint.hide();
-		}
-	}
-}
-
-
-//****************************************************************************/
-// Class Screen Save
-//
-//****************************************************************************/
-function ScreenSave(second) {
-	
-	var _this = this;
-	this.timeCount;
-	this.screenSaveTime = second;
-	//this.isPlaying;
-	this.timeCountInterval;
-	
-	// set ready
-	// 
-	ScreenSave.prototype.ready = function() {
-		
-		_this.timeCount = 0;
-		//this.isPlaying = 0;
-		
-		this.timeCountInterval = setInterval(function(){
-			_this.timeCount++;
-			//debug(_this.timeCount);
-			if (_this.timeCount == _this.screenSaveTime) {
-				_this.start();
-			}
-		},1000);
-		
-		google.earth.addEventListener(ge.getGlobe(), 'mousemove', _this.resetCount);
-		
-		
-		/*
-		google.earth.addEventListener(ge.getGlobe(), 'mouseup', function(){
-		
-			setInterval(focusTxt,200);
-		});
-		
-		google.earth.addEventListener(ge.getWindow(), "mouseup", function(event) {
-			//resetScreenSaveTime();
-		
-			//setGeBlur();
-			//ge.getWindow().blur();
-		});
-		*/
-	}
-	
-	ScreenSave.prototype.resetCount = function() {
-		_this.timeCount = 0;
-	}
-	// screen save start
-	//
-	ScreenSave.prototype.start = function() {
-		
-		clearInterval(_this.timeCountInterval);
-		_this.timeCountInterval = null;
-		google.earth.removeEventListener(ge.getGlobe(), 'mousemove', _this.resetCount);
-		
-		document.getElementById("map3d").style.visibility = "hidden";
-		
-		var videoObj = document.getElementById("screenSaveVideo");
-		videoObj.width = 1356;
-		videoObj.height = 766;
-		videoObj.src="video/screen.mp4"
-		videoObj.load();		// sean add
-		antAgent.show();
-		antAgent.moveTo(900,400);
-		agentTimer = window.setInterval(Ant_ScreenSaver,5000);
-		// sean add end	
-		
-		videoObj.play();
-		userSession.loginOut();
-		
-		Global.reset2Init();
-		
-	}
-	
-	// screen save start
-	//
-	ScreenSave.prototype.stop = function() {		// sean add
-		window.clearInterval(agentTimer);
-		antAgent.moveTo(2000,2000);
-		// sean add end
-		
-		var videoObj = document.getElementById("screenSaveVideo");
-		videoObj.width = 0;
-		videoObj.height = 0;
-		videoObj.pause();
-		document.getElementById("map3d").style.visibility = "visible";
+
+	loginButton.addClickListener(function() {
+		loginButton.hide();
+		loginHint.show();
+		alert("login");
+
+		QRcodeReader.read(function(){
+
+			alert("this is callBack");
+
+		});
+		/*
+		QRcodeReader.read(function(QRCode){
+			userSession.requestUserInfo(QRCode,function() {
+				alert("read callback");
+				alert(QRCode);
+				placeSelectMenu = new PlaceSelectMenu(userSession);
+				loginHint.hide();
+				Global.reset2Init();
+				placeSelectMenu.show();
+				sideMenu.show();
+			});
+
+		});
+		*/
+	});
+
+	cancelButton.addClickListener(function() {
+				cancelButton.hide();
+				loginHint.hide();
+				Global.reset2Init();
+				//screenSave.start();
+				userSession.loginOut();
+				//sideMenu.show();
+	});
+
+	appHint1.hintDiv.addEventListener("click",function(evt){
+		appHint1.hide();
+		appHint2.show();
+		screenSave.resetCount();
+	});
+
+	appHint2.hintDiv.addEventListener("click", function(evt){
+		appHint2.hide();
+		screenSave.resetCount();
+	});
+
+
+
+	loginHint.hintDiv.addEventListener("click",function(evt){
+		//alert("click1");
+		userSession.loginOut();
+		loginHint.hide();
+		Global.reset2Init();
 		flyToOsaka();
-
-/*		
-		var lookat = ge.createLookAt('');		//move to osaka
-		lookat.set(34.7, 135.5,
-			600, // altitude
-			ge.ALTITUDE_RELATIVE_TO_GROUND,
-			0, // heading
-			30, // straight-down tilt
-			120000 // range (inverse of zoom)
-		);
-		ge.getView().setAbstractView(lookat);				setTimeout(function(){			
-			if (selectedPlace != null) {
-				selectedPlace.dispose();
-			}
-			selectedPlace = new Place("現在地");
-			selectedPlace.geocode("大阪府大阪市西区千代崎3丁目北2");
-			selectedPlace.show();
-			//loginButton.show();
-			sideMenu.show();		},5000);	*/	
-		_this.ready();
-	}
-}
-
-//****************************************************************************/
-// Class Side Menu
-//
-//****************************************************************************/
-function SideMenu() {
-
-	var _this = this;
-	this.isHide = 1;
-	
-
-	var sideBtnTsunamiLeft = (SCREEN_WIDTH / 2) - 120;
-	var sideBtnTsunamiTop = SCREEN_HEIGHT -130;
-	var sideBtnTsunamiWidth = 60;
-	var sideBtnTsunamiHeight = 60;
-
-	var sideBtnShelterLeft = (SCREEN_WIDTH / 2) - 40;
-	var sideBtnShelterTop = SCREEN_HEIGHT -130;
-	var sideBtnShelterWidth = 60;
-	var sideBtnShelterHeight = 60;
-
-	var sideBtnLoginLeft = (SCREEN_WIDTH / 2) + 40;
-	var sideBtnLoginTop = SCREEN_HEIGHT -130;
-	var sideBtnLoginWidth = 60;
-	var sideBtnLoginHeight = 60;
-
-	var sideBtnDLLeft = (SCREEN_WIDTH / 2) + 120;
-	var sideBtnDLTop = SCREEN_HEIGHT -130;
-	var sideBtnDLWidth = 60;
-	var sideBtnDLHeight = 60;
-
-
-	var sideBtnQuitLeft = SCREEN_WIDTH - 300;
-	var sideBtnQuitTop = SCREEN_HEIGHT -130;
-	var sideBtnQuitWidth = 150;
-	var sideBtnQuitHeight = 60;
-
-	var routeBtn1Left = (SCREEN_WIDTH / 2);
-	var routeBtn1Top = SCREEN_HEIGHT - 210;
-	var routeBtn1Width = 60;
-	var routeBtn1Height = 60;	
-	
-	var sideBtnTsunamiIcon = ge.createIcon('');
-	sideBtnTsunamiIcon.setHref(URL_IMG + 'hazardmap-btn-01.png');
-
-	this.sideBtnTsunami = ge.createScreenOverlay('');
-	this.sideBtnTsunami.setIcon(sideBtnTsunamiIcon);
-	this.sideBtnTsunami.getOverlayXY().set(sideBtnTsunamiLeft, ge.UNITS_PIXELS, sideBtnTsunamiTop, ge.UNITS_INSET_PIXELS);
-	this.sideBtnTsunami.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
-	this.sideBtnTsunami.getSize().set(sideBtnTsunamiWidth, ge.UNITS_PIXELS, sideBtnTsunamiHeight, ge.UNITS_PIXELS);
-	//ge.getFeatures().appendChild(sideBtnTsunami);
-	
-	var sideBtnShelterIcon = ge.createIcon('');
-	sideBtnShelterIcon.setHref(URL_IMG + 'hazardmap-btn-02.png');
-
-	this.sideBtnShelter = ge.createScreenOverlay('');
-	this.sideBtnShelter.setIcon(sideBtnShelterIcon);
-	this.sideBtnShelter.getOverlayXY().set(sideBtnShelterLeft, ge.UNITS_PIXELS, sideBtnShelterTop, ge.UNITS_INSET_PIXELS);
-	this.sideBtnShelter.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
-	this.sideBtnShelter.getSize().set(sideBtnShelterWidth, ge.UNITS_PIXELS, sideBtnShelterHeight, ge.UNITS_PIXELS);
-	//ge.getFeatures().appendChild(sideBtnAddrSel);
-
-	var sideBtnLoginIcon = ge.createIcon('');
-	sideBtnLoginIcon.setHref(URL_IMG + 'hazardmap-btn-03.png');
-
-	this.sideBtnLogin = ge.createScreenOverlay('');
-	this.sideBtnLogin.setIcon(sideBtnLoginIcon);
-	this.sideBtnLogin.getOverlayXY().set(sideBtnLoginLeft, ge.UNITS_PIXELS, sideBtnLoginTop, ge.UNITS_INSET_PIXELS);
-	this.sideBtnLogin.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
-	this.sideBtnLogin.getSize().set(sideBtnLoginWidth, ge.UNITS_PIXELS, sideBtnLoginHeight, ge.UNITS_PIXELS);
-	//ge.getFeatures().appendChild(sideBtnAddrSel);
-
-	var sideBtnDLIcon = ge.createIcon('');
-	sideBtnDLIcon.setHref(URL_IMG + 'hazardmap-btn-04.png');
-
-	this.sideBtnDL = ge.createScreenOverlay('');
-	this.sideBtnDL.setIcon(sideBtnDLIcon);
-	this.sideBtnDL.getOverlayXY().set(sideBtnDLLeft, ge.UNITS_PIXELS, sideBtnDLTop, ge.UNITS_INSET_PIXELS);
-	this.sideBtnDL.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
-	this.sideBtnDL.getSize().set(sideBtnDLWidth, ge.UNITS_PIXELS, sideBtnDLHeight, ge.UNITS_PIXELS);
-	//ge.getFeatures().appendChild(sideBtnAddrSel);
-
-
-	var sideBtnQuitIcon = ge.createIcon('');
-	sideBtnQuitIcon.setHref(URL_IMG + 'hazardmap-btn-quit.png');
-	
-	this.sideBtnQuit = ge.createScreenOverlay('');
-	this.sideBtnQuit.setIcon(sideBtnQuitIcon);
-	this.sideBtnQuit.getOverlayXY().set(sideBtnQuitLeft, ge.UNITS_PIXELS, sideBtnQuitTop, ge.UNITS_INSET_PIXELS);
-	this.sideBtnQuit.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
-	this.sideBtnQuit.getSize().set(sideBtnQuitWidth, ge.UNITS_PIXELS, sideBtnQuitHeight, ge.UNITS_PIXELS);
-	//ge.getFeatures().appendChild(sideBtnQuit);
-
-	var routeBtn1Icon = ge.createIcon('');
-	routeBtn1Icon.setHref(URL_IMG + 'hazardmap-btn-04.png');
-
-	this.routeBtn1 = ge.createScreenOverlay('');
-	this.routeBtn1.setIcon(routeBtn1Icon);
-	this.routeBtn1.getOverlayXY().set(routeBtn1Left, ge.UNITS_PIXELS, routeBtn1Top, ge.UNITS_INSET_PIXELS);
-	this.routeBtn1.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
-	this.routeBtn1.getSize().set(routeBtn1Width, ge.UNITS_PIXELS, routeBtn1Height, ge.UNITS_PIXELS);
-	
-	google.earth.addEventListener(ge.getWindow(), 'click', function(evt) {
-		if(userSession.isLoginIn()){
-		//resetScreenSaveTime();
-			if (evt.getButton() === 0 &&
-				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnTsunamiLeft,sideBtnTsunamiTop,sideBtnTsunamiWidth,sideBtnTsunamiHeight)) {
-
-					toggleKml('tsunami2');
-					//alert('hoge');
-
-			} else if (evt.getButton() === 0 &&
-				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnShelterLeft,sideBtnShelterTop,sideBtnShelterWidth,sideBtnShelterHeight)) {
-
-					toggleKml('shelter');
-
-			} else if (evt.getButton() === 0 &&
-				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnLoginLeft,sideBtnLoginTop,sideBtnLoginWidth,sideBtnLoginHeight)) {
-			
-				//	SideMenu.hide();
-					loginHint.show();
-					QRcodeReader.read(function(QRCode){
-						userSession.requestUserInfo(QRCode,function() {
-						placeSelectMenu = new PlaceSelectMenu(userSession);
-						loginHint.hide();
-						Global.reset2Init();
-						placeSelectMenu.show();
-						sideMenu.show();
-					});
-				});
-			
-			} else if (evt.getButton() === 0 &&
-				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnDLLeft,sideBtnDLTop,sideBtnDLWidth,sideBtnDLHeight)) {
-
-				download.download();
-
-			} else if (evt.getButton() === 0 &&
-				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnQuitLeft,sideBtnQuitTop,sideBtnQuitWidth,sideBtnQuitHeight)) {
-
-					userSession.loginOut();
-					Global.reset2Init();
-					flyToOsaka();
-					ScreenSave.ready();
-			}
-
-			return true;
-		}else{
-			//resetScreenSaveTime();
-			if (evt.getButton() === 0 &&
-				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnTsunamiLeft,sideBtnTsunamiTop,sideBtnTsunamiWidth,sideBtnTsunamiHeight)) {
-		
-					toggleKml('tsunami2');
-					//alert('hoge');
-	
-			} else if (evt.getButton() === 0 &&
-				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnShelterLeft,sideBtnShelterTop,sideBtnShelterWidth,sideBtnShelterHeight)) {
-
-					toggleKml('shelter');
-	
-			} else if (evt.getButton() === 0 &&
-				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnLoginLeft,sideBtnLoginTop,sideBtnLoginWidth,sideBtnLoginHeight)) {
-			
-				//	SideMenu.hide();
-					loginHint.show();
-					QRcodeReader.read(function(QRCode){
-						userSession.requestUserInfo(QRCode,function() {
-						placeSelectMenu = new PlaceSelectMenu(userSession);
-						loginHint.hide();
-						Global.reset2Init();
-						placeSelectMenu.show();
-						sideMenu.show();
-						});
-					});
-			
-			} else if (evt.getButton() === 0 &&
-				isMouseOnButton(evt.getClientX(), evt.getClientY(),sideBtnQuitLeft,sideBtnQuitTop,sideBtnQuitWidth,sideBtnQuitHeight)) {
-
-					userSession.loginOut();
-					Global.reset2Init();
-					flyToOsaka();
-					ScreenSave.ready();
-			}
-
-			return true;
-
-
-		}
-	});
-
-	// hide side menu
-	//
-	SideMenu.prototype.hide = function() {
-		
-		if (this.isHide == 0) {
-			if(userSession.isLoginIn()){
-				ge.getFeatures().removeChild(this.sideBtnTsunami);
-				ge.getFeatures().removeChild(this.sideBtnShelter);
-				ge.getFeatures().removeChild(this.sideBtnLogin);
-				ge.getFeatures().removeChild(this.sideBtnDL);
-				ge.getFeatures().removeChild(this.sideBtnQuit);						
-			}else{
-				ge.getFeatures().removeChild(this.sideBtnTsunami);
-				ge.getFeatures().removeChild(this.sideBtnShelter);
-				ge.getFeatures().removeChild(this.sideBtnLogin);
-				ge.getFeatures().removeChild(this.sideBtnQuit);
-
-			}
-			this.isHide = 1;
-		}
-	}
-	
-	// show side menu
-	//
-	SideMenu.prototype.show = function() {
-		
-		if (this.isHide == 1) {
-			if(userSession.isLoginIn()){
-				ge.getFeatures().appendChild(this.sideBtnTsunami);
-				ge.getFeatures().appendChild(this.sideBtnShelter);
-				ge.getFeatures().appendChild(this.sideBtnLogin);
-				ge.getFeatures().appendChild(this.sideBtnDL);
-				ge.getFeatures().appendChild(this.sideBtnQuit);
-			}else{
-				ge.getFeatures().appendChild(this.sideBtnTsunami);
-				ge.getFeatures().appendChild(this.sideBtnShelter);
-				ge.getFeatures().appendChild(this.sideBtnLogin);
-				ge.getFeatures().appendChild(this.sideBtnQuit);
-			}
-
-
-			this.isHide = 0;
-		}
-	}
-	
-	// check is click button
-	//
-	var isMouseOnButton = function(mx, my, x, y, width, height) {
-		return x <= mx && mx <= x + width && y <= my && my <= y + height;
-	}
-
-	return this;
-}
-
-//****************************************************************************/
-// Class draw route button (temp)
-//
-//****************************************************************************/
-
-function RouteButton() {
-
-	var _this = this;
-	this.isHide = 1;
-
-	var routeBtn1Left = (SCREEN_WIDTH / 2);
-	var routeBtn1Top = SCREEN_HEIGHT - 190;
-	var routeBtn1Width = 60;
-	var routeBtn1Height = 60;	
-
-	var routeBtn1Icon = ge.createIcon('');
-	routeBtn1Icon.setHref(URL_IMG + 'hazardmap-btn-quit.png');
-
-	this.routeBtn1 = ge.createScreenOverlay('');
-	this.routeBtn1.setIcon(routeBtn1Icon);
-	this.routeBtn1.getOverlayXY().set(routeBtn1Left, ge.UNITS_PIXELS, routeBtn1Top, ge.UNITS_INSET_PIXELS);
-	this.routeBtn1.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
-	this.routeBtn1.getSize().set(routeBtn1Width, ge.UNITS_PIXELS, routeBtn1Height, ge.UNITS_PIXELS);
-	
-	google.earth.addEventListener(ge.getWindow(), 'click', function(evt) {
-	
-	if (evt.getButton() === 0 &&
-			isMouseOnButton(evt.getClientX(), evt.getClientY(), routeBtn1Left, routeBtn1Top, routeBtn1Width, routeBtn1Height)){
-			//alert('1');
-			shelter.shelterRoute(' + idx + ');
-			
-		}
-		return true;
-	});
-
-	var isMouseOnButton = function(mx, my, x, y, width, height) {
-		return x <= mx && mx <= x + width && y <= my && my <= y + height;
-	}
-
-
-	RouteButton.prototype.hide = function() {
-		if(this.isHide == 0){
-			ge.getFeatures().removeChild(this.routeBtn1);
-
-			this.isHide = 1;
-		}
-	}
-
-	RouteButton.prototype.show = function(){
-		if(this.isHide == 1){
-			ge.getFeatures().appendChild(this.routeBtn1);
-
-			this.isHide = 0;
-		}
-	}
-
-	return this;
-}
-
-//****************************************************************************/
-// Class return button (temp)
-//
-//****************************************************************************/
-
-function ReturnButton() {
-
-	var _this = this;
-	this.isHide = 1;
-
-	var returnBtnLeft = SCREEN_WIDTH - 300;
-	var returnBtnTop = SCREEN_HEIGHT - 130;
-	var returnBtnWidth = 150;
-	var returnBtnHeight = 60;	
-
-	var returnBtnIcon = ge.createIcon('');
-	returnBtnIcon.setHref(URL_IMG + 'hazardmap-btn-04.png');
-
-	this.returnBtn = ge.createScreenOverlay('');
-	this.returnBtn.setIcon(routeBtnIcon);
-	this.returnBtn.getOverlayXY().set(returnBtnLeft, ge.UNITS_PIXELS, returnBtnTop, ge.UNITS_INSET_PIXELS);
-	this.returnBtn.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
-	this.returnBtn.getSize().set(returnBtnWidth, ge.UNITS_PIXELS, returnBtnHeight, ge.UNITS_PIXELS);
-	
-	google.earth.addEventListener(ge.getWindow(), 'click', function(evt) {
-	
-		if (evt.getButton() === 0 &&
-			isMouseOnButton(evt.getClientX(), evt.getClientY(), returnBtnLeft, returnBtnTop, returnBtnWidth, returnBtnHeight)){
-			//alert('1');
-			//shelter.shelterRoute(' + idx + ');
-			
-		}
-		return true;
-	});
-
-	var isMouseOnButton = function(mx, my, x, y, width, height) {
-		return x <= mx && mx <= x + width && y <= my && my <= y + height;
-	}
-
-
-	ReturnButton.prototype.hide = function() {
-		if(this.isHide == 0){
-			ge.getFeatures().removeChild(this.returnBtn);
-
-			this.isHide = 1;
-		}
-	}
-
-	ReturnButton.prototype.show = function(){
-		if(this.isHide == 1){
-			ge.getFeatures().appendChild(this.returnBtn);
-
-			this.isHide = 0;
-		}
-	}
-
-	return this;
-}
-
-
-//****************************************************************************/
-// Class Shelter Balloon
-//
-//****************************************************************************/
-
-function ShelterBalloon(shelter,idx,event) {
-	var shelterLoc = shelter.geometry.location;
-	this.balloon = ge.createHtmlDivBalloon('');
-	this.balloon.setFeature(event.getTarget());
-	this.balloon.setMaxWidth(500);
-	this.balloon.setCloseButtonEnabled(false);
-	
-	this.balloonDiv = document.createElement('DIV');
-	this.balloonDiv.innerHTML = '<table border=0 width=100%>'
-							+ '<tr>'
-							+ '<td valign="top"><img class="shelterImg"  src = "' + shelter.icon + '">'
-							+ '</td>'
-							+ '<td valign="top" width="250px" padding="5px"><span style="font-size:14px;font-weight:bold">'+shelter.name+'</span>'
-							+ '             <br><span style="font-size:11px">'+ shelter.formatted_address  +'</span>'
-							+ '             <br><span style="font-size:11px">06-6582-0330   osaka-c.ed.jp</span>'
-							+ '             <br><span style="font-size:12px;font-weight:bold">住所１から200m</span>'
-							+ '             <br><span style="font-size:12px;font-weight:bold">収容人数500人   海抜3m</span>'
-							+ '</td>'
-							+ '<td valign="top" align="right" style=" padding-left:10px"><img class="balloonClose" src = "' + URL_IMG + 'close_shelter-balloon.png" onclick="ge.setBalloon(null);"><br><br>'
-							+ '</td>'
-							+ '</tr>'
-							+ '</table>'
-							+ '<table>'
-							+ '<tr>'
-							+ '<td valign="middle" align="center"><div style="width:140px;height:40px; line-height:40px; align:center;background-position:9px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="ge.setBalloon(null);" >ストリートビュー</div>'
-							+ '</td>'
-							//+ '<td valign="middle" align="center"><div style="width:140px;height:40px; line-height:40px; align:center;background-position:9px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="showDirection(' + shelter.geometry.location.lat() + ',' + shelter.geometry.location.lng() + ');" >' + selectedPlace.name + 'からの経路</div>'
-							+ '<td valign="middle" align="center"><div style="width:140px;height:40px; line-height:40px; align:center;background-position:9px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="shelter.shelterRoute();" >' + selectedPlace.name + 'からの経路</div>'
-							+ '</td>'
-							+ '<td valign="middle" align="center"><div style="width:140px;height:40px; line-height:30px; align:center;background-position:9px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="download.downloadRoute(' + "'" + shelter.name + "'" + ',' + shelterLoc.lat() + ',' + shelterLoc.lng() + ');" ><table style="height:30px" ><tr><td><img style="max-width: 23px;max-height: 23px; margin-top:6px;" src="' + URL_IMG + 'dl_shelter-balloon.png"></td><td valign="top" style="padding-top:3px">ダウンロード</td></tr></table></div>'
-							+ '</td>'
-							+ '</tr>'
-							+ '</table>';
-		
-	this.balloon.setContentDiv(this.balloonDiv);
-	
-	// show Shelter Balloon
-	//
-	ShelterBalloon.prototype.show = function() {
-		ge.setBalloon(this.balloon);
-	}
-	
-	return this;
-}
-
-//****************************************************************************/
-// Class Shelter
-//
-//****************************************************************************/
-function Shelter(_selectedPlace) {
-	
-	var _this = this;
-	this.shelterInfo;
-	this.isSearching = 0;
-	this.shelterMarkArr;
-	this.shelterBalloonArr;
-	this.elevation;
-	this.routePlaceMark;
-	
-	this.selectedPlace = _selectedPlace;
-	
-	// search and show
-	//
-	Shelter.prototype.searchAndShow = function(elevation) {
-		ge.setBalloon(null);
-		this.search(elevation);
-		this.show();
-	}
-	
-	// search shelter
-	//
-	Shelter.prototype.search = function(elevation) {
-		
-		this.isSearching = 1;
-		this.elevation = elevation;
-		
-		var request = {
-			location: this.selectedPlace.location,
-			radius: '1000',
-			//types:['police'],
-			query: '避難'
-		};
-		
-		placeService.textSearch(request, function(results, status){
-			
-			if (status == google.maps.places.PlacesServiceStatus.OK) {
-				_this.shelterInfo = results;
-				_this.isSearching = 0;
-			}
-		});
-	};
-	
-	// show shelter 
-	//
-	Shelter.prototype.show = function() {
-		
-		if (_this.isSearching == 1) {
-			setTimeout(_this.show,100);
-			return;
-		}
-		
-		_this.shelterMarkArr = new Array();
-		_this.shelterBalloonArr = new Array();
-		
-		for (i = 0; i < _this.shelterInfo.length; i++) {
-	  		createShelterMark(_this.shelterInfo[i],i); 
-		}
-		
-		var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
-		lookAt.setAltitude(60);
-		lookAt.setRange(2000.0); //default is 0.0
-		ge.getView().setAbstractView(lookAt);
-		
-	};
-	
-	// create shelter mark
-	//
-	var createShelterMark = function(shelter,idx) {
-		
-		var shelterLoc = shelter.geometry.location;
-		var locations = [];
-		locations.push(shelterLoc);
-		
-		// Create a LocationElevationRequest object using the array's one value
-		var positionalRequest = { 'locations': locations };
-
-		// Initiate the location request
-		
-		elevator.getElevationForLocations(positionalRequest, function(results, status) {
-			if (status == google.maps.ElevationStatus.OK) {
-				// Retrieve the first result
-				if (results[0]) {
-					if (results[0].elevation - _this.elevation > 0) {
-						
-						var marker = ge.createPlacemark('');
-						
-						// Define a custom icon.
-						var icon = ge.createIcon('');
-						icon.setHref(URL_IMG + 'pin_shelter.png');
-						
-						var style = ge.createStyle(''); //create a new style
-						style.getIconStyle().setIcon(icon); //apply the icon to the style
-						style.getIconStyle().setScale(1.6);
-						
-						marker.setStyleSelector(style); //apply the style to the placemark
-						marker.setName(shelter.name);
-						// Set the placemark's location.  
-						var point = ge.createPoint('');
-						point.setLatitude(shelterLoc.lat());
-						point.setLongitude(shelterLoc.lng());
-						marker.setGeometry(point);
-						
-						// Add the placemark to Earth.
-						_this.shelterMarkArr.push(marker);
-						ge.getFeatures().appendChild(marker);
-						
-						(function(shelter,idx) {
-							google.earth.addEventListener(marker, 'click', function(event) {
-							
-								// prevent the default balloon from popping up
-								event.preventDefault();
-								var balloon = new ShelterBalloon(shelter,idx,event);
-								balloon.show();
-								_this.shelterBalloonArr.push(balloon);
-							});
-						})(shelter,idx);
-					}
-				} else {
-					alert('No results found');
-				}
-			} else {
-				alert('Elevation service failed due to: ' + status);
-			}
-		});
-			
-	};
-
-
-	
-	// shelter route from selected place
-	//
-	Shelter.prototype.shelterRoute = function() {
-		var des = new google.maps.LatLng(currentClickedObject['lat'],currentClickedObject['lng'])
-		ge.setBalloon(null);
-		var request = {
-			origin: this.selectedPlace.location,//new google.maps.LatLng(latCur,lngCur),
-			destination: des,
-			travelMode: google.maps.TravelMode.WALKING
-		};
-		// Route the directions and pass the response to a
-		// function to create markers for each step.
-		directionsService.route(request, function(response, status) {
-			if (status == google.maps.DirectionsStatus.OK) {
-				drawSteps(response,des);
-				//drawSteps(response, _this.shelterInfo[idx].geometry.location);
-				currentClickedObject['lat'] = null;
-				currentClickedObject['lng'] = null;		
-			}
-		});
-	}
-	
-	// draw route step by step
-	//
-	var drawSteps = function(directionResult,destination) {
-		// For each step, place a marker, and add the text to the marker's
-		// info window. Also attach the marker to an array so we
-		// can keep track of it and remove it when calculating new
-		// routes.
-		
-		if(currentLine){
-			ge.getFeatures().removeChild(currentLine);
-			currentLine = null;	
-		}
-
-		if (_this.routePlaceMark != null) {
-			_this.routePlaceMark.setGeometry(null);
-		}
-		
-		var routeGeometry = ge.createMultiGeometry('');
-		
-		var myRoute = directionResult.routes[0].legs[0];
-		var slat = _this.selectedPlace.location.lat();
-		var slng = _this.selectedPlace.location.lng();
-		
-		for (var i = 0; i < myRoute.steps.length; i++) {
-			var line = ge.createLineString('');
-			line.getCoordinates().pushLatLngAlt(slat, slng, 0);
-			line.getCoordinates().pushLatLngAlt(myRoute.steps[i].start_point.lat(), myRoute.steps[i].start_point.lng(), 0);
-			line.setTessellate(true);
-			line.setAltitudeMode(ge.ALTITUDE_CLAMP_TO_GROUND);
-			
-			routeGeometry.getGeometries().appendChild(line);
-			
-			slat = myRoute.steps[i].start_point.lat();
-			slng = myRoute.steps[i].start_point.lng();
-		}
-		if (myRoute.steps.length > 0) {
-			var line = ge.createLineString('');
-			line.getCoordinates().pushLatLngAlt(slat, slng, 0);
-			line.getCoordinates().pushLatLngAlt(myRoute.steps[myRoute.steps.length-1].end_point.lat(), myRoute.steps[myRoute.steps.length-1].end_point.lng(), 0);
-			line.setTessellate(true);
-			line.setAltitudeMode(ge.ALTITUDE_CLAMP_TO_GROUND);
-			
-			routeGeometry.getGeometries().appendChild(line);
-			
-			slat = myRoute.steps[myRoute.steps.length-1].end_point.lat();
-			slng = myRoute.steps[myRoute.steps.length-1].end_point.lng();
-		}
-		var line = ge.createLineString('');
-		line.getCoordinates().pushLatLngAlt(slat, slng, 0);
-		line.getCoordinates().pushLatLngAlt(destination.lat(), destination.lng(), 0);
-		line.setTessellate(true);
-		line.setAltitudeMode(ge.ALTITUDE_CLAMP_TO_GROUND);
-		
-		routeGeometry.getGeometries().appendChild(line);
-		
-		
-		_this.routePlaceMark = ge.createPlacemark('');
-		_this.routePlaceMark.setGeometry(routeGeometry);
-		
-		_this.routePlaceMark.setStyleSelector(ge.createStyle(''));
-		var lineStyle = _this.routePlaceMark.getStyleSelector().getLineStyle();
-		lineStyle.setWidth(5);
-		lineStyle.getColor().set('990088ff');
-
-		ge.getFeatures().appendChild(_this.routePlaceMark);
-		currentLine = _this.routePlaceMark;
-
-
-	}
-	
-	// shelter dispose
-	//
-	Shelter.prototype.dispose = function() {
-		
-		var i;
-		
-		if (_this.shelterMarkArr != null) {
-			for (i = 0; i<this.shelterMarkArr.length; i++) {
-				ge.getFeatures().removeChild(this.shelterMarkArr[i]);
-			}
-			_this.shelterMarkArr = null;
-		}
-
-		if (_this.routePlaceMark != null) {
-			_this.routePlaceMark.setGeometry(null);
-			_this.routePlaceMark = null;
-		}
-	}
-	
-	return this;
-}
-
-
-
-
-//****************************************************************************/
-// Class PlaceBalloon
-//
-//****************************************************************************/
-function PlaceBalloon(info,event) {
-	
-	var balloonDivInner_1 = '<table>'
-		+ '<tr height="50">'
-		+ '<td>'
-		+ '<span class="placeBalloonText" style="padding-left:5px;font-weight:bold">addrMark</span><br>'
-		+ '<span class="placeBalloonText" style="padding-left:5px">海抜 Elevationｍ</span>'
-		+ '</td>'
-		+ '<td align="left" valign="top"><img style="max-width: 35px;max-height: 35px;padding-left:23px;" src = "' + URL_IMG + 'close_shelter-balloon-y.png" onclick="ge.setBalloon(null);">'
-		+ '</td>'
-		+ '</tr>'
-		+ '<tr>'
-
-		+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:40px; background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="toggleKml(\tsunami2\');" >津波ハザードマップ</div>'
-		//+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:40px; background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="selectedPlace.showNextBalloon();" >津波ハザードマップ</div>'
-		+ '</td>'
-		+ ''
-		+ '</tr>'
-		+ '<tr>'
-		+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:40px; background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="toggleKml(\'shelter\');" >避難所の表示</div>' 
-		//+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:40px; background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="shelter.searchAndShow(0);" >近くの避難所</div>'
-				
-		+ '</td>'
-		+ ''
-		+ '</tr>'
-		+ '<tr>'
-		+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:30px; align:center;background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="download.download();" ><table style="height:30px" ><tr><td><img style="max-width: 23px;max-height: 23px; margin-top:6px;" src="' + URL_IMG + 'dl_shelter-balloon.png"></td><td valign="top" style="padding-top:3px">ダウンロード&nbsp;</td></tr></table></div>'
-		+ '</td>'
-		+ ''
-		+ '</tr>'
-		+ '</table>';
-	
-	var balloonDivInner_2 = '<table>'
-		+ '<tr height="45">'
-		+ '<td align="left" valign="top"><img style="max-width: 120px;max-height: 35px; padding-left:5px;" src = "' + URL_IMG + 'back_shelter-balloon-y.png"  onclick="selectedPlace.showPrevBalloon();">'
-		+ '</td>'
-		+ '<td align="left" valign="top"><img style="max-width: 35px;max-height: 35px;" src = "' + URL_IMG + 'close_shelter-balloon-y.png" onclick="ge.setBalloon(null);">'
-		+ '</td>'
-		+ '</tr>'
-		+ '<tr>'
-		+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:40px; background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="showTsunami(1);" >1mの津波</div>'
-		+ '</td>'
-		+ ''
-		+ '</tr>'
-		+ '<tr>'
-		+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:40px; background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="showTsunami(2);" >3mの津波</div>'
-		+ '</td>'
-		+ ''
-		+ '</tr>'
-		+ '<tr>'
-		+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:40px; background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="showTsunami(3);" >5mの津波</div>'
-		+ '</td>'
-		+ ''
-		+ '</tr>'
-		+ '<tr>'
-		+ '<td colspan=2 align="center"><div style="width:130px;height:45px; line-height:30px; align:center;background-position:4px 1px;background-image:url(' + URL_IMG + 'btn_shelter-balloon-y_1.png' + '); background-repeat:no-repeat; color:white; font-size:12px;"  onclick="download.download();" ><table style="height:30px" ><tr><td><img style="max-width: 23px;max-height: 23px; margin-top:6px;" src="' + URL_IMG + 'dl_shelter-balloon.png"></td><td valign="top" style="padding-top:3px">ダウンロード&nbsp;</td></tr></table></div>'
-		+ '</td>'
-		+ ''
-		+ '</tr>'
-		+ '</table>';
-	this.prevDivInner;
-	
-	this.placeMarkBalloon = ge.createHtmlDivBalloon('');
-	this.placeMarkBalloon.setFeature(event.getTarget());
-	this.placeMarkBalloon.setMaxWidth(500);
-	this.placeMarkBalloon.setCloseButtonEnabled(false);
-	
-	this.balloonDiv = document.createElement('DIV');
-	this.balloonDiv.innerHTML = balloonDivInner_1.replace("addrMark", info.name).replace("Elevation",info.elevation);
-		
-	this.placeMarkBalloon.setContentDiv(this.balloonDiv);
-	
-	
-	// show Place Balloon
-	//
-	PlaceBalloon.prototype.show = function() {
-		ge.setBalloon(this.placeMarkBalloon);
-	}
-	
-	// show Next Menu
-	//
-	PlaceBalloon.prototype.showNext = function(){
-		this.prevDivInner = this.balloonDiv.innerHTML;
-		this.balloonDiv.innerHTML = balloonDivInner_2;
-	}
-	
-	// show Prev Menu
-	//
-	PlaceBalloon.prototype.showPrev = function(){
-		this.balloonDiv.innerHTML = this.prevDivInner;
-	}
-	
-	return this;
-}
-
-
-//****************************************************************************/
-// Class Place
-//
-//****************************************************************************/
-function Place(name) {
-	
-	var _this = this;
-	this.isHide = 1;
-	
-	this.altitude = -1;
-	this.location;
-	
-	this.name = name;
-	this.address;
-	this.isGeocoding = 0;
-	
-	this.placeMark = ge.createPlacemark('');
-	this.ballon;
-	
-	if (shelter != null) {
-		shelter.dispose();
-	}
-	shelter = new Shelter(_this);
-	
-	google.earth.addEventListener(this.placeMark, 'click', function(event) {
-		// prevent the default balloon from popping up
-		event.preventDefault();
-		
-		//resetScreenSaveTime();
-		var info = {
-			name: _this.name,
-			elevation: '100'
-		};
-		
-		_this.balloon = new PlaceBalloon(info,event);
-		_this.balloon.show();
-	});
-	
-	
-	// request geocode through call google api
-	//
-	Place.prototype.geocode = function(address) {
-		
-		this.address = address;
-		_this.isGeocoding = 1;
-		geocoder.geocode( { 'address': this.address}, function(results, status) {
-			if (status == google.maps.GeocoderStatus.OK) {
-			
-				_this.location = results[0].geometry.location;
-				
-			} else {
-				//alert("Geocode was not successful for the following reason: " + status);
-			}
-			_this.isGeocoding = 0;
-		});
-	}
-	
-	// show place mark
-	//
-	Place.prototype.show = function() {
-		
-		if (_this.isGeocoding == 1) {
-			setTimeout(_this.show,100)
-			return;
-		}
-		var la = ge.createLookAt('');
-		la.set(_this.location.lat(),
-				_this.location.lng(),
-				60, // altitude
-				ge.ALTITUDE_RELATIVE_TO_GROUND,
-				0, // heading
-				30, // straight-down tilt
-				1000 // range (inverse of zoom)
-				);
-		ge.getView().setAbstractView(la);
-		
-		
-		// Define a custom icon.
-		var icon = ge.createIcon('');
-		icon.setHref(URL_IMG + 'pin_mine.png');
-		
-		var style = ge.createStyle(''); //create a new style
-		style.getIconStyle().setIcon(icon); //apply the icon to the style
-		style.getIconStyle().setScale(2.0);
-		
-		_this.placeMark.setStyleSelector(style); //apply the style to the placemark
-		_this.placeMark.setName(_this.name);
-		
-		// Set the placemark's location.  
-		var point = ge.createPoint('');
-		point.setLatitude(_this.location.lat());
-		point.setLongitude(_this.location.lng());
-		_this.placeMark.setGeometry(point);
-		ge.getFeatures().appendChild(_this.placeMark);
-		
-		_this.isHide = 0;
-	}
-	
-	// hide place mark
-	//
-	Place.prototype.hide = function() {
-		
-	}
-	
-	// show next ballon
-	//
-	Place.prototype.showNextBalloon = function() {
-		_this.balloon.showNext();
-	}
-	
-	// show next ballon
-	//
-	Place.prototype.showPrevBalloon = function() {
-		_this.balloon.showPrev();
-	}
-	
-	// dispose
-	//
-	Place.prototype.dispose = function() {
-		if (this.isHide == 0) {
-			ge.getFeatures().removeChild(this.placeMark);
-			this.isHide = 1;
-		}
-	}
-	
-	return this;
-}
-
-
-//****************************************************************************/
-// Class QRCode Reader
-//
-//****************************************************************************/
-function QRCodeReader() {
-	
-	var _this = this;
-	var QRCode = "";
-	this.keydownHandel="";
-	this.isReading = 0;
-	
-	//Read QRCode and call back
-	//
-	QRCodeReader.prototype.read = function(callback) {
-		
-		QRCode = "";
-		this.isReading = 1;
-		addEventHandler(window, 'keydown', function(e) {
-			
-			_this.keydownHandel = arguments.callee;
-			e = e || window.event; 
-			var keycode = e.which ? e.which : e.keyCode; 
-			if (keycode !=13) {
-				QRCode = QRCode + (keycode-48);
-			} else {
-				//removeEventHandler(window, 'keydown', keydownHandel);
-				_this.stopRead();
-				screenSave.resetCount();				//callback("1315492432");
-				callback(QRCode);
-			}
-			e.preventDefault();
-			e.stopPropagation();
-		});
-		
-	};
-	
-	//stop read
-	//
-	QRCodeReader.prototype.stopRead = function() {
-		removeEventHandler(window, 'keydown', _this.keydownHandel);
-		//QRCode = "";
-		_this.isReading = 0;
-	}
-	
-	// event handling helper
-	//
-	function addEventHandler(obj, evt, handler) {
-		if ('attachEvent' in obj)
-			obj.attachEvent('on' + evt, handler);
-		else
-			obj.addEventListener(evt, handler, false);
-	}
-	
-	// event handling helper
-	//
-	function removeEventHandler(obj, evt, handler) {
-		if ('detachEvent' in obj) {
-			obj.detachEvent('on' + evt, handler);
-		}
-		else {
-			obj.removeEventListener(evt, handler, false);
-		}
-	}
-	
-	return this;
-}
-
-
-//****************************************************************************/
-// Class User Session
-//
-//****************************************************************************/
-function UserSession() {
-	
-	var userInfo;		//JSON String
-	var userQRCode;		
-	//Request UserInfo through call WEB API
-	//
-	UserSession.prototype.requestUserInfo = function(QRCode,callback) {		userQRCode = null;		
-		$.getJSON(USERINFO_URL + QRCode ,function(result){
-			userInfo = result;
-			userQRCode = QRCode;
-			callback();
-		
-		});
-	};
-	//get user QRCode
-	//
-	UserSession.prototype.getQRCode = function() {
-		return userQRCode;
-	};
-		/*
-		$.each(result.places,function(i, place) {
-			alert(place.name);
-			alert(place.address);
-		});
-		*/
-	
-	//get place count
-	//
-	UserSession.prototype.placeCount = function() {
-		return userInfo.places.length;
-	};
-	
-	//get PlaceName
-	//
-	UserSession.prototype.getPlaceName = function(idx) {
-		return userInfo.places[idx].name;
-	};
-	
-	//get Address
-	//
-	UserSession.prototype.getAddress = function(idx) {
-		return userInfo.places[idx].address;
-	};
-	
-	//login out
-	//
-	UserSession.prototype.loginOut = function() {
-		userInfo = null;				userQRCode = null;
-	}
-	//is Login in
-	//
-	UserSession.prototype.isLoginIn = function() {		if (userQRCode == null) {			return false;		} 		return true;
-	}		// authenticate		//		UserSession.prototype.authenticate = function(QRCode) {		if (userQRCode == QRCode) {			return true;		} 		return false;
-	}
-	return this;
-}
-
-
-
-//****************************************************************************/
-// Class Place Select Menu
-//
-//****************************************************************************/
-function PlaceSelectMenu(userSession) {
-	
-	var _this = this;
-	this.isHide = 1;
-	
-	var titleWidth = 380;
-	var titleHeight = 66;
-	var titleTop = 210;
-	
-	var placeSelBtnTop = 300;
-	var placeSelBtnWidth = 300;
-	var placeSelBtnHeight = 50;
-	
-	var _userSession = userSession
-	var placeArr = new Array();
-	
-	var titleIcon = ge.createIcon('');
-	titleIcon.setHref(URL_IMG + 'h2-1_earth.png');
-	
-	var placeSelOverlay = ge.createScreenOverlay('');
-	placeSelOverlay.setIcon(titleIcon);
-	placeSelOverlay.getOverlayXY().set(SCREEN_WIDTH/2 - titleWidth/2, ge.UNITS_PIXELS, titleTop, ge.UNITS_INSET_PIXELS);
-	placeSelOverlay.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
-	placeSelOverlay.getSize().set(titleWidth, ge.UNITS_PIXELS, titleHeight, ge.UNITS_PIXELS);
-	
-	var i;
-	for (i = 0; i < _userSession.placeCount(); i++) {
-		placeArr[i] = new HtmlButton(_userSession.getPlaceName(i)
-								,SCREEN_WIDTH/2-placeSelBtnWidth/2
-								,placeSelBtnTop + (placeSelBtnHeight + 20) * i
-								,placeSelBtnWidth
-								,placeSelBtnHeight);
-		(function(name,address) {
-			placeArr[i].addClickListener(function(){
-				if (selectedPlace != null) {
-					selectedPlace.dispose();
-				}
-				selectedPlace = new Place(name);
-				selectedPlace.geocode(address);
-				selectedPlace.show();
-				_this.hide();
-			});
-		})(_userSession.getPlaceName(i),_userSession.getAddress(i));
-		
-	}
-	
-	///////////////////////
-	//method start
-	///////////////////////
-	
-	//show PlaceSelectMenu
-	//
-	PlaceSelectMenu.prototype.show = function() {
-		
-		if (this.isHide == 1) {
-			ge.getFeatures().appendChild(placeSelOverlay);
-			var idx;
-			for (idx = 0; idx < placeArr.length; idx++) {
-				placeArr[idx].show();
-			}
-			this.isHide = 0;
-		}
-	}
-	
-	//hide PlaceSelectMenu
-	//
-	PlaceSelectMenu.prototype.hide = function() {
-	
-		if (this.isHide == 0) {
-			ge.getFeatures().removeChild(placeSelOverlay);
-			var i;
-			for (i = 0; i < placeArr.length; i++) {
-				placeArr[i].hide();
-			}
-			this.isHide = 1;
-		}
-	}
-	
-	
-	// PlaceSelectMenu dispose
-	//
-	PlaceSelectMenu.prototype.dispose = function() {
-		
-		try {
-			if (this.isHide == 0) {
-				ge.getFeatures().removeChild(placeSelOverlay);
-				var i;
-				for (i = 0; i < placeArr.length; i++) {
-					placeArr[i].dispose();
-				}
-				this.isHide = 1;
-			}
-		} catch(err) {
-			debug("PlaceSelectMenu dispose err:" + err.description);
-		}
-	}
-	
-	return this;
-
-}
-
-
-//****************************************************************************/
-// Class HTML Button
-//
-//****************************************************************************/
-//function HtmlButton(id,text,left,top,width,height) {
-function HtmlButton(text,left,top,width,height) {
-	
-	this.isHide = 1;
-	var _this = this;
-	
-	//button edge
-	this.edgeIcon = ge.createIcon('');
-	this.edgeIcon.setHref(URL_IMG + 'btn_earth.png');
-	this.edgeOverlay = ge.createScreenOverlay('');
-	this.edgeOverlay.setIcon(this.edgeIcon);
-	this.edgeOverlay.getOverlayXY().set(left, ge.UNITS_PIXELS, top, ge.UNITS_INSET_PIXELS);
-	this.edgeOverlay.getScreenXY().set(0, ge.UNITS_FRACTION, 1, ge.UNITS_FRACTION);
-	this.edgeOverlay.getSize().set(width, ge.UNITS_PIXELS, height, ge.UNITS_PIXELS);
-	
-	// create div
-	this.buttonDiv = document.createElement("div");
-	this.buttonDiv.className="htmlButton";
-	this.buttonDiv.innerHTML = text;
-	
-	// create an IFRAME shim for the button  
-	this.iframeShim;
-	this.iframeShim = document.createElement('iframe');  
-	this.iframeShim.frameBorder = 0;  
-	this.iframeShim.scrolling = 'no';  
-	this.iframeShim.src = (navigator.userAgent.indexOf('MSIE 6') >= 0) ?  
-	  '' : 'javascript:void(0);';  
-
-	// position the button and IFRAME shim  
-	this.buttonDiv.style.position = this.iframeShim.style.position = 'absolute';  
-	this.buttonDiv.style.left = this.iframeShim.style.left = left+(width/12) + 'px';  
-	this.buttonDiv.style.top = this.iframeShim.style.top = top+(height/10) + 'px';  
-	this.buttonDiv.style.width = this.iframeShim.style.width = width-(width/12)*2 + 'px';  
-	this.buttonDiv.style.height = this.iframeShim.style.height =  height-(height/10)*2 + 'px';  
-	this.buttonDiv.style.lineHeight =  height-(height/10)*2 + 'px';  
-	// set up z-orders  
-	this.buttonDiv.style.zIndex = 10;  
-	this.iframeShim.style.zIndex = this.buttonDiv.style.zIndex - 1;  
-	
-	///////////////////////
-	//method start
-	///////////////////////
-	
-	//show button
-	//
-	HtmlButton.prototype.show = function() {
-		if (this.isHide == 1) {
-			ge.getFeatures().appendChild(this.edgeOverlay);
-			document.body.appendChild(this.buttonDiv);  
-			document.body.appendChild(this.iframeShim);  
-			this.isHide = 0;
-		}
-	};
-	
-	//hide button
-	//
-	HtmlButton.prototype.hide = function() {
-		try {
-			if (this.isHide == 0) {
-				ge.getFeatures().removeChild(this.edgeOverlay);
-				document.body.removeChild(this.buttonDiv);  
-				document.body.removeChild(this.iframeShim);  
-				this.isHide = 1;
-			}
-		} catch(err) {
-			debug("HTML Button hide err:" + err.description);
-		}
-	};
-	
-	//set font size
-	//
-	HtmlButton.prototype.setFontSize = function(fontSize) {
-		this.buttonDiv.style.fontSize = fontSize + 'px';
-	};
-	
-	//define click event
-	//
-	HtmlButton.prototype.addClickListener = function(funcName) {
-		this.buttonDiv.addEventListener("click", screenSave.resetCount);
-		this.buttonDiv.addEventListener("click", funcName);
-	};
-	
-	//dispose
-	//
-	HtmlButton.prototype.dispose = function() {
-		try {
-			if (this.isHide == 0) {
-				ge.getFeatures().removeChild(this.edgeOverlay);
-				document.body.removeChild(this.buttonDiv);  
-				document.body.removeChild(this.iframeShim);   
-				this.isHide = 1;
-			}
-		} catch(err) {
-			debug("HTML Button dispose err:" + err.description);
-		}
-	};
-	return this;
-}
-
-
-//****************************************************************************/
-// Class HTML Hint
-//
-//****************************************************************************/
-//function HtmlHint(id,text,left,top,width,height) {
-function HtmlHint(text,left,top,width,height) {
-	
-	var _this = this;
-	this.isHide = 1;
-	
-	// create div
-	this.hintDiv = document.createElement("div");
-	this.hintDiv.className="htmlHint";
-	this.hintDiv.innerHTML = text;
-	
-	// create an IFRAME shim for the button  
-	this.iframeShim = document.createElement('iframe');  
-	this.iframeShim.frameBorder = 0;  
-	this.iframeShim.scrolling = 'no';  
-	this.iframeShim.src = (navigator.userAgent.indexOf('MSIE 6') >= 0) ?  
-	  '' : 'javascript:void(0);';  
-
-	// position the button and IFRAME shim  
-	this.hintDiv.style.position = this.iframeShim.style.position = 'absolute';  
-	this.hintDiv.style.left = this.iframeShim.style.left = left + 'px';  
-	this.hintDiv.style.top = this.iframeShim.style.top = top + 'px';  
-	this.hintDiv.style.width = this.iframeShim.style.width = width + 'px';  
-	this.hintDiv.style.height = this.iframeShim.style.height = height + 'px';
-	this.hintDiv.style.lineHeight =  height + 'px';  
-	
-	// set up z-orders  
-	this.hintDiv.style.zIndex = 10;  
-	this.iframeShim.style.zIndex = this.hintDiv.style.zIndex - 1;  
-	
-	///////////////////////
-	//method start
-	///////////////////////
-	
-	//show hint
-	//
-	HtmlHint.prototype.show = function() {		_this = this;		
-		if (this.isHide == 1) {
-			document.body.appendChild(this.hintDiv);  
-			document.body.appendChild(this.iframeShim);  
-			startFlicker();
-			this.isHide = 0;
-		}
-	};
-	
-	//hide hint
-	//
-	HtmlHint.prototype.hide = function() {
-		try {
-			if (this.isHide == 0) {
-				document.body.removeChild(this.hintDiv);  
-				document.body.removeChild(this.iframeShim);  
-				stopFlicker();
-				this.isHide = 1;
-			}
-		} catch(err) {
-			debug("HTML HtmlHint hide err:" + err.description);
-		}
-	};
-	
-	//set font size
-	//
-	HtmlHint.prototype.setFontSize = function(fontSize) {
-		this.hintDiv.style.fontSize = fontSize + 'px';
-	};
-	
-	//set Background Image
-	//
-	HtmlHint.prototype.setBackgroundImage = function(image) {
-		this.hintDiv.style.backgroundImage = "url(" + URL_IMG + image + ")";
-	};
-	
-	//font flicker
-	//
-	var index = 0;
-	var flickerFlg = 1;
-	var flickerInterval;
-	var color = ['#000000','#080808','#101010','#181818','#202020','#282828','#303030','#383838',
-				'#404040','#484848','#505050','#585858','#606060','#686868','#707070','#787878',
-				'#808080','#888888','#909090','#989898','#A0A0A0','#A8A8A8','#B0B0B0','#B8B8B8',
-				'#C0C0C0','#C8C8C8','#D0D0D0','#D8D8D8','#E0E0E0','#E8E8E8','#F0F0F0','#F8F8F8'];
-	//start flicker
-	//
-	var startFlicker = function() {
-		flickerInterval = setInterval(function() {
-			_this.hintDiv.style.color = color[index];
-			if (flickerFlg == 1) {
-				index ++;
-				if (index == 31) {
-					flickerFlg = -1;
-				}
-			} else {
-				index --;
-				if (index == 0) {
-					flickerFlg = 1;
-				}
-			}
-		},40);
-	};
-	//stop flicker
-	//
-	var stopFlicker = function() {
-		clearInterval(flickerInterval);
-		flickerInterval = null;
-	}
-	
-	return this;
-}
-
-	//<input type="text" id="debug">
-	//<input type="button" id="test1" value ="test1" onclick="testBtn1();">
-	//<input type="button" id="test2" value ="test2" onclick="testBtn2();">
-
-//****************************************************************************/
-// Getting latlng of place where camera is looking
-//
-//****************************************************************************/
-function viewEventListener(event) {
-  var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
-	//document.getElementById("id_lat_la").innerHTML = lookAt.getLatitude().toFixed(10);
-	//document.getElementById("id_lng_la").innerHTML = lookAt.getLongitude().toFixed(10);
-	viewLat = lookAt.getLatitude();
-	viewLng = lookAt.getLongitude();
-}
-
-//****************************************************************************/
-// Class getAddress
-//
-//****************************************************************************/
-
-	function getAddress(lat1,lng1) {
-		var geocoder = new google.maps.Geocoder();
-		var latlngmap = new google.maps.LatLng(lat1,lng1);
-		geocoder.geocode({
-			latLng: latlngmap
-		}, function(results, status) {
-			if (status == google.maps.GeocoderStatus.OK) {
-				if (results[0].geometry) {
-					var address = results[0].formatted_address.replace(/^日本, /, '');
-					//alert(address);
-					nowAddress = address; /////////////////////////////////かえる
-				}
-			}
-		});
-	}
-
-//****************************************************************************/
-// Functions for showing and hiding KML
-//
-//****************************************************************************/
-//////for Shelter
-// I think there is a lot better way to do this.
-
-function loadKml(file) {
-
-	var kmlUrl = 'http://192.218.175.137:8080/aeonsite/kml/' + file + '.kml';
-	
-	google.earth.fetchKml(ge, kmlUrl,  function(kmlObject) {
-    	if (kmlObject) {
-      		// show it on Earth
-      		currentKmlObject[file] = kmlObject;
-      		ge.getFeatures().appendChild(kmlObject);
-	
-		google.earth.addEventListener(kmlObject, 'click', function(event) {
-
- 			var kmlPlacemark = event.getTarget();
-			currentClickedObject['name'] = kmlPlacemark.getName();
-			currentClickedObject['lat'] = kmlPlacemark.getGeometry().getLatitude();
-			currentClickedObject['lng'] = kmlPlacemark.getGeometry().getLongitude();
-			//alert(currentClickedObject['name']+currentClickedObject['lat']+currentClickedObject['lng']);
-			routeButton.show();
-		});
-
-	
-    	} else {
-      		// bad KML
-		alert('kmlLoadFailed');
-      		currentKmlObject[file] = null;
-	}});
-}
-
-function toggleKml(file){
-
-  	if (!currentKmlObject[file]) {
-		loadKml(file);
-    	}else if(currentKmlObject[file]){
-		ge.getFeatures().removeChild(currentKmlObject[file]);
-    		currentKmlObject[file] = null;
-	}
-}
-
-function releaseKml(file){
-	
-	if(currentKmlObject[file]){
-	ge.getFeatures().removeChild(currentKmlObject[file]);
-    	currentKmlObject[file] = null;
-	}
-}
-
-function releaseLine(){
-	if(currentLine){
-	ge.getFeatures().removeChild(currentLine);
-    	currentLine = null;
-	}
-}
-
-//****************************************************************************/
-// Shelter route new
-//
-//****************************************************************************/
-/**************************************************************************/
-
-
-	//shelter route from lookingAt
-	//
-
-function shelterRoute1(){
-	//directionsDisplay = new google.maps.DirectionsRenderer();
-	var org = new google.maps.LatLng(viewLat,viewLng);
-	var des = new google.maps.LatLng(currentClickedObject['lat'],currentClickedObject['lng']);	
-	
-	//ge.setBalloon(null);
-	var request = {
-		origin: org,
-		destination: des,
-		travelMode: google.maps.TravelMode.WALKING
-	};
-	directionsService.route(request,function(response, status) {
-		if (status == google.maps.DirectionsStatus.OK) {
-			//directionsDisplay.setDirections(response);
-			drawSteps1(response,des);
-		}else {alert(status);}
-	});
-}
-	//draw route from lookingAt
-	//
-	// draw route step by step
-	//選択した地点からのルートと現在地からのルートはわける
-	//これは現在地から
-
-function drawSteps1(directionResult,destination) {
-		// For each step, place a marker, and add the text to the marker's
-		// info window. Also attach the marker to an array so we
-		// can keep track of it and remove it when calculating new
-		// routes.
-		
-		if(currentLine){
-			ge.getFeatures().removeChild(currentLine);
-			currentLine = null;	
-		}		
-
-		var routeGeometry = ge.createMultiGeometry('');
-		
-		var myRoute = directionResult.routes[0].legs[0];
-		var slat = viewLat;
-		var slng = viewLng;
-		
-		for (var i = 0; i < myRoute.steps.length; i++) {
-			var line = ge.createLineString('');
-			line.getCoordinates().pushLatLngAlt(slat, slng, 0);
-			line.getCoordinates().pushLatLngAlt(myRoute.steps[i].start_point.lat(), myRoute.steps[i].start_point.lng(), 0);
-			line.setTessellate(true);
-			line.setAltitudeMode(ge.ALTITUDE_CLAMP_TO_GROUND);
-			//alert('hoge');
-			routeGeometry.getGeometries().appendChild(line);
-			
-			slat = myRoute.steps[i].start_point.lat();
-			slng = myRoute.steps[i].start_point.lng();
-		}
-		if (myRoute.steps.length > 0) {
-			var line = ge.createLineString('');
-			line.getCoordinates().pushLatLngAlt(slat, slng, 0);
-			line.getCoordinates().pushLatLngAlt(myRoute.steps[myRoute.steps.length-1].end_point.lat(), myRoute.steps[myRoute.steps.length-1].end_point.lng(), 0);
-			line.setTessellate(true);
-			line.setAltitudeMode(ge.ALTITUDE_CLAMP_TO_GROUND);
-			
-			routeGeometry.getGeometries().appendChild(line);
-			//alert('end');
-			slat = myRoute.steps[myRoute.steps.length-1].end_point.lat();
-			slng = myRoute.steps[myRoute.steps.length-1].end_point.lng();
-		}
-		var line = ge.createLineString('');
-		line.getCoordinates().pushLatLngAlt(slat, slng, 0);
-		line.getCoordinates().pushLatLngAlt(destination.lat(), destination.lng(), 0);
-		line.setTessellate(true);
-		line.setAltitudeMode(ge.ALTITUDE_CLAMP_TO_GROUND);
-		
-		routeGeometry.getGeometries().appendChild(line);
-		
-		
-		this.routePlaceMark = ge.createPlacemark('');
-		this.routePlaceMark.setGeometry(routeGeometry);
-		this.routePlaceMark.setStyleSelector(ge.createStyle(''));
-		var lineStyle = this.routePlaceMark.getStyleSelector().getLineStyle();
-		lineStyle.setWidth(5);
-		lineStyle.getColor().set('990088ff');
-		ge.getFeatures().appendChild(this.routePlaceMark);
-		currentLine = this.routePlaceMark;
-		
-	}
-
-//****************************************************************************/
-// flyToOsaka
-//
-//****************************************************************************/
-	
-
-function flyToOsaka(){
-		var lookat = ge.createLookAt('');		//move to osaka
-		lookat.set(34.7, 135.5,
-			600, // altitude
-			ge.ALTITUDE_RELATIVE_TO_GROUND,
-			0, // heading
-			30, // straight-down tilt
-			120000 // range (inverse of zoom)
-		);
-		ge.getView().setAbstractView(lookat);				setTimeout(function(){			
-			if (selectedPlace != null) {
-				selectedPlace.dispose();
-			}
-			selectedPlace = new Place("現在地");
-			selectedPlace.geocode("大阪府大阪市西区千代崎3丁目北2");
-			selectedPlace.show();
-			//loginButton.show();
-			sideMenu.show();		},5000);	
-}
-
-
-///////////////////////////////////
-//memo
-/*	
-	//alert(getAddress(viewLat,viewLng) + 'から' + currentClickedObject['name'] + 'へのルート');
-	shelterRoute1();
-	getAddress(viewLat,viewLng);
-	alert(nowAddress+'から'+currentClickedObject['name']+'へのルート');
+		QRcodeReader.stopRead();
+		//screenSave.start();
+		//alert("end");
+	});
+
+/*
+	videoObj = document.getElementById("screenSaveVideo");
+	videoObj.width = 1915;
+	videoObj.height = 1075;
+	videoObj.src="video/screen2.mp4"
 */
 
 
+	/////////////
+	google.earth.addEventListener(ge.getView(), "viewchange", viewEventListener);
+	////////////
+	//keyboardFocusHack(ge);
+
+}
+
+function failureCB(errorCode) {}
+
+google.setOnLoadCallback(init);
+
+//////定期的にページを更新、UserSessionじゃない時のみ
+/////できれば次回ログアウト時にページを更新したい
+function reloadPage(){
+	if(!userSession.isLoginIn()){
+		location.reload();
+	}
+}
+
+///シェルターなど開放できていないときがある
+///現在地の開放ができていないことがある
 
 
+///世界旅行防止したい
+///カメラ標高一定以上で操作不能
+///カメラ見てる座標一定以上で操作不能（スクリーンセーバー？）
+///画像の読み込みを最初に
+///
+///クラッシュが多いのでとりあえず中止
+///onLoad="setInterval('reloadPage()',1000*60*30)"
 
+</script>
 
-
-
-</script>
-	
-</head>
-<body  onKeyDown="return keyDown(event);" onKeyUp="return keyUp(event);">
-	<div style="height:0px; width:0px;">
-      <applet ID='DownloadApplet' Name = 'DownloadApplet' codebase='.'
-    	code='DownloadApplet.class' archive='DownloadApplet.jar'
-    	width='0' height='0'>
-      </applet>
-    </div>
-    <div id="map3d" style="height:768px; width:1358px;"></div>
-    <div id="map_canvas" style="height:0px; width:0px;"></div>
-	<div style="position:absolute; left:0px;top:0px;">
-		<video id = "screenSaveVideo" style="background-color:black;" width="0" height="0" loop onclick="screenSave.stop();">
-		<source src="video/screen.mp4" type="video/mp4">
-		Your browser does not support the video tag.
-		</video>
+</head>
+<body>
+	<div style="height:0px; width:0px;">
+      <applet ID='DownloadApplet' Name = 'DownloadApplet' codebase='.'
+    	code='DownloadApplet.class' archive='DownloadApplet.jar'
+    	width='0' height='0'>
+      </applet>
+    </div>
+    <div id="map3d" style="height:1080px; width:1920px; cursor:crosshair;"></div>
+    <div id="map_canvas" style="height:0px; width:0px;"></div>
+	<div style="position:absolute; left:0px;top:0px; cursor:crosshair";>
 	</div>
+
 <!--
 <p><input type="button" value="getAddress" onclick="getAddress(viewLat,viewLng)">
-<input type="button" value="toggleShelter" onclick="toggleKml('shelter')">
-<input type="button" value="toggleTsunami" onclick="toggleKml('tsunami2')">
-<input type="button" value="route" onclick="shelterRoute1()"></p>
+<input type="button" value="qrDebug" onclick="qrDebug();">
+<input type="button" value="hint" onclick="applicationHint();">
+<input type="button" value="route" onclick="shelterRoute1()"></p>
 -->
-</body>
-</html>
+</body>
+</html>

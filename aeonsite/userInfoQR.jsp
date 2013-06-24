@@ -26,8 +26,8 @@
 </div>
 
 <div data-role="content" align="center" >
-<br><img  src="./images/aeon-logo.png" alt=""><br><br>
-<p><img src="<s:property value='registerConfirmBean.qrImage'/>" height="200" width="200"/></p>
+
+<p><img src="<s:property value='registerConfirmBean.qrImage'/>" height="250" width="250"/></p>
 </div></div>
 
 

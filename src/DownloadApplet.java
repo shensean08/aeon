@@ -18,8 +18,7 @@ import java.net.*;
 public class DownloadApplet extends Applet implements ActionListener {
 	private static final long serialVersionUID = 7973760697552446266L;
 	
-	private static final String urlString = "http://192.218.175.137:8080/aeonsite/downloadAction.action";
-	//private static final String urlString = "http://127.0.0.1:8080/aeonsite/downloadAction.action";
+	private static final String urlString = "downloadAction.action";
 	
     private JTextArea textArea;
     private JTextField textField;
@@ -66,7 +65,7 @@ public class DownloadApplet extends Applet implements ActionListener {
 
     public String test() {
     	String rtn = "test ok";
-    	DownloadImage("userID","0","sName1","sLat1","sLng1","dName1","dLat1","dLng1");
+    	DownloadImage("http://127.0.0.1:8080/aeonsite/","userID","0","sName1","sLat1","sLng1","dName1","dLat1","dLng1");
         return rtn;
     }
     
@@ -84,13 +83,13 @@ public class DownloadApplet extends Applet implements ActionListener {
 		return result;
 	}
 	
-	public void DownloadImage(String userID,String type, String startName, String startLat,String startLng,String destinationName, String destinationLat,String destinationLng) {
+	public void DownloadImage(String urlAddress, String userID,String type, String startName, String startLat,String startLng,String destinationName, String destinationLat,String destinationLng) {
 		try {
 			// capture Screen
 			byte[] pic = CaptureScreen();
 			
 			// add parameter
-			String urlLink = urlString; 
+			String urlLink = urlAddress + urlString; 
 			urlLink += "?" + URLEncoder.encode("userID", "UTF-8") + "=" + URLEncoder.encode(userID, "UTF-8");
 			urlLink += "&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode(type, "UTF-8");
 			urlLink += "&" + URLEncoder.encode("startName","UTF-8") + "=" + URLEncoder.encode(startName, "UTF-8");

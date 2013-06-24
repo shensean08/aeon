@@ -25,7 +25,7 @@
 
 <div data-role="fieldcontain">
 <label for="inp_5419">ユーザー名</label>
-<s:textfield name="loginBean.userName" value="%{loginBean.userName}" size="20" maxlength="20" id="inp_5419" />
+<s:textfield name="loginBean.userName" value="%{loginBean.userName}" onkeyup="this.value=this.value.toLowerCase();value=value.replace(/[\W]/g,'');" size="20" maxlength="20" id="inp_5419" />
 </div>
 
 <div data-role="fieldcontain">

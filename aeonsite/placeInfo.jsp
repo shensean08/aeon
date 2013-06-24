@@ -4,7 +4,7 @@
 	
 	String QRCode = new String(request.getParameter("qrcode").getBytes("iso-8859-1"),"UTF-8");
 	loginQrLogic logic = new loginQrLogic();
-   	String res = logic.execute(QRCode);
+	String res = logic.execute(QRCode);
    	//"1315492432"
    	//response.setContentType("text/html charset=utf-8");
    	//PrintWriter out = response.getWriter();

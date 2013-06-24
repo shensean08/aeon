@@ -28,7 +28,7 @@
 
 <div data-role="fieldcontain">
 <label for="inp_5511">メールアドレス</label>
-<s:textfield name="userInfoBean.mailAddress" value="%{userInfoBean.mailAddress}" maxlength="20" size="20" id="inp_5511" />
+<s:textfield name="userInfoBean.mailAddress" value="%{userInfoBean.mailAddress}" onkeyup="this.value=this.value.toLowerCase();" maxlength="20" size="20" id="inp_5511" />
 </div>
 
 <div data-role="fieldcontain">

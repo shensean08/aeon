@@ -3,6 +3,7 @@ package edu.kgu.aeon.Action;
 import edu.kgu.aeon.bean.loginFormBean;
 import edu.kgu.aeon.bean.registerConfirmFormBean;
 import edu.kgu.aeon.logic.loginLogic;
+import edu.kgu.log.LogLogger;
 
 public class loginAction extends BaseAction {
 
@@ -44,7 +45,6 @@ public class loginAction extends BaseAction {
 		}
 		
 		this.setMessagebean(logic.messagebean);
-		
 		return rtn;
 	}
 }

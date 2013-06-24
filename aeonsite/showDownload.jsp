@@ -88,14 +88,14 @@
 <div class="ui-grid-a" data-theme="b">
 <s:iterator value="downloadlist" status="st">
 	<div class="ui-block-a" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
-		<img id="sh<s:property value='%{DLNo}'/>" style="visibility: hidden" src="images/minus.png" onclick="minus('sh' + '<s:property value='%{DLNo}'/>')" height=22 width=22/>
+		<img id="sh<s:property value='%{DLNo}'/>" style="visibility: hidden" src="images/minus.png" onclick="minus('sh' + '<s:property value='%{DLNo}'/>')" height=23 width=23/>
 		<s:property value="%{DLName}"/>
 	</div>
 	<div class="ui-block-b">
-		<s:a href="#" onclick="location.href=<s:property value='%{ImageLink}'/>">image</s:a>
+		<s:a href="#" onclick="location.href='%{ImageLink}'">image</s:a>
 		&nbsp;		
-		<s:a href="#" onclick="location.href=<s:property value='%{MapLink}'/>">Map</s:a>
-		<img id="del<s:property value='%{DLNo}'/>" src="images/del.png" onclick="location.href='delDownloadAction.action?&DLNo=<s:property value='%{DLNo}'/>'" style="visibility: hidden" align="right" width=37 height=23/>
+		<s:a href="#" onclick="location.href='%{MapLink}'">Map</s:a>
+		<img id="del<s:property value='%{DLNo}'/>" src="images/del.png" onclick="location.href='delDownloadAction.action?&DLNo=<s:property value='%{DLNo}'/>'" style="visibility: hidden" align="right" width=38 height=24/>
 	</div>
 </s:iterator>
 <s:hidden id="minusStates" name="showMinus" value="%{showMinus}" />
