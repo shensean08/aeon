@@ -18,9 +18,14 @@
 
 <div data-role="navbar">
 <ul>
-<li><a href="#" onclick="location.href='myQRAction.action'" data-theme="b">MyＱＲ</a></li>
-<li><a href="#" onclick="location.href='showDownloadAction.action'" data-theme="b">My地図</a></li>
-<li><a href="userInfoMain.jsp" data-theme="b">My情報</a></li>
+<li><a href="#" onclick="location.href='myQRAction.action'" data-theme="b">マイQR</a></li>
+<li><a href="#" onclick="location.href='showDownloadAction.action'" data-theme="b">マイマップ</a></li>
+</ul>
+</div>
+<div data-role="navbar">
+<ul>
+<li><a href="userInfoMain.jsp" data-theme="b">アカウント</a></li>
+<li><a href="#" data-theme="b">防災図鑑</a></li>
 </ul>
 </div>
 </div>
