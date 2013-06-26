@@ -62,8 +62,6 @@
         <action name="registerAction" class="edu.kgu.aeon.Action.registerAction">
             <result name="input">register.jsp</result>
             <result name="success">userInfoMain.jsp</result>
-            <result name="login">login.jsp</result> 
-            <interceptor-ref name="permissionStack" />  
         </action>
 
         <!-- userInfoUpdateAction -->

@@ -19,7 +19,7 @@ import edu.kgu.aeon.agent.*;
 
 public class test {
 	public static void main(String[] args) {
-		downloadpic();
+		updateUserInfo();
 	}
 	
 	public static void deletedl() {
@@ -29,7 +29,7 @@ public class test {
 		action.execute();
 	}
 	public static void updateUserInfo() {
-		userInfoEditAction action = new userInfoEditAction();
+		userInfoUpdateAction action = new userInfoUpdateAction();
 		
 		registerFormBean bean = new registerFormBean();
 		//bean.setUserName("shensean08");
@@ -37,13 +37,13 @@ public class test {
 		bean.setPassword("1234567");
 		bean.setPasswordConfirm("1234567");
 		bean.setMailAddress("sdfsdf@ggg.com");
-		bean.setAddress1Name("address1");
+		bean.setAddress1Name("家");
 		bean.setAddress1Postalcode("p1");
-		bean.setAddress1Address("ad1");
+		bean.setAddress1Address("宝塚市");
 		
 		action.setUserID("1315492432");
 		action.setUserName("shensean08");
-		action.setInfoParten("base");
+		action.setInfoParten("address1");
 		
 		action.setUserInfoBean(bean);
 		

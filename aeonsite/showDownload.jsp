@@ -74,8 +74,8 @@
 <a href="login.jsp" data-icon="delete" class="ui-btn-right">Logout</a>
 <div data-role="navbar">
 <ul>
-<li><a href="myQRAction.action">MyＱＲ</a></li>
-<li><a href="showDownloadAction.action" class="ui-btn-active">My地図</a></li>
+<li><a href="#" onclick="location.href='myQRAction.action'" data-theme="b">MyＱＲ</a></li>
+<li><a href="#" onclick="location.href='showDownloadAction.action'" data-theme="b">My地図</a></li>
 <li><a href="userInfoMain.jsp">My情報</a></li>
 </ul>
 </div>

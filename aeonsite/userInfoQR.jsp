@@ -18,8 +18,8 @@
 
 <div data-role="navbar">
 <ul>
-<li><a href="myQRAction.action" class="ui-btn-active" data-theme="b">MyＱＲ</a></li>
-<li><a href="showDownloadAction.action" data-theme="b">My地図</a></li>
+<li><a href="#" onclick="location.href='myQRAction.action'" data-theme="b">MyＱＲ</a></li>
+<li><a href="#" onclick="location.href='showDownloadAction.action'" data-theme="b">My地図</a></li>
 <li><a href="userInfoMain.jsp" data-theme="b">My情報</a></li>
 </ul>
 </div>

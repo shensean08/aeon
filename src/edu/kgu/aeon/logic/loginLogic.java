@@ -49,10 +49,10 @@ public class loginLogic extends BaseLogic {
 		
 		// form value check
 		if (CheckFormBean()) {
-			
+
 			// create LoginQrImage
 			registerLogic.createQrCode(resultBean.getUserID());
-	
+			
 			// set return value
 			String path = "QRtmp/";
 			// userID

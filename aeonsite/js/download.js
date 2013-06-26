@@ -1,4 +1,4 @@
-﻿
+
 //****************************************************************************/
 // Class Download
 //
@@ -60,7 +60,7 @@ function Download(second) {
 
 					/// sean add start
 					//document.DownloadApplet.DownloadImage("1315492432","0","start","0","1","end","2","3");
-					document.DownloadApplet.DownloadImage(QRCode,"0",selectedPlace.name,selectedPlace.location.lat(),selectedPlace.location.lng(),"","","");
+					document.DownloadApplet.DownloadImage("http://dps.or.jp/aeonsite/",QRCode,"0",selectedPlace.name,selectedPlace.location.lat(),selectedPlace.location.lng(),"","","");
 					// sean add end
 
 					msg = " ";
@@ -140,7 +140,7 @@ function Download(second) {
 					// sean add start
 					//document.DownloadApplet.DownloadImage("1315492432","0","start","0","1","end","2","3");
 
-					document.DownloadApplet.DownloadImage(QRCode,0,selectedPlace.name,selectedPlace.location.lat(),selectedPlace.location.lng(),name,lat,lng);
+					document.DownloadApplet.DownloadImage("http://dps.or.jp/aeonsite/",QRCode,0,selectedPlace.name,selectedPlace.location.lat(),selectedPlace.location.lng(),name,lat,lng);
 
 					// sean add end
 					

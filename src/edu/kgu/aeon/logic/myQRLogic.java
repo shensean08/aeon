@@ -17,6 +17,9 @@ public class myQRLogic extends BaseLogic {
 		registerConfirmFormBean rtn = new registerConfirmFormBean();
 		userInfoBean bean = access.getUserInfoByUserName(userName);
 		
+		// create LoginQrImage
+		registerLogic.createQrCode(bean.getUserID());
+		
 		// set return value
 		String path = "QRtmp/";
 		
