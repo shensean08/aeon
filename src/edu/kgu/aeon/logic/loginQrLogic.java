@@ -42,16 +42,12 @@ public class loginQrLogic extends BaseLogic {
 				addressObj[2].put("address", bean.getAddress3Address());
 				
 				addressObj[3] = new JSONObject();
-				addressObj[3].put("name", bean.getAddress3Name());
-				addressObj[3].put("address", bean.getAddress3Address());
+				addressObj[3].put("name", bean.getAddress4Name());
+				addressObj[3].put("address", bean.getAddress4Address());
 				
 				addressObj[4] = new JSONObject();
-				addressObj[4].put("name", bean.getAddress3Name());
-				addressObj[4].put("address", bean.getAddress3Address());
-				
-				addressObj[5] = new JSONObject();
-				addressObj[5].put("name", bean.getAddress3Name());
-				addressObj[5].put("address", bean.getAddress3Address());
+				addressObj[4].put("name", bean.getAddress5Name());
+				addressObj[4].put("address", bean.getAddress5Address());
 				
 				currObj.put("name", "現在地");
 				currObj.put("address", "大阪府大阪市西区千代崎3丁目北2");
