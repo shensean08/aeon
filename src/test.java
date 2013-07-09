@@ -19,7 +19,7 @@ import edu.kgu.aeon.agent.*;
 
 public class test {
 	public static void main(String[] args) {
-		updateUserInfo();
+		downloadpic();
 	}
 	
 	public static void deletedl() {

@@ -87,6 +87,11 @@ public class DownloadApplet extends Applet implements ActionListener {
 		try {
 			// capture Screen
 			byte[] pic = CaptureScreen();
+//			File file = new File("/Users/seanshen/Documents/1.jpg");
+//			BufferedImage bin = ImageIO.read(file);
+//			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+//			ImageIO.write(bin,"png",bout);
+//			byte[] pic = bout.toByteArray();
 			
 			// add parameter
 			String urlLink = urlAddress + urlString; 

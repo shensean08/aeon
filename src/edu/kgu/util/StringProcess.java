@@ -2,7 +2,8 @@ package edu.kgu.util;
 
 public class StringProcess {
 	public static boolean chkMailAddress(String value) {
-		return value.matches("[\\w\\.\\-]+@(?:[\\w\\-]+\\.)+[\\w\\-]+");
+		return true;
+		//return value.matches("[\\w\\.\\-]+@(?:[\\w\\-]+\\.)+[\\w\\-]+");
 	}
 	
 	public static boolean chkKatakana(String value) {
