@@ -25,7 +25,7 @@ public class DownloadApplet extends Applet implements ActionListener {
 	
     public void init() {
         // Add a text field that provides the URL to download.
-        this.textField = new JTextField("http://www.baidu.com");
+        this.textField = new JTextField("http://www.google.com");
         this.textField.addActionListener(this);
 
         // Add a button that downloads the content from the URL.
