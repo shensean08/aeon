@@ -11,6 +11,7 @@ import edu.kgu.aeon.bean.loginFormBean;
 import edu.kgu.aeon.bean.registerConfirmFormBean;
 import edu.kgu.aeon.logic.loginLogic;
 import edu.kgu.log.LogLogger;
+import edu.kgu.util.encryption.MD5;
 
 public class loginAction extends BaseAction implements ServletResponseAware {
 	private HttpServletResponse response;
@@ -50,11 +51,21 @@ public class loginAction extends BaseAction implements ServletResponseAware {
 			this.setUserName(registerConfirmBean.getUserName());
 			this.setAppSession();
 			
-			Cookie cookie = new Cookie("userName",this.getUserName());
-			cookie.setMaxAge(60 * 60 * 24 * 14);
-			cookie.setPath("/");
-			cookie.setDomain("dps.or.jp");
-			response.addCookie(cookie);
+			
+			Cookie cookieUserName = new Cookie("userName",this.getUserName());
+			cookieUserName.setMaxAge(60 * 60 * 24 * 14);
+			cookieUserName.setPath("/");
+			
+			System.out.println("password:" + registerConfirmBean.getPassword());
+			String password = MD5.StrToMD5(registerConfirmBean.getPassword());
+			System.out.println("md5password:" + password);
+			Cookie cookiePswd = new Cookie("pswd",password);
+			cookiePswd.setMaxAge(60 * 60 * 24 * 14);
+			cookiePswd.setPath("/");
+			
+			//cookie.setDomain("dps.or.jp");
+			response.addCookie(cookieUserName);
+			response.addCookie(cookiePswd);
 			rtn = SUCCESS;
 		}
 		

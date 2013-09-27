@@ -24,7 +24,7 @@
 <div data-role="navbar">
 <ul>
 <li><a href="userInfoMain.jsp" data-theme="b">アカウント</a></li>
-<li><a href="#" data-theme="b">防災図鑑</a></li>
+<li><a href="http://dps.or.jp/game/index.php" data-theme="b">防災図鑑</a></li>
 </ul>
 </div>
 

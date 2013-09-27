@@ -12,9 +12,6 @@ public class downloadLogic extends BaseLogic {
 		return false;
 	}
 
-	/*
-	 * Insert ImageData and MapLink
-	 */
 	public int execute(InputStream pic, String userID,String type, String sName, String sLat, String sLng, String dName, String dLat, String dLng)  {
 		int rtn = -1;
 		

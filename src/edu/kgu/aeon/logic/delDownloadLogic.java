@@ -6,7 +6,6 @@ public class delDownloadLogic extends BaseLogic {
 	private DLinfoAccess access = new DLinfoAccess();
 	
 	public boolean CheckFormBean() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	

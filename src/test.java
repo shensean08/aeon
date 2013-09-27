@@ -7,6 +7,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 import edu.kgu.QrCode.*;
@@ -15,13 +17,30 @@ import edu.kgu.aeon.bean.registerFormBean;
 import edu.kgu.aeon.Action.*;
 import edu.kgu.aeon.logic.*;
 import edu.kgu.util.*;
+import edu.kgu.util.encryption.MD5;
 import edu.kgu.aeon.agent.*;
 
 public class test {
 	public static void main(String[] args) {
-		downloadpic();
+		System.out.println(MD5.StrToMD5("1234567"));
 	}
-	
+	public static String MD5Purity(String plainText ) {
+		try {
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(plainText.getBytes());
+		byte b[] = md.digest();
+		int i;
+		StringBuffer buf = new StringBuffer("");
+		for (int offset = 0; offset < b.length; offset++) {
+		i = b[offset];
+		if(i<0) i+= 256;
+		if(i<16) buf.append("0");
+		buf.append(Integer.toHexString(i));
+		}
+		plainText=buf.toString();
+		} catch (NoSuchAlgorithmException e){e.printStackTrace();}
+		return plainText.toUpperCase();
+		}
 	public static void deletedl() {
 		delDownloadAction action = new delDownloadAction();
 		action.setUserID("1315492432");

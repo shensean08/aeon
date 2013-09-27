@@ -48,17 +48,6 @@ public class DLinfoAccess extends BaseAccess {
 		query.append("       ,dLat");
 		query.append("       ,dLng)");
 		query.append("   VALUES (?,?,?,?,?,?,?,?,?,?,?) ");
-//		query.append("   VALUES ('" + value.getUserID() + "'");					//userID
-//		query.append("   		,'" + value.getDLNo() + "'");					//DLNo
-//		query.append("   		,'" + value.getType() + "'");					//Type		
-//		query.append("   		,'" + value.getDLName() + "'");					//Name
-//		query.append("   		,'" + value.getImgData() + "'");				//ImgData
-//		query.append("   		,'" + value.getsName() + "'");					//sName
-//		query.append("   		,'" + value.getsLat() + "'");					//sLat
-//		query.append("   		,'" + value.getsLng() + "'");					//sLng
-//		query.append("   		,'" + value.getdName() + "'");					//dName
-//		query.append("   		,'" + value.getdLat() + "'");					//dLat
-//		query.append("   		,'" + value.getdLng() + "')");					//dLng	
 		
 		try {
 			dbConn.BeginTransaction();

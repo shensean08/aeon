@@ -9,7 +9,6 @@ public class myQRLogic extends BaseLogic {
 	private userInfoAccess access = new userInfoAccess();
 	@Override
 	public boolean CheckFormBean() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	

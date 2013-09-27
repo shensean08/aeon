@@ -60,7 +60,7 @@ public class loginLogic extends BaseLogic {
 			this.registerConfirmBean.setUserName(resultBean.getUserName());
 			this.registerConfirmBean.setFirstName(resultBean.getFirstname());
 			this.registerConfirmBean.setQrImage(path + resultBean.getUserID() + ".png");
-
+			this.registerConfirmBean.setPassword(resultBean.getPassword());
 			rtn = true;
 		}
 		

@@ -5,7 +5,14 @@ public class registerConfirmFormBean {
 	public String userName = "";
 	public String firstName = "";
 	public String qrImage = "";
+	public String password = "";
 	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public String getFirstName() {
 		return firstName;
 	}
