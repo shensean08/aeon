@@ -56,9 +56,7 @@ public class loginAction extends BaseAction implements ServletResponseAware {
 			cookieUserName.setMaxAge(60 * 60 * 24 * 14);
 			cookieUserName.setPath("/");
 			
-			System.out.println("password:" + registerConfirmBean.getPassword());
 			String password = MD5.StrToMD5(registerConfirmBean.getPassword());
-			System.out.println("md5password:" + password);
 			Cookie cookiePswd = new Cookie("pswd",password);
 			cookiePswd.setMaxAge(60 * 60 * 24 * 14);
 			cookiePswd.setPath("/");

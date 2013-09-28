@@ -22,8 +22,31 @@ import edu.kgu.aeon.agent.*;
 
 public class test {
 	public static void main(String[] args) {
-		System.out.println(MD5.StrToMD5("1234567"));
+		shelterAdd();
 	}
+	
+	public static void delShelter() {
+		delShelterInfoAction action = new delShelterInfoAction();
+		action.setUserID("1111");
+		action.setDlNo("00001");
+		action.execute();
+	}
+	
+	public static void shelterList() {
+		showShelterInfoAction action = new showShelterInfoAction();
+		action.setUserID("1111");
+		action.execute();
+	}
+	
+	public static void shelterAdd() {
+		shelterInfoAction action = new shelterInfoAction();
+		action.setUserID("1111");
+		action.setLat("lat");
+		action.setLng("lng");
+		action.setPlaceName("中国人");
+		action.execute();
+	}
+	
 	public static String MD5Purity(String plainText ) {
 		try {
 		MessageDigest md = MessageDigest.getInstance("MD5");

@@ -51,5 +51,4 @@ public class delDownloadAction extends BaseAction {
 		return SUCCESS;
 	}
 
-
 }
