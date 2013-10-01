@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import edu.kgu.aeon.access.userInfoAccess;
 import edu.kgu.aeon.bean.userInfoBean;
 import edu.kgu.log.LogLogger;
+import edu.kgu.util.Resourse;
 
 public class loginQrLogic extends BaseLogic {
 	userInfoAccess access = new userInfoAccess();
@@ -50,7 +51,7 @@ public class loginQrLogic extends BaseLogic {
 				addressObj[4].put("address", bean.getAddress5Address());
 				
 				currObj.put("name", "現在地");
-				currObj.put("address", "京都市右京区西京極豆田町29");
+				currObj.put("address", Resourse.getItem("Current_local"));
 				
 				for (int i = 0; i < 5; i++) {
 					allObj.put(addressObj[i]);

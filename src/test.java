@@ -22,7 +22,11 @@ import edu.kgu.aeon.agent.*;
 
 public class test {
 	public static void main(String[] args) {
-		shelterAdd();
+		getResourse();
+	}
+	
+	public static void getResourse() {
+		System.out.println(Resourse.getItem("Current_local"));
 	}
 	
 	public static void delShelter() {
