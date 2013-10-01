@@ -100,6 +100,8 @@ public class shelterInfoAccess extends BaseAccess {
 		dbConn = conn.getDBConnect();
 		StringBuffer query = new StringBuffer();
 		query.append(" SELECT DLNo ");
+		query.append("		 ,lat ");
+		query.append("		 ,lng ");
 		query.append("       ,PlaceName ");
 		query.append("       ,FID ");
 		query.append("       ,Address ");
@@ -116,6 +118,8 @@ public class shelterInfoAccess extends BaseAccess {
 				shelterInfoBean bean = new shelterInfoBean();
 				bean.setUserID(userID);
 				bean.setDlNo(result.getString("DLNo"));
+				bean.setLat(result.getString("lat"));
+				bean.setLng(result.getString("lng"));
 				bean.setPlaceName(result.getString("PlaceName"));
 				bean.setFid(result.getString("FID"));
 				bean.setAddress(result.getString("Address"));
